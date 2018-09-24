@@ -6,6 +6,8 @@
 #  Created: 09/08/18
 
 from board import Board
+# importing copy module for creating deep copies for cheat mode
+import copy
 
 
 ## @class Executive
@@ -30,6 +32,9 @@ class Executive:
         ## @var grid
         #  empty grid
         self.grid = [0][0]
+        ## @var cheat_mode
+        # variable for whether or not user is in cheat mode
+        self.cheat_mode = False
         ## @var myBoard
         #  instance of the board class
         self.myBoard = Board()
@@ -134,58 +139,108 @@ class Executive:
     #  @author: Ethan
     def play(self):
         while not self.game_over:
-            self.myBoard.print_board(self.size, self.grid)
-            print("Number of flags: %s" % self.num_flags)
-            while True:
-                try:
-                    x = int(input("Enter a Y coordinate: "))
-                    if x < 0 or x > self.size - 1:
-                        print("Invalid input. Try again.")
-                    else:
-                        break
-                except ValueError:
-                    print("That\'s not an integer. Try again.")
-            while True:
-                try:
-                    y = int(input("Enter an X coordinate: "))
-                    if y < 0 or y > self.size - 1:
-                        print("Invalid input. Try again.")
-                    else:
-                        break
-                except ValueError:
-                    print("That\'s not an integer. Try again.")
-            choice = input("Enter an action flag [f], reveal [r], unflag [n]: ")
-            if x > self.size - 1 or y > self.size - 1:
-                print("Invalid try again")
-            elif choice != "f" and choice != "n" and choice != "r":
-                print("Invalid choice try again")
-            elif not self.grid[x][y].is_flagged and choice == "n":
-                print("Invalid try again")
-            elif not self.grid[x][y].is_flagged and self.num_flags == 0 and choice == "f":
-                print("Out of flags. Try again.")
-            elif self.grid[x][y].is_flagged and choice == "f":
-                print("Space is already flagged. Try again.")
-            elif self.grid[x][y].is_revealed and choice == "f":
-                print("You can't flag a revealed space. Try again.")
-            elif self.grid[x][y].is_revealed and choice == "n":
-                print("You can't unflag a revealed space. Try again.")
-            elif self.grid[x][y].is_flagged and choice == "n":
-                self.grid[x][y].is_flagged = False
-                self.num_flags += 1
-            elif not self.grid[x][y].is_flagged and choice == "f":
-                self.grid[x][y].is_flagged = True
-                self.num_flags -= 1
-                self.check_win()
-            #Testing to see if is_revealed is being switched to true
-            elif self.grid[x][y].is_revealed and not self.grid[x][y].is_mine and choice == "r":
-                print("Space is already revealed. Try again.")
-            elif self.grid[x][y].is_flagged and choice == "r":
-                print("You can't reveal a flagged space. Unflag before guessing this space or guess a different space.")
-            elif self.grid[x][y].is_mine and choice == "r":
-                print("Game Over")
-                self.game_over = True
+            # Checking if in cheat mode
+            if self.cheat_mode:
+                # in cheat mode
+                print('Entering cheat mode, revealing entire board...')
+                # make duplicate board and reveal all spaces
+                cheat_board = copy.deepcopy(self.grid)
+                for i in range(0, self.size):
+                    for j in range(0, self.size):
+                        cheat_board[i][j].is_revealed = True
+                        cheat_board[i][j].num_adj_mines = False
+                self.myBoard.print_board(self.size, cheat_board)
+                # present notice on how to leave cheat mode
+                leave_cheat_mode = input('Enter any input to leave cheat mode...')
+                # leave cheat mode
+                self.cheat_mode = False
+                print('Leaving cheat mode...')
             else:
-                self.reveal(x, y)
+                # Printing board and number of flags
+                self.myBoard.print_board(self.size, self.grid)
+                print("Number of flags: %s" % self.num_flags)
+                # not in cheat mode
+                # get x coordinate
+                while True:
+                    x = input("Enter a X coordinate: ")
+                    # account for cheat input
+                    if x == 'c' or x == 'C':
+                        self.cheat_mode = True
+                        break
+                    # not cheat input, check if numeric
+                    elif not x.isnumeric():
+                        print("That\'s not an integer. Try again.")
+                    # not cheat input, is numeric, check if within range
+                    elif int(x) < 0 or int(x) > self.size - 1:
+                        print("Invalid input. Try again.")
+                    # good input
+                    else:
+                        # make x an int
+                        x = int(x)
+                        break
+
+                # check if cheat applied
+                if self.cheat_mode == True:
+                    # is applied, continue to next iteration of loop
+                    continue
+
+                # get x coordinate
+                while True:
+                    y = input("Enter a Y coordinate: ")
+                    # account for cheat input
+                    if y == 'c' or y == 'C':
+                        self.cheat_mode = True
+                        break
+                    # not cheat input, check if numeric
+                    elif not y.isnumeric():
+                        print("That\'s not an integer. Try again.")
+                    # not cheat input, is numeric, check if within range
+                    elif int(y) < 0 or int(y) > self.size - 1:
+                        print("Invalid input. Try again.")
+                    # good input
+                    else:
+                        # make y an int
+                        y = int(y)
+                        break
+
+                # check if cheat applied
+                if self.cheat_mode == True:
+                    # is applied, continue to next iteration of loop
+                    continue
+
+                # cheat code not applied, ask user for action with selected coordinates
+                choice = input("Enter an action flag [f], reveal [r], unflag [n]: ")
+                if x > self.size - 1 or y > self.size - 1:
+                    print("Invalid try again")
+                elif choice != "f" and choice != "n" and choice != "r":
+                    print("Invalid choice try again")
+                elif not self.grid[x][y].is_flagged and choice == "n":
+                    print("Invalid try again")
+                elif not self.grid[x][y].is_flagged and self.num_flags == 0 and choice == "f":
+                    print("Out of flags. Try again.")
+                elif self.grid[x][y].is_flagged and choice == "f":
+                    print("Space is already flagged. Try again.")
+                elif self.grid[x][y].is_revealed and choice == "f":
+                    print("You can't flag a revealed space. Try again.")
+                elif self.grid[x][y].is_revealed and choice == "n":
+                    print("You can't unflag a revealed space. Try again.")
+                elif self.grid[x][y].is_flagged and choice == "n":
+                    self.grid[x][y].is_flagged = False
+                    self.num_flags += 1
+                elif not self.grid[x][y].is_flagged and choice == "f":
+                    self.grid[x][y].is_flagged = True
+                    self.num_flags -= 1
+                    self.check_win()
+                #Testing to see if is_revealed is being switched to true
+                elif self.grid[x][y].is_revealed and not self.grid[x][y].is_mine and choice == "r":
+                    print("Space is already revealed. Try again.")
+                elif self.grid[x][y].is_flagged and choice == "r":
+                    print("You can't reveal a flagged space. Unflag before guessing this space or guess a different space.")
+                elif self.grid[x][y].is_mine and choice == "r":
+                    print("Game Over")
+                    self.game_over = True
+                else:
+                    self.reveal(x, y)
 
         for i in range(0, self.size):
             for j in range(0, self.size):

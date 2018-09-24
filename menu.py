@@ -65,7 +65,7 @@ class Menu:
             print("Goodbye! See you later!")
             return
 
-    
+
     ## Prints the game instructions
     #  @author: Ayah
     def game_rules(self):
@@ -90,6 +90,8 @@ When player chose to reveal:
     - If not a mine, it will show spaces and numbers to tell player the number of mines around the chosen square.
 
 The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.
+
+Note: To enter a secret cheat mode, enter 'C' when asked for coordinates!
 
 Good Luck!
 
