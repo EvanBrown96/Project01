@@ -81,35 +81,35 @@ class Board:
 
             grid = [[0 for x in range(height + 2)] for y in range(width + 2)]
 
-            for i in range(0, width+2):
-                for j in range(0, height+2):
+            for i in range(0, height+2):
+                for j in range(0, width+2):
                     if(i == 0 and j == 0 or i == 0 and j == 1 or i == 1 and j == 0
                     or i == 1 and j == 1):
-                        grid[i][j] = " "
+                        grid[j][i] = " "
                     elif j == 0:
-                        grid[i][j] = i-2
+                        grid[j][i] = i-2
                     elif i == 0:
-                        grid[i][j] = j-2
+                        grid[j][i] = j-2
                     elif j == 1:
-                        grid[i][j] = "|"
+                        grid[j][i] = "|"
                     elif i == 1:
-                        grid[i][j] = "--"
+                        grid[j][i] = "--"
                     else:
-                        grid[i][j] = main_grid[i - 2][j - 2]
+                        grid[j][i] = main_grid[j - 2][i - 2]
 
-            for i in range(0, width+2):
-                for j in range(0, height+2):
+            for i in range(0, height+2):
+                for j in range(0, width+2):
                     if i == 0 or i == 1 or j == 0 or j == 1:
                         if i == 1 and j == 0:
-                            print(grid[i][j], end=' ')
+                            print(grid[j][i], end=' ')
                         elif i == 0 and j == 0 or i == 0 and j == 1 or i == 1 and j == 1:
-                            print((str(grid[i][j]).ljust(2)), end=' ')
+                            print((str(grid[j][i]).ljust(2)), end=' ')
                         elif i == 0 or j == 0:
-                            print((str(grid[i][j]).zfill(2)), end=' ')
+                            print((str(grid[j][i]).zfill(2)), end=' ')
                         else:
-                            print(str(grid[i][j]).ljust(2), end=' ')
+                            print(str(grid[j][i]).ljust(2), end=' ')
                     else:
-                        grid[i][j].print_square()
+                        grid[j][i].print_square()
                 print('\n', end=' ')
 
     ## Counts number of adjacent mines for a given cell
