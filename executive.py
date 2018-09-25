@@ -45,6 +45,7 @@ class Executive:
     #  @param x, x-coordinate of cell
     #  @param y, y-coordinate of cell
     def reveal(self, x, y):
+        self.grid[x][y].is_revealed = True
         if self.grid[x][y].num_adj_mines == 0:
             self.reveal_adjacent(x - 1, y - 1)
             self.reveal_adjacent(x - 1, y)
@@ -54,8 +55,6 @@ class Executive:
             self.reveal_adjacent(x, y + 1)
             self.reveal_adjacent(x + 1, y - 1)
             self.reveal_adjacent(x + 1, y + 1)
-        else:
-            self.grid[x][y].is_revealed = True
 
     ## Checks that coordinates are within bounds of board
     #  @author: Kristi
