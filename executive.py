@@ -19,7 +19,8 @@ class Executive:
     def __init__(self):
         ## @var size
         #  stores the size of the board
-        self.size = 0
+        self.width = 0
+        self.height = 0
         ## @var mines
         #  stores the number of mines
         self.mines = 0
@@ -61,7 +62,7 @@ class Executive:
     #  @param x, x-coordinate of cell
     #  @param y, y-coordinate of cell
     def is_valid_cell(self, x, y):
-        if 0 <= x < self.size and 0 <= y < self.size:
+        if 0 <= x < self.width and 0 <= y < self.height:
             return True
         return False
 
@@ -87,8 +88,8 @@ class Executive:
     #  @post: game_over flag has been updated
     def check_win(self):
         flag_on_mine = 0
-        for i in range(0, self.size):
-            for x in range(0, self.size):
+        for i in range(0, self.width):
+            for x in range(0, self.height):
                 if self.grid[i][x].is_mine and self.grid[i][x].is_flagged:
                     flag_on_mine += 1
         if flag_on_mine == self.mines:
@@ -101,18 +102,33 @@ class Executive:
     #  @author: Ethan
     #  @post: Board is generated based on user input
     def setup(self):
+
         while True:
             try:
-                board_size_select = int(input("Please enter the board size between 2 and 15: "))
+                board_size_select = int(input("Please enter the board width between 2 and 15: "))
             except ValueError:
                 print("That\'s not a number!")
             else:
                 if 2 <= board_size_select <= 15:
-                    self.size = board_size_select
+                    self.width = board_size_select
                     break
                 else:
                     print('Not a valid board size. Try again')
-        max_mines = self.size * self.size - 1
+
+        while True:
+            try:
+                board_size_select = int(input("Please enter the board height between 2 and 15: "))
+            except ValueError:
+                print("That\'s not a number!")
+            else:
+                if 2 <= board_size_select <= 15:
+                    self.height = board_size_select
+                    break
+                else:
+                    print('Not a valid board size. Try again')
+
+        max_mines = self.width * self.height - 1
+
         while True:
             try:
                 mine_num_select = int(
@@ -128,9 +144,9 @@ class Executive:
 
         self.num_flags = self.mines
 
-        self.grid = self.myBoard.make_grid(self.size)
-        self.myBoard.generate_mines(self.mines, self.size, self.grid)
-        self.myBoard.mine_check(self.size, self.grid)
+        self.grid = self.myBoard.make_grid(self.width, self.height)
+        self.myBoard.generate_mines(self.mines, self.width, self.height, self.grid)
+        self.myBoard.mine_check(self.width, self.height, self.grid)
 
 
 
@@ -145,11 +161,11 @@ class Executive:
                 print('Entering cheat mode, revealing entire board...')
                 # make duplicate board and reveal all spaces
                 cheat_board = copy.deepcopy(self.grid)
-                for i in range(0, self.size):
-                    for j in range(0, self.size):
+                for i in range(0, self.width):
+                    for j in range(0, self.height):
                         cheat_board[i][j].is_revealed = True
                         cheat_board[i][j].num_adj_mines = False
-                self.myBoard.print_board(self.size, cheat_board)
+                self.myBoard.print_board(self.width, self.height, cheat_board)
                 # present notice on how to leave cheat mode
                 leave_cheat_mode = input('Enter any input to leave cheat mode...')
                 # leave cheat mode
@@ -157,7 +173,7 @@ class Executive:
                 print('Leaving cheat mode...')
             else:
                 # Printing board and number of flags
-                self.myBoard.print_board(self.size, self.grid)
+                self.myBoard.print_board(self.width, self.height, self.grid)
                 print("Number of flags: %s" % self.num_flags)
                 # not in cheat mode
                 # get x coordinate
@@ -171,7 +187,7 @@ class Executive:
                     elif not x.isnumeric():
                         print("That\'s not an integer. Try again.")
                     # not cheat input, is numeric, check if within range
-                    elif int(x) < 0 or int(x) > self.size - 1:
+                    elif int(x) < 0 or int(x) >= self.width:
                         print("Invalid input. Try again.")
                     # good input
                     else:
@@ -195,7 +211,7 @@ class Executive:
                     elif not y.isnumeric():
                         print("That\'s not an integer. Try again.")
                     # not cheat input, is numeric, check if within range
-                    elif int(y) < 0 or int(y) > self.size - 1:
+                    elif int(y) < 0 or int(y) >= self.height:
                         print("Invalid input. Try again.")
                     # good input
                     else:
@@ -210,7 +226,7 @@ class Executive:
 
                 # cheat code not applied, ask user for action with selected coordinates
                 choice = input("Enter an action flag [f], reveal [r], unflag [n]: ")
-                if x > self.size - 1 or y > self.size - 1:
+                if x >= self.width or y >= self.height:
                     print("Invalid try again")
                 elif choice != "f" and choice != "n" and choice != "r":
                     print("Invalid choice try again")
@@ -242,8 +258,8 @@ class Executive:
                 else:
                     self.reveal(x, y)
 
-        for i in range(0, self.size):
-            for j in range(0, self.size):
+        for i in range(0, self.width):
+            for j in range(0, self.height):
                 self.grid[i][j].is_revealed = True
                 self.grid[i][j].num_adj_mines = False
-        self.myBoard.print_board(self.size, self.grid)
+        self.myBoard.print_board(self.width, self.height, self.grid)

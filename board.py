@@ -18,7 +18,8 @@ class Board:
     def __init__(self):
         ## @var boardSize
         #  stores the size of the board
-        self.boardSize = 0
+        self.boardWidth = 0
+        self.boardHeight = 0
         ## @var mines_num
         #  stores the number of mines
         self.mines_num = 0
@@ -27,13 +28,14 @@ class Board:
     #  @author: Clare
     #  @param: size, size of the grid
     #  @returns: grid
-    def make_grid(self, size):
-            size = int(size)
-            grid = [[0 for x in range(size)] for y in range(size)]
-            for i in range(0, size):
-                for j in range(0, size):
-                    grid[i][j] = Square()
-            return grid
+    def make_grid(self, width, height):
+        width = int(width)
+        height = int(height)
+        grid = [[0 for y in range(height)] for x in range(width)]
+        for i in range(0, width):
+            for j in range(0, height):
+                grid[i][j] = Square()
+        return grid
 
     ## Randomly places mines on board
     #  @author: Ayah
@@ -42,14 +44,15 @@ class Board:
     #  @param: size, size of the grid
     #  @param: grid, grid to be populated
     #  @post: the grid is populated with mines
-    def generate_mines(self, mines, size, grid):
+    def generate_mines(self, mines, width, height, grid):
         self.mines_num=mines;
-        self.boardSize=size;
+        self.boardWidth = width;
+        self.boardHeight = height;
         for i in range(0, self.mines_num):
             is_bomb = False
             while not is_bomb:
-                a = randint(0, self.boardSize - 1)
-                b = randint(0, self.boardSize - 1)
+                a = randint(0, self.boardWidth - 1)
+                b = randint(0, self.boardHeight - 1)
                 if not grid[a][b].is_mine:
                     grid[a][b].is_mine = True
                     is_bomb = True
@@ -72,11 +75,14 @@ class Board:
     #  @param: size, size of the grid
     #  @param: main_grid, grid to be printed
     #  @post: grid is printed to look nice for the user
-    def print_board(self, size, main_grid):
-            size = int(size)
-            grid = [[0 for x in range(size + 2)] for y in range(size + 2)]
-            for i in range(0, size+2):
-                for j in range(0, size+2):
+    def print_board(self, width, height, main_grid):
+            width = int(width)
+            height = int(height)
+
+            grid = [[0 for x in range(height + 2)] for y in range(width + 2)]
+
+            for i in range(0, width+2):
+                for j in range(0, height+2):
                     if(i == 0 and j == 0 or i == 0 and j == 1 or i == 1 and j == 0
                     or i == 1 and j == 1):
                         grid[i][j] = " "
@@ -91,8 +97,8 @@ class Board:
                     else:
                         grid[i][j] = main_grid[i - 2][j - 2]
 
-            for i in range(0, size+2):
-                for j in range(0, size+2):
+            for i in range(0, width+2):
+                for j in range(0, height+2):
                     if i == 0 or i == 1 or j == 0 or j == 1:
                         if i == 1 and j == 0:
                             print(grid[i][j], end=' ')
@@ -112,55 +118,23 @@ class Board:
     #  @param y, y-coordinate of cell
     #  @param: size, size of the grid
     #  @param: grid, grid to be checked
-    def count_nearby_mines(self, x, y, size, grid):
+    def count_nearby_mines(self, x, y, width, height, grid):
         if grid[x][y].is_mine:
             return
-        if 0 < x:
-            # top left
-            if 0 < y:
-                if grid[x - 1][y - 1].is_mine:
-                    grid[x][y].num_adj_mines += 1
 
-            # top middle
-            if grid[x - 1][y].is_mine:
-                grid[x][y].num_adj_mines += 1
-
-            # top right
-            if y < size:
-                if grid[x - 1][y + 1].is_mine:
-                    grid[x][y].num_adj_mines += 1
-
-        # left
-        if 0 < y:
-            if grid[x][y - 1].is_mine:
-                grid[x][y].num_adj_mines += 1
-
-        # right
-        if y < size:
-            if grid[x][y + 1].is_mine:
-                grid[x][y].num_adj_mines += 1
-
-        if x < size:
-            # bottom left
-            if 0 < y:
-                if grid[x + 1][y - 1].is_mine:
-                    grid[x][y].num_adj_mines += 1
-
-            # bottom middle
-            if grid[x + 1][y].is_mine:
-                grid[x][y].num_adj_mines += 1
-
-            # bottom right
-            if y < size:
-                if grid[x + 1][y + 1].is_mine:
-                    grid[x][y].num_adj_mines += 1
+        for i in range(-1, 2):
+            if x+i >= 0 and x+i < width:
+                for j in range(-1, 2):
+                    if y+j >= 0 and y+j < height:
+                        if grid[x+i][y+j].is_mine:
+                            grid[x][y].num_adj_mines += 1
 
     ## Counts/labels number of adjacent mines for board
     #  @author: Kyle
     #  @param: size, size of the grid
     #  @param: grid, grid to be checked
     #  @post: each square is labeled with num_adj_mines
-    def mine_check(self, size, grid):
-        for w in range(size):
-            for z in range(size):
-                self.count_nearby_mines(w, z, size - 1, grid)
+    def mine_check(self, width, height, grid):
+        for x in range(width):
+            for y in range(height):
+                self.count_nearby_mines(x, y, width, height, grid)
