@@ -6,7 +6,11 @@
 #  Created: 09/06/18
 
 from menu import Menu
+import tkinter as Tk
 
-playing = Menu()
-playing.game_rules()
-playing.game_menu()
+root = Tk.Tk()
+
+playing = Menu(root)
+#playing.game_rules()
+#playing.game_menu()
+Tk.mainloop()

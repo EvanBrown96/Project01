@@ -6,7 +6,7 @@
 #  Created: 09/08/18
 
 from executive import Executive
-
+import tkinter as Tk
 
 ## @class Menu
 #  @brief Prints menu and rules; Manages Executive instance
@@ -14,62 +14,79 @@ class Menu:
 
     ## Constructor; initializes class variables
     #  @author: Ayah
-    def __init__(self):
-        ## @var choice
-        #  flag for replay choice
-        self.choice = 0
+    def __init__(self, root):
+
         ## @var myGame
         #  instance of the executive class
+        self.myGame = None
+
+        # save root Tk window
+        self.root = root
+
+        # create welcome text and display it
+        Tk.Label(root, text="Welcome to Minesweeper").pack()
+
+        # create buttons
+        self.play_button = Tk.Button(root, text="Play", command=self.start_game)
+        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules)
+        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy)
+
+        # display buttons
+        self.play_button.pack()
+        self.rules_button.pack()
+        self.quit_button.pack()
+
+        # create member variable for rules window, but don't create the actual window yet
+        self.rules_window = None
+        # flag to prevent rules window from being created multiple times
+        self.rules_displayed = False
+
+
+    def start_game(self):
+
+        # hide the menu window, and the rules window if it is open
+        self.root.withdraw()
+        if self.rules_displayed:
+            self.rules_window.withdraw()
+
+        # create new game and call methods as normal
         self.myGame = Executive()
+        self.myGame.setup()
+        self.myGame.play()
 
-    ## Handles any type error in users input
-    #  @author: Ayah
-    #  @returns user input when entered correctly
-    def type_error_handler(self):
-        while True:
-            try:
-                check = int (input())
-                break
-            except:
-                print ("Please enter a valid choice: ")
-                print ("Play[1], Quit[2]")
-        return check
+        # after game finishes (by either loss or win), display the windows again
+        self.root.deiconify()
+        if self.rules_displayed:
+            self.rules_window.deiconify()
 
-    ## Keep the game running until user chose to quit
-    #  @authors: Ayah
-    def game_menu(self):
 
-        play_again = 1
-        while not self.myGame.game_over:
-            print("Please, chose from the menu:")
-            print("""1. Play the Game
-2. Quit""")
-            self.choice = self.type_error_handler()
-            if self.choice == 1:
-                self.myGame.setup()
-                self.myGame.play()
-            elif self.choice == 2:
-                print("Goodbye! See you later!")
-                break
-            else:
-                print("Please enter a valid choice:")
-            while play_again != 2:
-                print("Play[1], Quit [2]")
-                play_again = self.type_error_handler()
-                if play_again == 1:
-                    self.myGame = Executive ()
-                    self.myGame.setup()
-                    self.myGame.play()
-                elif play_again != 2:
-                    print("Please enter a valid choice")
-            print("Goodbye! See you later!")
-            return
+
+    def on_rules_close(self):
+        self.rules_displayed = False
+        self.rules_window.destroy()
+
 
 
     ## Prints the game instructions
     #  @author: Ayah
     def game_rules(self):
-        print("""Welcome to Minesweepers!
+
+        if self.rules_displayed:
+            # if rules are already displayed, move them to the front and return
+            self.rules_window.lift()
+            return
+
+        # set displayed flag
+        self.rules_displayed = True
+
+        # create a new window
+        self.rules_window = Tk.Toplevel(self.root)
+
+        # when window is closed, set
+        self.rules_window.protocol("WM_DELETE_WINDOW", self.on_rules_close)
+
+        # create and show rules text
+        Tk.Label(self.rules_window, text="""Welcome to Minesweepers!
 
 Here are the game instructions:
 
@@ -95,4 +112,4 @@ Note: To enter a secret cheat mode, enter 'C' when asked for coordinates!
 
 Good Luck!
 
-""")
+""").pack()
