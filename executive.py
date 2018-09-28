@@ -163,7 +163,6 @@ class Executive:
                 for i in range(0, self.width):
                     for j in range(0, self.height):
                         cheat_board[i][j].is_revealed = True
-                        cheat_board[i][j].num_adj_mines = False
                 self.myBoard.print_board(self.width, self.height, cheat_board)
                 # present notice on how to leave cheat mode
                 leave_cheat_mode = input('Enter any input to leave cheat mode...')
