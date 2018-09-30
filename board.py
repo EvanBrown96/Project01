@@ -117,6 +117,14 @@ class Board:
                         if grid[x+i][y+j].is_mine:
                             grid[x][y].num_adj_mines += 1
 
+    #Simple loop to reset num_adj_mines to 0 before being evaluated again
+    def resetGridMineCount(self, grid):
+        for x in range(0, self.boardWidth):
+            for y in range(0, self.boardHeight):
+                grid[x][y].num_adj_mines = 0;
+                grid[x][y].was_moved = False;
+
+
     ## Counts/labels number of adjacent mines for board
     #  @author: Kyle
     #  @param: size, size of the grid
@@ -125,4 +133,6 @@ class Board:
     def mine_check(self, width, height, grid):
         for x in range(width):
             for y in range(height):
+                #grid[x][y].num_adj_mines = 0;
+                oldCount = grid[x][y].num_adj_mines
                 self.count_nearby_mines(x, y, width, height, grid)

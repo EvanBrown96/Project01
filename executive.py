@@ -5,6 +5,7 @@
 #  Author: Ethan Lefert
 #  Created: 09/08/18
 
+from random import randint
 from board import Board
 # importing copy module for creating deep copies for cheat mode
 import copy
@@ -39,6 +40,30 @@ class Executive:
         ## @var myBoard
         #  instance of the board class
         self.myBoard = Board()
+
+##Trys to move the mine several times verse just once, set the tolerance to increase the probability of a successful moved
+#default tolerance set to 10
+    def validTransformation(self, tolerance, i, j):
+        if not tolerance == 0:
+            a = randint(0, self.width - 1)
+            b = randint(0, self.height - 1)
+            if not self.grid[a][b].is_mine and not self.grid[a][b].is_flagged and self.is_valid_cell(a, b) and not self.grid[a][b].is_revealed:
+                self.grid[i][j].is_mine = False
+                self.grid[a][b].is_mine = True
+                self.grid[a][b].was_moved = True;
+                #Uncomment to show transformation of mine position
+                print("Value i,j :" + str(i) + ", " + str(j) + " with was_moved to: " + str(a) + ", " +str(b))
+
+            else:
+                self.validTransformation(tolerance-1, i, j)
+
+    ##Iterates through each cell of the 2D array and determines if there is a mine
+    #If there is a mine the mine is removed and placed somewhere else not revealed or a mine
+    def moveMines(self,x,y):
+        for i in range(0, self.width):
+            for j in range(0, self.height):
+                if self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and not self.grid[i][j].was_moved:
+                    self.validTransformation(10, i, j)
 
     ## Recursively calls reveal_adjacent() to uncover squares
     #  @authors: Ethan, Kristi
@@ -254,7 +279,12 @@ class Executive:
                     print("Game Over")
                     self.game_over = True
                 else:
+                    self.moveMines(x, y)
+                    self.myBoard.resetGridMineCount(self.grid)
+                    self.myBoard.mine_check(self.width, self.height, self.grid)
                     self.reveal(x, y)
+
+
 
         for i in range(0, self.width):
             for j in range(0, self.height):
