@@ -57,18 +57,6 @@ class Board:
                     grid[a][b].is_mine = True
                     is_bomb = True
 
-    ## Prints the board with minimal formatting
-    #  @author:Clare
-    #  @pre: the grid has been generated
-    #  @param: size, size of the grid
-    #  @param: grid, grid to be printed
-    #  @post: grid printed in a grid-like manner
-    def just_print(self, size, grid):
-        for i in range(0, size):
-            for j in range(0, size):
-                grid[i][j].print_square()
-            print('\n', end=' ')
-
     ## Prints a formatted game board
     #  @author: Clare
     #  @pre: grid does not have formatting
