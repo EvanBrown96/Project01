@@ -134,6 +134,7 @@ class Board:
         for x in range(0, self.boardWidth):
             for y in range(0, self.boardHeight):
                 grid[x][y].num_adj_mines = 0;
+                grid[x][y].was_moved = False;
 
 
     ## Counts/labels number of adjacent mines for board
