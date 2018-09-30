@@ -130,10 +130,10 @@ class Board:
                             grid[x][y].num_adj_mines += 1
 
     #Simple loop to reset num_adj_mines to 0 before being evaluated again
-    def resetGridMineCount(self):
+    def resetGridMineCount(self, grid):
         for x in range(0, self.boardWidth):
             for y in range(0, self.boardHeight):
-                self.num_adj_mines = 0;
+                grid[x][y].num_adj_mines = 0;
 
 
     ## Counts/labels number of adjacent mines for board
@@ -147,4 +147,3 @@ class Board:
                 #grid[x][y].num_adj_mines = 0;
                 oldCount = grid[x][y].num_adj_mines
                 self.count_nearby_mines(x, y, width, height, grid)
-                print("Cell: " + str(x) + ", " + str(y) + str(oldCount) + " -> " + str(grid[x][y].num_adj_mines))
