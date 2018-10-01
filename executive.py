@@ -52,18 +52,19 @@ class Executive:
                 self.grid[a][b].is_mine = True
                 self.grid[a][b].was_moved = True;
                 #Uncomment to show transformation of mine position
-                print("Value i,j :" + str(i) + ", " + str(j) + " with was_moved to: " + str(a) + ", " +str(b))
-
+                #print("Value i,j :" + str(i) + ", " + str(j) + " with was_moved to: " + str(a) + ", " +str(b))
+                return True;
             else:
                 self.validTransformation(tolerance-1, i, j)
 
     ##Iterates through each cell of the 2D array and determines if there is a mine
     #If there is a mine the mine is removed and placed somewhere else not revealed or a mine
-    def moveMines(self,x,y):
+    def moveMines(self):
         for i in range(0, self.width):
             for j in range(0, self.height):
                 if self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and not self.grid[i][j].was_moved:
-                    self.validTransformation(10, i, j)
+                    if self.validTransformation(10, i, j):
+                        self.reveal(i, j)
 
     ## Recursively calls reveal_adjacent() to uncover squares
     #  @authors: Ethan, Kristi
@@ -280,7 +281,7 @@ class Executive:
                     self.game_over = True
                 else:
                     self.reveal(x, y)
-                    self.moveMines(x, y)
+                    self.moveMines()
                     self.myBoard.resetGridMineCount(self.grid)
                     self.myBoard.mine_check(self.width, self.height, self.grid)
 
