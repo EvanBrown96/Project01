@@ -47,3 +47,15 @@ Location: In-Class
   * Discussed next meeting for the following week
   * Discussed next steps after moving mines is resolved
   * Discussed current progress on example GUI implementation.
+
+## Meeting \#5
+Date: Monday, October 1, 2018
+
+Time: 11:30 - 11:50 AM
+
+Location: In-Class
+
+  * Discussed moving mines implementation
+  * Discussed continuing work on GUI
+  * Discussed implementing a stopwatch
+  * Discussed next meeting time and location
