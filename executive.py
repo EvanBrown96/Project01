@@ -279,10 +279,11 @@ class Executive:
                     print("Game Over")
                     self.game_over = True
                 else:
+                    self.reveal(x, y)
                     self.moveMines(x, y)
                     self.myBoard.resetGridMineCount(self.grid)
                     self.myBoard.mine_check(self.width, self.height, self.grid)
-                    self.reveal(x, y)
+
 
 
 
