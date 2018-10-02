@@ -22,14 +22,18 @@ class Menu:
 
         # save root Tk window
         self.root = root
+        root.title("Minesweeper 2018")
+        root.geometry("400x200")
+        root.configure(height=200, width=400, bg="lightgreen", bd=10, relief="ridge", pady=30)
+        root.resizable(width=False, height=False)
 
         # create welcome text and display it
-        Tk.Label(root, text="Welcome to Minesweeper").pack()
+        Tk.Label(root, text="Welcome to Minesweeper", bg="lightgreen", font=('copperplate', 24)).pack()
 
         # create buttons
-        self.play_button = Tk.Button(root, text="Play", command=self.start_game)
-        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules)
-        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy)
+        self.play_button = Tk.Button(root, text="Play", command=self.start_game, highlightbackground="lightgreen")
+        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules, highlightbackground="lightgreen")
+        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy, highlightbackground="lightgreen")
 
         # display buttons
         self.play_button.pack()
@@ -40,7 +44,6 @@ class Menu:
         self.rules_window = None
         # flag to prevent rules window from being created multiple times
         self.rules_displayed = False
-
 
     def start_game(self):
 
