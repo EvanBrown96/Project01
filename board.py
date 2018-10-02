@@ -55,7 +55,7 @@ class Board:
     #  @param: size, size of the grid
     #  @param: grid, grid to be populated
     #  @post: the grid is populated with mines
-    def generate_mines(self, mines, width, height, grid):
+    def generate_mines(self, mines, width, height):
         self.mines_num=mines;
         self.width = width;
         self.height = height;
@@ -64,8 +64,8 @@ class Board:
             while not is_bomb:
                 a = randint(0, self.width - 1)
                 b = randint(0, self.height - 1)
-                if not grid[a][b].is_mine:
-                    grid[a][b].is_mine = True
+                if not self.grid[a][b].is_mine:
+                    self.grid[a][b].is_mine = True
                     is_bomb = True
 
     ## Prints a formatted game board
@@ -118,16 +118,16 @@ class Board:
     #  @param y, y-coordinate of cell
     #  @param: size, size of the grid
     #  @param: grid, grid to be checked
-    def count_nearby_mines(self, x, y, width, height, grid):
-        if grid[x][y].is_mine:
+    def count_nearby_mines(self, x, y, width, height):
+        if self.grid[x][y].is_mine:
             return
 
         for i in range(-1, 2):
             if x+i >= 0 and x+i < width:
                 for j in range(-1, 2):
                     if y+j >= 0 and y+j < height:
-                        if grid[x+i][y+j].is_mine:
-                            grid[x][y].num_adj_mines += 1
+                        if self.grid[x+i][y+j].is_mine:
+                            self.grid[x][y].num_adj_mines += 1
 
 
     def checkAdditionalReveals(self):
@@ -138,23 +138,23 @@ class Board:
                     self.reveal(i, j)
 
     # Simple loop to reset num_adj_mines to 0 before being evaluated again
-    def resetGridMineCount(self, grid):
+    def resetGridMineCount(self):
         for x in range(0, self.width):
             for y in range(0, self.height):
-                grid[x][y].num_adj_mines = 0;
-                grid[x][y].was_moved = False;
+                self.grid[x][y].num_adj_mines = 0;
+                self.grid[x][y].was_moved = False;
 
     ## Counts/labels number of adjacent mines for board
     #  @author: Kyle
     #  @param: size, size of the grid
     #  @param: grid, grid to be checked
     #  @post: each square is labeled with num_adj_mines
-    def mine_check(self, width, height, grid):
+    def mine_check(self, width, height):
         for x in range(width):
             for y in range(height):
                 #grid[x][y].num_adj_mines = 0;
                 #oldCount = grid[x][y].num_adj_mines
-                self.count_nearby_mines(x, y, width, height, grid)
+                self.count_nearby_mines(x, y, width, height)
 
     ## Recursively calls reveal_adjacent() to uncover squares
     #  @authors: Ethan, Kristi

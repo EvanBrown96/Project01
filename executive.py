@@ -91,8 +91,8 @@ class Executive:
         self.myBoard.num_flags = self.mines_num
 
         self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
-        self.myBoard.generate_mines(self.mines_num, self.width, self.height, self.myBoard.grid)
-        self.myBoard.mine_check(self.width, self.height, self.myBoard.grid)
+        self.myBoard.generate_mines(self.mines_num, self.width, self.height)
+        self.myBoard.mine_check(self.width, self.height)
 
     ## Takes coordinates from user and handles input
     #  @pre: Board has been setup
@@ -217,8 +217,8 @@ class Executive:
                         self.myBoard.stopwatch.start()
                     self.myBoard.reveal(x, y)
                     self.myBoard.moveMines()
-                    self.myBoard.resetGridMineCount(self.myBoard.grid)
-                    self.myBoard.mine_check(self.width, self.height, self.myBoard.grid)
+                    self.myBoard.resetGridMineCount()
+                    self.myBoard.mine_check(self.width, self.height)
                     self.myBoard.checkAdditionalReveals()
 
         for i in range(0, self.width):
