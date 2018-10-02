@@ -23,6 +23,9 @@ class Board:
         ## @var mines_num
         #  stores the number of mines
         self.mines_num = 0
+        ## @var grid
+        #  empty grid
+        self.grid = [0][0]
 
     ## Generates a grid object
     #  @author: Clare
