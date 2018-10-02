@@ -7,6 +7,7 @@
 
 from random import randint
 from board import Board
+
 # importing copy module for creating deep copies for cheat mode
 import copy
 
@@ -125,6 +126,9 @@ class Executive:
                     if x == 'c' or x == 'C':
                         self.cheat_mode = True
                         break
+                    # user requested to see current time on stopwatch
+                    elif x == 't' or x == 'T':
+                        self.myBoard.printCurrentTime()
                     # not cheat input, check if numeric
                     elif not x.isnumeric():
                         print("That\'s not an integer. Try again.")
@@ -149,6 +153,9 @@ class Executive:
                     if y == 'c' or y == 'C':
                         self.cheat_mode = True
                         break
+                    # user requested to see current time on stopwatch
+                    elif y == 't' or y == 'T':
+                        self.myBoard.printCurrentTime()
                     # not cheat input, check if numeric
                     elif not y.isnumeric():
                         print("That\'s not an integer. Try again.")
@@ -186,6 +193,11 @@ class Executive:
                     self.myBoard.grid[x][y].is_flagged = False
                     self.myBoard.num_flags += 1
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
+                    # checking if first selection for stopwatch
+                    if self.myBoard.first_selection:
+                        # is first selection, toggle and start stopwatch
+                        self.myBoard.first_selection = False
+                        self.myBoard.stopwatch.start()
                     self.myBoard.grid[x][y].is_flagged = True
                     self.myBoard.num_flags -= 1
                     self.check_win()
@@ -198,6 +210,11 @@ class Executive:
                     print("Game Over")
                     self.game_over = True
                 else:
+                    # checking if first selection for stopwatch
+                    if self.myBoard.first_selection:
+                        # is first selection, toggle and start stopwatch
+                        self.myBoard.first_selection = False
+                        self.myBoard.stopwatch.start()
                     self.myBoard.reveal(x, y)
                     self.myBoard.moveMines()
                     self.myBoard.resetGridMineCount(self.myBoard.grid)

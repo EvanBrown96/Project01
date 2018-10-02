@@ -7,6 +7,7 @@
 
 from random import randint
 from square import Square
+from stopwatch import Stopwatch
 
 ## @class Board
 #  @brief Handles board creation and board functionality
@@ -28,6 +29,11 @@ class Board:
         ## @var grid
         #  empty grid
         self.grid = [0][0]
+        # @var first_selection
+        self.first_selection = True
+        # @var stopwatch
+        # instance of stopwatch class
+        self.stopwatch = Stopwatch()
 
     ## Generates a grid object
     #  @author: Clare
@@ -207,3 +213,25 @@ class Board:
                 if self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and not self.grid[i][j].was_moved:
                     if self.validTransformation(10, i, j):
                         self.reveal(i, j)
+
+    # Prints current time on stopwatch for user
+    def printCurrentTime(self):
+        seconds = self.stopwatch.currentTime()
+        hours = seconds // 3600
+        seconds = seconds % 3600
+        minutes = seconds // 60
+        seconds = seconds % 60
+        time = "Time: "
+        if hours < 10:
+            time += "0" + str(hours) + ":"
+        else:
+            time += str(hours) + ":"
+        if minutes < 10:
+            time += "0" + str(minutes) + ":"
+        else:
+            time += str(minutes) + ":"
+        if seconds < 10:
+            time += "0" + str(seconds)
+        else:
+            time += str(seconds)
+        print(time)
