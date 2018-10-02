@@ -1,5 +1,6 @@
 import time
 
+
 class Stopwatch:
 
     """
@@ -7,7 +8,8 @@ class Stopwatch:
     getting current time on the stopwatch
 
     Attributes:
-        start_time: Integer to record time (0 seconds) that stopwatch was started
+        start_time: Integer to record time (0 seconds) that stopwatch was
+                    started
         end_time: Integer to record number of seconds since stopwatch started
     """
 
@@ -16,8 +18,8 @@ class Stopwatch:
         Constructor for Stopwatch
         Sets both start_time and end_time member variables to 0
         """
-        self.start_time = 0;
-        self.end_time = 0;
+        self.start_time = 0
+        self.end_time = 0
 
     # Starts stopwatch
     def start(self):
@@ -30,8 +32,8 @@ class Stopwatch:
     # Starts stopwatch
     def stop(self):
         """
-        Stops stopwatch by settingt the end_time equal to time.time() - start_time,
-        rounded to the nearest whole number
+        Stops stopwatch by settingt the end_time equal to
+        time.time() - start_time, rounded to the nearest whole number
         """
         self.end_time = round(time.time() - self.start_time)
 
