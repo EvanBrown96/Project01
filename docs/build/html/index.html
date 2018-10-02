@@ -128,7 +128,162 @@ attributes</p>
 
 </dd></dl>
 
-<span class="target" id="module-board"></span><span class="target" id="module-stopwatch"></span><dl class="class">
+<span class="target" id="module-board"></span><dl class="class">
+<dt id="board.Board">
+<em class="property">class </em><code class="descclassname">board.</code><code class="descname">Board</code><a class="reference internal" href="_modules/board.html#Board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Board class that handles game board creation and functionality</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">width: Integer for width of the board</p>
+<p>height: Integer for height of the board</p>
+<p>mines_num: Integer for recording number of mines</p>
+<p>num_flags: Integer for recording number of flags</p>
+<p>grid: 2D array to store Square instances that make up board</p>
+<dl class="docutils">
+<dt>first_selection: Boolean for recording whether or not an interaction is</dt>
+<dd>the user’s first interaction</dd>
+</dl>
+<p class="last">stopwatch: Instance of the Stopwatch class</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="board.Board.count_nearby_mines">
+<code class="descname">count_nearby_mines</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.count_nearby_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.count_nearby_mines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of adjacent mines for a given Square</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate of Square on the x-axis
+y: Integer coordinate of Square on the y-axis
+width: Integer for width of board
+height: Integer for height of board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.generate_mines">
+<code class="descname">generate_mines</code><span class="sig-paren">(</span><em>mines</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.generate_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.generate_mines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly places mines on board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>mines: Integer number of mines to be used
+width: Integer for width of board
+height: Integer for height of board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.is_valid_cell">
+<code class="descname">is_valid_cell</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.is_valid_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.is_valid_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that coordinates are within bounds of the board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.make_grid">
+<code class="descname">make_grid</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.make_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.make_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates grid to user specification</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer for width of board
+height: Integer for height of board</dd>
+<dt>Returns:</dt>
+<dd>grid: Populated 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.mine_check">
+<code class="descname">mine_check</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.mine_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.mine_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns number of adjacent mines for each Square to the Square member
+variable</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer width of the board
+height: Integer height of the board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.moveMines">
+<code class="descname">moveMines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.moveMines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.moveMines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves mines to a location that is not revealed nor is a mine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.printCurrentTime">
+<code class="descname">printCurrentTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.printCurrentTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.printCurrentTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a formatted time from the stopwatch</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.print_board">
+<code class="descname">print_board</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>main_grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.print_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.print_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a formatted game board, followed by making a call to print a
+formatted time from stopwatch</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer for width of board
+height: Integer for height of board
+main_grid: 2D array to be printed</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.resetGridMineCount">
+<code class="descname">resetGridMineCount</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.resetGridMineCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.resetGridMineCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets number of adjacent mines to 0 before evaluating the board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.reveal">
+<code class="descname">reveal</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively calls reveal_adajenct to reveal Squares</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.reveal_adjacent">
+<code class="descname">reveal_adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal_adjacent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal_adjacent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reveals cells that aren’t mines</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.validTransformation">
+<code class="descname">validTransformation</code><span class="sig-paren">(</span><em>tolerance</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.validTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.validTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if moved mines are moved properly</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tolerance: Integer weight for propability of successful move
+i: Integer coordinate on the x-axis
+j: Integer coordinate on the y-axis</dd>
+<dt>Returns:</dt>
+<dd>True if valid transformation</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-stopwatch"></span><dl class="class">
 <dt id="stopwatch.Stopwatch">
 <em class="property">class </em><code class="descclassname">stopwatch.</code><code class="descname">Stopwatch</code><a class="reference internal" href="_modules/stopwatch.html#Stopwatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple stopwatch class with functionality for starting, stopping, and
