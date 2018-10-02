@@ -25,7 +25,10 @@ class Square:
         ## @var num_adj_mines
         #  tracks number of adjacent mines
         self.num_adj_mines = 0
-
+        ## @var was_moved
+        # tracks what mines were moved
+        self.was_moved = False
+        
     ## Prints the square based on properties
     #  @author: Kristi
     def print_square(self):

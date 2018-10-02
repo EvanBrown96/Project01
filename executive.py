@@ -5,7 +5,9 @@
 #  Author: Ethan Lefert
 #  Created: 09/08/18
 
+from random import randint
 from board import Board
+
 # importing copy module for creating deep copies for cheat mode
 import copy
 
@@ -17,70 +19,15 @@ class Executive:
     ## Constructor; initializes class variables
     #  @author: Ethan
     def __init__(self):
-        ## @var size
-        #  stores the size of the board
-        self.width = 0
-        self.height = 0
-        ## @var mines
-        #  stores the number of mines
-        self.mines = 0
-        ## @var num_flags
-        #  stores the number of flags
-        self.num_flags = 0
         ## @var game_over
         #  flag for game status
         self.game_over = False
-        ## @var grid
-        #  empty grid
-        self.grid = [0][0]
         ## @var cheat_mode
         # variable for whether or not user is in cheat mode
         self.cheat_mode = False
         ## @var myBoard
         #  instance of the board class
         self.myBoard = Board()
-
-    ## Recursively calls reveal_adjacent() to uncover squares
-    #  @authors: Ethan, Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def reveal(self, x, y):
-        self.grid[x][y].is_revealed = True
-        if self.grid[x][y].num_adj_mines == 0:
-            self.reveal_adjacent(x - 1, y - 1)
-            self.reveal_adjacent(x - 1, y)
-            self.reveal_adjacent(x - 1, y + 1)
-            self.reveal_adjacent(x + 1, y)
-            self.reveal_adjacent(x, y - 1)
-            self.reveal_adjacent(x, y + 1)
-            self.reveal_adjacent(x + 1, y - 1)
-            self.reveal_adjacent(x + 1, y + 1)
-
-    ## Checks that coordinates are within bounds of board
-    #  @author: Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def is_valid_cell(self, x, y):
-        if 0 <= x < self.width and 0 <= y < self.height:
-            return True
-        return False
-
-    ## Reveals cells that aren't mines; Called by reveal()
-    #  @authors: Ethan, Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def reveal_adjacent(self, x, y):
-        if not self.is_valid_cell(x, y):
-            return
-        if self.grid[x][y].is_revealed or self.grid[x][y].is_flagged:
-            return
-        if self.grid[x][y].num_adj_mines == 0:
-            self.grid[x][y].is_revealed = True
-            self.reveal(x, y)
-        else:
-            if not self.grid[x][y].is_mine:
-                self.grid[x][y].is_revealed = True
-            return
 
     ## Checks if all mines are flagged
     #  @author: Ethan
@@ -89,9 +36,9 @@ class Executive:
         flag_on_mine = 0
         for i in range(0, self.width):
             for x in range(0, self.height):
-                if self.grid[i][x].is_mine and self.grid[i][x].is_flagged:
+                if self.myBoard.grid[i][x].is_mine and self.myBoard.grid[i][x].is_flagged:
                     flag_on_mine += 1
-        if flag_on_mine == self.mines:
+        if flag_on_mine == self.mines_num:
             print("You Win!")
             self.game_over = True
         else:
@@ -136,18 +83,16 @@ class Executive:
                 print("That\'s not a number!")
             else:
                 if 1 <= mine_num_select <= max_mines:
-                    self.mines = mine_num_select
+                    self.mines_num = mine_num_select
                     break
                 else:
                     print('Not a valid amount of mines. Try again')
 
-        self.num_flags = self.mines
+        self.myBoard.num_flags = self.mines_num
 
-        self.grid = self.myBoard.make_grid(self.width, self.height)
-        self.myBoard.generate_mines(self.mines, self.width, self.height, self.grid)
-        self.myBoard.mine_check(self.width, self.height, self.grid)
-
-
+        self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
+        self.myBoard.generate_mines(self.mines_num, self.width, self.height)
+        self.myBoard.mine_check(self.width, self.height)
 
     ## Takes coordinates from user and handles input
     #  @pre: Board has been setup
@@ -159,7 +104,7 @@ class Executive:
                 # in cheat mode
                 print('Entering cheat mode, revealing entire board...')
                 # make duplicate board and reveal all spaces
-                cheat_board = copy.deepcopy(self.grid)
+                cheat_board = copy.deepcopy(self.myBoard.grid)
                 for i in range(0, self.width):
                     for j in range(0, self.height):
                         cheat_board[i][j].is_revealed = True
@@ -171,8 +116,8 @@ class Executive:
                 print('Leaving cheat mode...')
             else:
                 # Printing board and number of flags
-                self.myBoard.print_board(self.width, self.height, self.grid)
-                print("Number of flags: %s" % self.num_flags)
+                self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
+                print("Number of flags: %s" % self.myBoard.num_flags)
                 # not in cheat mode
                 # get x coordinate
                 while True:
@@ -181,6 +126,9 @@ class Executive:
                     if x == 'c' or x == 'C':
                         self.cheat_mode = True
                         break
+                    # user requested to see current time on stopwatch
+                    elif x == 't' or x == 'T':
+                        self.myBoard.printCurrentTime()
                     # not cheat input, check if numeric
                     elif not x.isnumeric():
                         print("That\'s not an integer. Try again.")
@@ -205,6 +153,9 @@ class Executive:
                     if y == 'c' or y == 'C':
                         self.cheat_mode = True
                         break
+                    # user requested to see current time on stopwatch
+                    elif y == 't' or y == 'T':
+                        self.myBoard.printCurrentTime()
                     # not cheat input, check if numeric
                     elif not y.isnumeric():
                         print("That\'s not an integer. Try again.")
@@ -228,36 +179,50 @@ class Executive:
                     print("Invalid try again")
                 elif choice != "f" and choice != "n" and choice != "r":
                     print("Invalid choice try again")
-                elif not self.grid[x][y].is_flagged and choice == "n":
+                elif not self.myBoard.grid[x][y].is_flagged and choice == "n":
                     print("Invalid try again")
-                elif not self.grid[x][y].is_flagged and self.num_flags == 0 and choice == "f":
+                elif not self.myBoard.grid[x][y].is_flagged and self.myBoard.num_flags == 0 and choice == "f":
                     print("Out of flags. Try again.")
-                elif self.grid[x][y].is_flagged and choice == "f":
+                elif self.myBoard.grid[x][y].is_flagged and choice == "f":
                     print("Space is already flagged. Try again.")
-                elif self.grid[x][y].is_revealed and choice == "f":
+                elif self.myBoard.grid[x][y].is_revealed and choice == "f":
                     print("You can't flag a revealed space. Try again.")
-                elif self.grid[x][y].is_revealed and choice == "n":
+                elif self.myBoard.grid[x][y].is_revealed and choice == "n":
                     print("You can't unflag a revealed space. Try again.")
-                elif self.grid[x][y].is_flagged and choice == "n":
-                    self.grid[x][y].is_flagged = False
-                    self.num_flags += 1
-                elif not self.grid[x][y].is_flagged and choice == "f":
-                    self.grid[x][y].is_flagged = True
-                    self.num_flags -= 1
+                elif self.myBoard.grid[x][y].is_flagged and choice == "n":
+                    self.myBoard.grid[x][y].is_flagged = False
+                    self.myBoard.num_flags += 1
+                elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
+                    # checking if first selection for stopwatch
+                    if self.myBoard.first_selection:
+                        # is first selection, toggle and start stopwatch
+                        self.myBoard.first_selection = False
+                        self.myBoard.stopwatch.start()
+                    self.myBoard.grid[x][y].is_flagged = True
+                    self.myBoard.num_flags -= 1
                     self.check_win()
                 #Testing to see if is_revealed is being switched to true
-                elif self.grid[x][y].is_revealed and not self.grid[x][y].is_mine and choice == "r":
+                elif self.myBoard.grid[x][y].is_revealed and not self.myBoard.grid[x][y].is_mine and choice == "r":
                     print("Space is already revealed. Try again.")
-                elif self.grid[x][y].is_flagged and choice == "r":
+                elif self.myBoard.grid[x][y].is_flagged and choice == "r":
                     print("You can't reveal a flagged space. Unflag before guessing this space or guess a different space.")
-                elif self.grid[x][y].is_mine and choice == "r":
+                elif self.myBoard.grid[x][y].is_mine and choice == "r":
                     print("Game Over")
                     self.game_over = True
                 else:
-                    self.reveal(x, y)
+                    # checking if first selection for stopwatch
+                    if self.myBoard.first_selection:
+                        # is first selection, toggle and start stopwatch
+                        self.myBoard.first_selection = False
+                        self.myBoard.stopwatch.start()
+                    self.myBoard.reveal(x, y)
+                    self.myBoard.moveMines()
+                    self.myBoard.resetGridMineCount()
+                    self.myBoard.mine_check(self.width, self.height)
+                    self.myBoard.checkAdditionalReveals()
 
         for i in range(0, self.width):
             for j in range(0, self.height):
-                self.grid[i][j].is_revealed = True
-                self.grid[i][j].num_adj_mines = False
-        self.myBoard.print_board(self.width, self.height, self.grid)
+                self.myBoard.grid[i][j].is_revealed = True
+                self.myBoard.grid[i][j].num_adj_mines = False
+        self.myBoard.print_board(self.width, self.height, self.myBoard.grid)

@@ -108,7 +108,7 @@ When player chose to reveal:
 
 The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.
 
-Note: To enter a secret cheat mode, enter 'C' when asked for coordinates!
+Note: To see your current time, enter 'T' when asked for coordinates, you can also enter 'C' to enter cheat mode!
 
 Good Luck!
 
