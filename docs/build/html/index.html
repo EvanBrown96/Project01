@@ -36,7 +36,43 @@
 <h1>Welcome to Minesweeper (2018)’s documentation!<a class="headerlink" href="#welcome-to-minesweeper-2018-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><span class="target" id="module-menu"></span><dl class="class">
+<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><dl class="class">
+<dt id="executive.Executive">
+<em class="property">class </em><code class="descclassname">executive.</code><code class="descname">Executive</code><a class="reference internal" href="_modules/executive.html#Executive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executive class to act as game manager</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">game_over: Boolean to record current game status</p>
+<p>cheat_mode: Boolean to record whether or not user is in cheat mode</p>
+<p class="last">myBoard: Instance of the Board class</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="executive.Executive.check_win">
+<code class="descname">check_win</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.check_win"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.check_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if all mines are flagged to determine is user has won the game</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>0 if user has not won the game</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.play">
+<code class="descname">play</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.play"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.play" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests user input for playing the game as long as the game is not over
+Presents revealed board upon game over</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates board to spec of user input</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-menu"></span><dl class="class">
 <dt id="menu.Menu">
 <em class="property">class </em><code class="descclassname">menu.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Menu class to act as game menu</p>
