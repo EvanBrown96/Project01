@@ -24,7 +24,7 @@ class Menu:
         self.root = root
         root.title("Minesweeper 2018")
         root.geometry("400x200")
-        root.configure(height=200, width=400, bg="lightgreen", bd=10, relief="ridge", pady=30)
+        root.configure(bg="lightgreen", bd=10, relief="ridge", pady=30)
         root.resizable(width=False, height=False)
 
         # create welcome text and display it
@@ -84,35 +84,38 @@ class Menu:
 
         # create a new window
         self.rules_window = Tk.Toplevel(self.root)
+        self.rules_window.title("Rules")
+        self.rules_window.geometry("550x425")
+        self.rules_window.configure(bg="khaki", bd=10, relief="ridge")
+        self.rules_window.resizable(width=False, height=False)
 
-        # when window is closed, set
+        # when window is closed, call function to set flag
         self.rules_window.protocol("WM_DELETE_WINDOW", self.on_rules_close)
+        # also allow escape to close the window
+        self.rules_window.bind("<Escape>", lambda _: self.on_rules_close())
 
         # create and show rules text
-        Tk.Label(self.rules_window, text="""Welcome to Minesweepers!
+        Tk.Label(self.rules_window, bg="khaki", text="----- How to Play -----").pack()
+        Tk.Label(self.rules_window, bg="khaki", justify=Tk.LEFT, text="""
+The game will provide players a tiled board with a number of hidden mines
+and an equal number of flags which with to mark the mines.
 
-Here are the game instructions:
+The player has three choices of action:
+- Flag: flag a tile that might have a mine
+- Unflag: unflag if you think you made a mistake
+- Reveal: show what a tile has hiding underneath
 
-The game will provid players a square board with a number of hidden mines and similar number of flags.
+When you choose to reveal:
+- If the square has a mine -> Gameover!
+- Not a mine -> Display number of adjacent squares that DO have a mine
 
-Player has three choices of action:
+Goal: place a flag where all of the mines are.
 
-    - Flag: to flag squares that might have mines.
+Also, as an added difficulty, some or all of the mines will move
+    around every time you select to reveal!
 
-    - Unflag: to unflag if player changed mind.
+Note: To see your current time, enter 'T' when asked for coordinates;
+    you can also enter 'C' to enter cheat mode!
 
-    - Reveal: to see what squares have underneath.
-
-When player chose to reveal:
-
-    - If the square has a mine -> Gameover!
-
-    - If not a mine, it will show spaces and numbers to tell player the number of mines around the chosen square.
-
-The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.
-
-Note: To see your current time, enter 'T' when asked for coordinates, you can also enter 'C' to enter cheat mode!
-
-Good Luck!
-
-""").pack()
+Good Luck!"""
+        ).pack()
