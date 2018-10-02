@@ -110,6 +110,7 @@ class Board:
                     else:
                         grid[j][i].print_square()
                 print('\n', end=' ')
+            self.printCurrentTime()
 
     ## Counts number of adjacent mines for a given cell
     #  @authors: Kyle, Kristi
