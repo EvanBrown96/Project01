@@ -36,11 +36,33 @@
 <h1>Welcome to Minesweeper (2018)’s documentation!<a class="headerlink" href="#welcome-to-minesweeper-2018-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><span class="target" id="module-menu"></span><span class="target" id="module-square"></span><span class="target" id="module-board"></span><span class="target" id="module-stopwatch"></span><dl class="class">
+<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><span class="target" id="module-menu"></span><span class="target" id="module-square"></span><dl class="class">
+<dt id="square.Square">
+<em class="property">class </em><code class="descclassname">square.</code><code class="descname">Square</code><a class="reference internal" href="_modules/square.html#Square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Square class for managing properties of a square in Minesweeper</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">is_mine: Boolean to record whether or not a square is a mine</p>
+<p>is_flagged: Boolean to record whether or not a square is flagged</p>
+<p>is_revealed: Boolean to record whether or not a square is revealed</p>
+<p>num_adj_mines: Integer to record number of mines adjacent to square</p>
+<p class="last">was_moved: Boolean to record whether or not a square has been moved</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="square.Square.print_square">
+<code class="descname">print_square</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.print_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.print_square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the square with respect to the current status of the square’s
+attributes</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-board"></span><span class="target" id="module-stopwatch"></span><dl class="class">
 <dt id="stopwatch.Stopwatch">
 <em class="property">class </em><code class="descclassname">stopwatch.</code><code class="descname">Stopwatch</code><a class="reference internal" href="_modules/stopwatch.html#Stopwatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple stopwatch class with functionality for starting, stopping, and
-getting current time on the stopwatch.</p>
+getting current time on the stopwatch</p>
 <dl class="docutils">
 <dt>Attributes:</dt>
 <dd><dl class="first docutils">

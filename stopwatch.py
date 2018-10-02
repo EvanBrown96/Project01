@@ -5,11 +5,12 @@ class Stopwatch:
 
     """
     Simple stopwatch class with functionality for starting, stopping, and
-    getting current time on the stopwatch.
+    getting current time on the stopwatch
 
     Attributes:
         start_time: Integer to record time (0 seconds) that stopwatch was
                     started
+                    
         end_time: Integer to record number of seconds since stopwatch started
     """
 
