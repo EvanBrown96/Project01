@@ -23,6 +23,9 @@ class Board:
         ## @var mines_num
         #  stores the number of mines
         self.mines_num = 0
+        ## @var num_flags
+        #  stores the number of flags
+        self.num_flags = 0
         ## @var grid
         #  empty grid
         self.grid = [0][0]

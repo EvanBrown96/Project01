@@ -18,12 +18,6 @@ class Executive:
     ## Constructor; initializes class variables
     #  @author: Ethan
     def __init__(self):
-        ## @var mines
-        #  stores the number of mines
-        self.mines = 0
-        ## @var num_flags
-        #  stores the number of flags
-        self.num_flags = 0
         ## @var game_over
         #  flag for game status
         self.game_over = False
@@ -110,7 +104,7 @@ class Executive:
             for x in range(0, self.height):
                 if self.myBoard.grid[i][x].is_mine and self.myBoard.grid[i][x].is_flagged:
                     flag_on_mine += 1
-        if flag_on_mine == self.mines:
+        if flag_on_mine == self.mines_num:
             print("You Win!")
             self.game_over = True
         else:
@@ -155,15 +149,15 @@ class Executive:
                 print("That\'s not a number!")
             else:
                 if 1 <= mine_num_select <= max_mines:
-                    self.mines = mine_num_select
+                    self.mines_num = mine_num_select
                     break
                 else:
                     print('Not a valid amount of mines. Try again')
 
-        self.num_flags = self.mines
+        self.myBoard.num_flags = self.mines_num
 
         self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
-        self.myBoard.generate_mines(self.mines, self.width, self.height, self.myBoard.grid)
+        self.myBoard.generate_mines(self.mines_num, self.width, self.height, self.myBoard.grid)
         self.myBoard.mine_check(self.width, self.height, self.myBoard.grid)
 
 
@@ -191,7 +185,7 @@ class Executive:
             else:
                 # Printing board and number of flags
                 self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
-                print("Number of flags: %s" % self.num_flags)
+                print("Number of flags: %s" % self.myBoard.num_flags)
                 # not in cheat mode
                 # get x coordinate
                 while True:
@@ -249,7 +243,7 @@ class Executive:
                     print("Invalid choice try again")
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "n":
                     print("Invalid try again")
-                elif not self.myBoard.grid[x][y].is_flagged and self.num_flags == 0 and choice == "f":
+                elif not self.myBoard.grid[x][y].is_flagged and self.myBoard.num_flags == 0 and choice == "f":
                     print("Out of flags. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "f":
                     print("Space is already flagged. Try again.")
@@ -259,10 +253,10 @@ class Executive:
                     print("You can't unflag a revealed space. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "n":
                     self.myBoard.grid[x][y].is_flagged = False
-                    self.num_flags += 1
+                    self.myBoard.num_flags += 1
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
                     self.myBoard.grid[x][y].is_flagged = True
-                    self.num_flags -= 1
+                    self.myBoard.num_flags -= 1
                     self.check_win()
                 #Testing to see if is_revealed is being switched to true
                 elif self.myBoard.grid[x][y].is_revealed and not self.myBoard.grid[x][y].is_mine and choice == "r":
