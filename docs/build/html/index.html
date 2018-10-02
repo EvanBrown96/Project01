@@ -36,7 +36,41 @@
 <h1>Welcome to Minesweeper (2018)’s documentation!<a class="headerlink" href="#welcome-to-minesweeper-2018-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><span class="target" id="module-menu"></span><span class="target" id="module-square"></span><dl class="class">
+<span class="target" id="module-main"></span><span class="target" id="module-executive"></span><span class="target" id="module-menu"></span><dl class="class">
+<dt id="menu.Menu">
+<em class="property">class </em><code class="descclassname">menu.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu class to act as game menu</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">choice: Integer value to record whether or not user wants to play again</p>
+<p class="last">myGame: Instance of the Executive class for managing the game</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="menu.Menu.game_menu">
+<code class="descname">game_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the game running until user quits</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu.Menu.game_rules">
+<code class="descname">game_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_rules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the game instructions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu.Menu.type_error_handler">
+<code class="descname">type_error_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.type_error_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.type_error_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles any type error in users input</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>check: Integer of users input if integer input</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-square"></span><dl class="class">
 <dt id="square.Square">
 <em class="property">class </em><code class="descclassname">square.</code><code class="descname">Square</code><a class="reference internal" href="_modules/square.html#Square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square" title="Permalink to this definition">¶</a></dt>
 <dd><p>Square class for managing properties of a square in Minesweeper</p>
