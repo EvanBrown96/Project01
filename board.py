@@ -129,7 +129,15 @@ class Board:
                         if grid[x+i][y+j].is_mine:
                             grid[x][y].num_adj_mines += 1
 
-    #Simple loop to reset num_adj_mines to 0 before being evaluated again
+
+    def checkAdditionalReveals(self):
+        for i in range(self.width):
+            for j in range(self.height):
+
+                if self.grid[i][j].num_adj_mines == 0 and self.grid[i][j].is_revealed:
+                    self.reveal(i, j)
+
+    # Simple loop to reset num_adj_mines to 0 before being evaluated again
     def resetGridMineCount(self, grid):
         for x in range(0, self.width):
             for y in range(0, self.height):
@@ -145,7 +153,7 @@ class Board:
         for x in range(width):
             for y in range(height):
                 #grid[x][y].num_adj_mines = 0;
-                oldCount = grid[x][y].num_adj_mines
+                #oldCount = grid[x][y].num_adj_mines
                 self.count_nearby_mines(x, y, width, height, grid)
 
     ## Recursively calls reveal_adjacent() to uncover squares
@@ -202,7 +210,6 @@ class Board:
                 self.grid[a][b].was_moved = True;
                 #Uncomment to show transformation of mine position
                 #print("Value i,j :" + str(i) + ", " + str(j) + " with was_moved to: " + str(a) + ", " +str(b))
-                return True;
             else:
                 self.validTransformation(tolerance-1, i, j)
 
@@ -212,8 +219,7 @@ class Board:
         for i in range(0, self.width):
             for j in range(0, self.height):
                 if self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and not self.grid[i][j].was_moved:
-                    if self.validTransformation(10, i, j):
-                        self.reveal(i, j)
+                    self.validTransformation(10, i, j)
 
     # Prints current time on stopwatch for user
     def printCurrentTime(self):

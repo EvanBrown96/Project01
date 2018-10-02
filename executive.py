@@ -219,6 +219,7 @@ class Executive:
                     self.myBoard.moveMines()
                     self.myBoard.resetGridMineCount(self.myBoard.grid)
                     self.myBoard.mine_check(self.width, self.height, self.myBoard.grid)
+                    self.myBoard.checkAdditionalReveals()
 
         for i in range(0, self.width):
             for j in range(0, self.height):
