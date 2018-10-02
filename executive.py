@@ -18,10 +18,6 @@ class Executive:
     ## Constructor; initializes class variables
     #  @author: Ethan
     def __init__(self):
-        ## @var size
-        #  stores the size of the board
-        self.width = 0
-        self.height = 0
         ## @var mines
         #  stores the number of mines
         self.mines = 0
@@ -31,9 +27,6 @@ class Executive:
         ## @var game_over
         #  flag for game status
         self.game_over = False
-        # ## @var grid
-        # #  empty grid
-        # self.myBoard.grid = [0][0]
         ## @var cheat_mode
         # variable for whether or not user is in cheat mode
         self.cheat_mode = False
@@ -47,7 +40,7 @@ class Executive:
         if not tolerance == 0:
             a = randint(0, self.width - 1)
             b = randint(0, self.height - 1)
-            if not self.myBoard.grid[a][b].is_mine and not self.myBoard.grid[a][b].is_flagged and self.is_valid_cell(a, b) and not self.myBoard.grid[a][b].is_revealed:
+            if not self.myBoard.grid[a][b].is_mine and not self.myBoard.grid[a][b].is_flagged and self.myBoard.is_valid_cell(a, b) and not self.myBoard.grid[a][b].is_revealed:
                 self.myBoard.grid[i][j].is_mine = False
                 self.myBoard.grid[a][b].is_mine = True
                 self.myBoard.grid[a][b].was_moved = True;
@@ -64,49 +57,49 @@ class Executive:
             for j in range(0, self.height):
                 if self.myBoard.grid[i][j].is_mine and not self.myBoard.grid[i][j].is_flagged and not self.myBoard.grid[i][j].was_moved:
                     if self.validTransformation(10, i, j):
-                        self.reveal(i, j)
+                        self.myBoard.reveal(i, j)
 
-    ## Recursively calls reveal_adjacent() to uncover squares
-    #  @authors: Ethan, Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def reveal(self, x, y):
-        self.myBoard.grid[x][y].is_revealed = True
-        if self.myBoard.grid[x][y].num_adj_mines == 0:
-            self.reveal_adjacent(x - 1, y - 1)
-            self.reveal_adjacent(x - 1, y)
-            self.reveal_adjacent(x - 1, y + 1)
-            self.reveal_adjacent(x + 1, y)
-            self.reveal_adjacent(x, y - 1)
-            self.reveal_adjacent(x, y + 1)
-            self.reveal_adjacent(x + 1, y - 1)
-            self.reveal_adjacent(x + 1, y + 1)
+    # ## Recursively calls reveal_adjacent() to uncover squares
+    # #  @authors: Ethan, Kristi
+    # #  @param x, x-coordinate of cell
+    # #  @param y, y-coordinate of cell
+    # def reveal(self, x, y):
+    #     self.myBoard.grid[x][y].is_revealed = True
+    #     if self.myBoard.grid[x][y].num_adj_mines == 0:
+    #         self.myBoard.reveal_adjacent(x - 1, y - 1)
+    #         self.myBoard.reveal_adjacent(x - 1, y)
+    #         self.myBoard.reveal_adjacent(x - 1, y + 1)
+    #         self.myBoard.reveal_adjacent(x + 1, y)
+    #         self.myBoard.reveal_adjacent(x, y - 1)
+    #         self.myBoard.reveal_adjacent(x, y + 1)
+    #         self.myBoard.reveal_adjacent(x + 1, y - 1)
+    #         self.myBoard.reveal_adjacent(x + 1, y + 1)
 
-    ## Checks that coordinates are within bounds of board
-    #  @author: Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def is_valid_cell(self, x, y):
-        if 0 <= x < self.width and 0 <= y < self.height:
-            return True
-        return False
+    # ## Checks that coordinates are within bounds of board
+    # #  @author: Kristi
+    # #  @param x, x-coordinate of cell
+    # #  @param y, y-coordinate of cell
+    # def is_valid_cell(self, x, y):
+    #     if 0 <= x < self.width and 0 <= y < self.height:
+    #         return True
+    #     return False
 
-    ## Reveals cells that aren't mines; Called by reveal()
-    #  @authors: Ethan, Kristi
-    #  @param x, x-coordinate of cell
-    #  @param y, y-coordinate of cell
-    def reveal_adjacent(self, x, y):
-        if not self.is_valid_cell(x, y):
-            return
-        if self.myBoard.grid[x][y].is_revealed or self.myBoard.grid[x][y].is_flagged:
-            return
-        if self.myBoard.grid[x][y].num_adj_mines == 0:
-            self.myBoard.grid[x][y].is_revealed = True
-            self.reveal(x, y)
-        else:
-            if not self.myBoard.grid[x][y].is_mine:
-                self.myBoard.grid[x][y].is_revealed = True
-            return
+    # ## Reveals cells that aren't mines; Called by reveal()
+    # #  @authors: Ethan, Kristi
+    # #  @param x, x-coordinate of cell
+    # #  @param y, y-coordinate of cell
+    # def reveal_adjacent(self, x, y):
+    #     if not self.myBoard.is_valid_cell(x, y):
+    #         return
+    #     if self.myBoard.grid[x][y].is_revealed or self.myBoard.grid[x][y].is_flagged:
+    #         return
+    #     if self.myBoard.grid[x][y].num_adj_mines == 0:
+    #         self.myBoard.grid[x][y].is_revealed = True
+    #         self.myBoard.reveal(x, y)
+    #     else:
+    #         if not self.myBoard.grid[x][y].is_mine:
+    #             self.myBoard.grid[x][y].is_revealed = True
+    #         return
 
     ## Checks if all mines are flagged
     #  @author: Ethan
@@ -280,7 +273,7 @@ class Executive:
                     print("Game Over")
                     self.game_over = True
                 else:
-                    self.reveal(x, y)
+                    self.myBoard.reveal(x, y)
                     self.moveMines()
                     self.myBoard.resetGridMineCount(self.myBoard.grid)
                     self.myBoard.mine_check(self.width, self.height, self.myBoard.grid)

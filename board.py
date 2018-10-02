@@ -16,10 +16,10 @@ class Board:
     ## Constructor
     #  @author: Clare
     def __init__(self):
-        ## @var boardSize
+        ## @var size
         #  stores the size of the board
-        self.boardWidth = 0
-        self.boardHeight = 0
+        self.width = 0
+        self.height = 0
         ## @var mines_num
         #  stores the number of mines
         self.mines_num = 0
@@ -49,13 +49,13 @@ class Board:
     #  @post: the grid is populated with mines
     def generate_mines(self, mines, width, height, grid):
         self.mines_num=mines;
-        self.boardWidth = width;
-        self.boardHeight = height;
+        self.width = width;
+        self.height = height;
         for i in range(0, self.mines_num):
             is_bomb = False
             while not is_bomb:
-                a = randint(0, self.boardWidth - 1)
-                b = randint(0, self.boardHeight - 1)
+                a = randint(0, self.width - 1)
+                b = randint(0, self.height - 1)
                 if not grid[a][b].is_mine:
                     grid[a][b].is_mine = True
                     is_bomb = True
@@ -122,8 +122,8 @@ class Board:
 
     #Simple loop to reset num_adj_mines to 0 before being evaluated again
     def resetGridMineCount(self, grid):
-        for x in range(0, self.boardWidth):
-            for y in range(0, self.boardHeight):
+        for x in range(0, self.width):
+            for y in range(0, self.height):
                 grid[x][y].num_adj_mines = 0;
                 grid[x][y].was_moved = False;
 
@@ -139,3 +139,45 @@ class Board:
                 #grid[x][y].num_adj_mines = 0;
                 oldCount = grid[x][y].num_adj_mines
                 self.count_nearby_mines(x, y, width, height, grid)
+
+    ## Recursively calls reveal_adjacent() to uncover squares
+    #  @authors: Ethan, Kristi
+    #  @param x, x-coordinate of cell
+    #  @param y, y-coordinate of cell
+    def reveal(self, x, y):
+        self.grid[x][y].is_revealed = True
+        if self.grid[x][y].num_adj_mines == 0:
+            self.reveal_adjacent(x - 1, y - 1)
+            self.reveal_adjacent(x - 1, y)
+            self.reveal_adjacent(x - 1, y + 1)
+            self.reveal_adjacent(x + 1, y)
+            self.reveal_adjacent(x, y - 1)
+            self.reveal_adjacent(x, y + 1)
+            self.reveal_adjacent(x + 1, y - 1)
+            self.reveal_adjacent(x + 1, y + 1)
+
+    ## Reveals cells that aren't mines; Called by reveal()
+    #  @authors: Ethan, Kristi
+    #  @param x, x-coordinate of cell
+    #  @param y, y-coordinate of cell
+    def reveal_adjacent(self, x, y):
+        if not self.is_valid_cell(x, y):
+            return
+        if self.grid[x][y].is_revealed or self.grid[x][y].is_flagged:
+            return
+        if self.grid[x][y].num_adj_mines == 0:
+            self.grid[x][y].is_revealed = True
+            self.reveal(x, y)
+        else:
+            if not self.grid[x][y].is_mine:
+                self.grid[x][y].is_revealed = True
+            return
+
+    ## Checks that coordinates are within bounds of board
+    #  @author: Kristi
+    #  @param x, x-coordinate of cell
+    #  @param y, y-coordinate of cell
+    def is_valid_cell(self, x, y):
+        if 0 <= x < self.width and 0 <= y < self.height:
+            return True
+        return False
