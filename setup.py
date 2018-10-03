@@ -14,8 +14,16 @@ class Setup:
         self.setup_window = Tk.Toplevel(root)
         self.setup_window.title("Setup Board")
         self.setup_window.geometry("200x200")
-        self.setup_window.configure(bg=self.bg, bd=10, relief="ridge")
+        self.setup_window.configure(bg=self.bg, bd=10, relief="ridge", pady=32)
         self.setup_window.resizable(width=False, height=False)
+
+        def return_to_menu():
+            self.setup_window.destroy()
+            self.menu_callback()
+
+        self.setup_window.protocol("WM_DELETE_WINDOW", return_to_menu)
+        self.setup_window.bind("<Escape>", lambda _: return_to_menu())
+        self.setup_window.bind("<Return>", lambda _: self.validate())
 
         self.width_val = Tk.StringVar()
         self.height_val = Tk.StringVar()
@@ -41,7 +49,6 @@ class Setup:
 
         self.begin = Tk.Button(self.setup_window, text="Begin Game", command=self.validate, highlightbackground=self.bg)
         self.begin.grid(row=3, column=0, columnspan=2)
-
 
 
     def validate(self):
@@ -81,7 +88,7 @@ class Setup:
                 messagebox.showerror("Entry Error", "Too small of a height")
             elif height > 15:
                 messagebox.showerror("Entry Error", "Too large of a height")
-            elif mines >= width * height - 1:
+            elif mines >= width * height:
                 messagebox.showerror("Entry Error", "Too many mines!")
             elif mines < 1:
                 messagebox.showerror("Entry Error", "Too few mines!")
