@@ -21,11 +21,17 @@ class Menu:
         #  instance of the executive class
         self.myGame = None
 
-        # save root Tk window
+        # save root Tk window and set dimensions and centering
         self.root = root
-        root.title("Minesweeper 2018")
         root.geometry("400x200")
         center_window(self.root)
+
+        # this prevents window from temporarily appearing in its original position
+        root.withdraw()
+        root.deiconify()
+
+        # configure window
+        root.title("Minesweeper 2018")
         root.configure(bg="lightgreen", bd=10, relief="ridge", pady=30)
         root.resizable(width=False, height=False)
 
@@ -92,9 +98,14 @@ class Menu:
 
         # create a new window
         self.rules_window = Tk.Toplevel(self.root)
-        self.rules_window.title("Rules")
         self.rules_window.geometry("550x425")
         center_window(self.rules_window)
+
+        self.rules_window.withdraw()
+        self.rules_window.deiconify()
+
+        # configure window
+        self.rules_window.title("Rules")
         self.rules_window.configure(bg="khaki", bd=10, relief="ridge")
         self.rules_window.resizable(width=False, height=False)
 

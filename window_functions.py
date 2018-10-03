@@ -4,7 +4,7 @@ def center_window(window):
     :param widget: window to center
     :type widget: Tk
     """
-
+    window.attributes('-alpha', 0.0)
     window.update_idletasks()
     # get current window width & height
     width = window.winfo_width()
@@ -14,3 +14,4 @@ def center_window(window):
     y = (window.winfo_screenheight() // 2) - (height // 2)
     # resize window
     window.geometry('{0}x{1}+{2}+{3}'.format(width, height, x, y))
+    window.attributes('-alpha', 1.0)
