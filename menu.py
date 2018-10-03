@@ -7,6 +7,7 @@
 
 from setup import Setup
 import tkinter as Tk
+from window_functions import center_window
 
 ## @class Menu
 #  @brief Prints menu and rules; Manages Executive instance
@@ -24,6 +25,7 @@ class Menu:
         self.root = root
         root.title("Minesweeper 2018")
         root.geometry("400x200")
+        center_window(self.root)
         root.configure(bg="lightgreen", bd=10, relief="ridge", pady=30)
         root.resizable(width=False, height=False)
 
@@ -92,6 +94,7 @@ class Menu:
         self.rules_window = Tk.Toplevel(self.root)
         self.rules_window.title("Rules")
         self.rules_window.geometry("550x425")
+        center_window(self.rules_window)
         self.rules_window.configure(bg="khaki", bd=10, relief="ridge")
         self.rules_window.resizable(width=False, height=False)
 
