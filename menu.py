@@ -5,7 +5,7 @@
 #  Author: Ayah Alkhatib
 #  Created: 09/08/18
 
-from executive import Executive
+from setup import Setup
 import tkinter as Tk
 
 ## @class Menu
@@ -52,15 +52,21 @@ class Menu:
         if self.rules_displayed:
             self.rules_window.withdraw()
 
+        def show_callback():
+            # after game finishes (by either loss or win), display the windows again
+            self.root.deiconify()
+            if self.rules_displayed:
+                self.rules_window.deiconify()
+
         # create new game and call methods as normal
-        self.myGame = Executive()
-        self.myGame.setup()
-        self.myGame.play()
+        self.setup = Setup(self.root, show_callback)
+        #self.myGame.setup()
+        #self.myGame.play()
 
         # after game finishes (by either loss or win), display the windows again
-        self.root.deiconify()
-        if self.rules_displayed:
-            self.rules_window.deiconify()
+        # self.root.deiconify()
+        # if self.rules_displayed:
+        #     self.rules_window.deiconify()
 
 
 
