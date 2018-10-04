@@ -53,7 +53,11 @@ class Square(Tk.Label):
         self.configure(text="")
     def reveal(self):
         self.is_revealed = True
-        self.configure(text=("" if self.num_adj_mines == 0 else self.num_adj_mines), relief=Tk.SUNKEN)
+        self.configure(text=("*" if self.is_mine else ("" if self.num_adj_mines == 0 else self.num_adj_mines)), relief=Tk.SUNKEN)
+
+    def freeze(self):
+        self.unbind("<Button-1>")
+        self.unbind("<Button-2>")
 
     ## Prints the square based on properties
     #  @author: Kristi

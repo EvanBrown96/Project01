@@ -56,8 +56,7 @@ class Executive:
                    self.myBoard.grid[i][x].is_flagged:
                     flag_on_mine += 1
         if flag_on_mine == self.mines_num:
-            print("You Win!")
-            self.game_over = True
+            self.on_game_win()
         else:
             return 0
 
@@ -176,8 +175,7 @@ unflag [n]: ")
         elif self.myBoard.grid[x][y].is_flagged:
             pass
         elif self.myBoard.grid[x][y].is_mine:
-            print("Game Over")
-            self.game_over = True
+            self.on_game_lose()
         else:
             # checking if first selection for stopwatch
             if self.myBoard.first_selection:
@@ -219,6 +217,22 @@ unflag [n]: ")
             self.myBoard.num_flags -= 1
             self.check_win()
 
+    def on_game_lose(self):
+        print("YOU LOSE")
+        #self.stopwatch.stop()
+        for i in range(self.width):
+            for j in range(self.height):
+                if self.myBoard.grid[i][j].is_mine:
+                    self.myBoard.grid[i][j].reveal()
+
+                self.myBoard.grid[i][j].freeze()
+
+    def on_game_win(self):
+        print("YOU WIN!")
+        for i in range(self.width):
+            for j in range(self.height):
+                self.myBoard.grid[i][j].reveal()
+                self.myBoard.grid[i][j].freeze()
 
         # for i in range(0, self.width):
         #     for j in range(0, self.height):
