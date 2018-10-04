@@ -8,6 +8,8 @@
 from random import randint
 from square import Square
 from stopwatch import Stopwatch
+import tkinter as Tk
+from window_functions import center_window
 
 ## @class Board
 #  @brief Handles board creation and board functionality
@@ -35,7 +37,7 @@ class Board:
 
     ## Constructor
     #  @author: Clare
-    def __init__(self):
+    def __init__(self, root):
         self.width = 0
         self.height = 0
         self.mines_num = 0
@@ -43,12 +45,44 @@ class Board:
         self.grid = [0][0]
         self.first_selection = True
         self.stopwatch = Stopwatch()
+        self.root = root
+
+        self.board_window = Tk.Toplevel(root)
+        center_window(self.board_window)
+
+        # this prevents window from temporarily appearing in its original position
+        self.board_window.withdraw()
+        self.board_window.deiconify()
+
+        # configure window
+        self.board_window.title("Minesweeper 2018")
+        self.board_window.resizable(width=False, height=False)
+
+
+    def gridSquares(self):
+
+        self.board_window.geometry("{}x{}".format(40*self.width, 40*self.height))
+
+        for i in range(self.width):
+            for j in range(self.height):
+                self.grid[i][j].grid(row=j, column=i, sticky="nesw")
+
+        for i in range(self.width):
+            self.board_window.grid_columnconfigure(i, minsize=40)
+
+        for i in range(self.height):
+            self.board_window.grid_rowconfigure(i, minsize=40)
+
+    def ungridSquares(self):
+        for i in range(self.width):
+            for j in range(self.height):
+                self.grid[i][j].destroy()
 
     ## Generates a grid object
     #  @author: Clare
     #  @param: size, size of the grid
     #  @returns: grid
-    def make_grid(self, width, height):
+    def make_grid(self, width, height, callback):
         """
         Populates grid to user specification
 
@@ -64,7 +98,7 @@ class Board:
         grid = [[0 for y in range(height)] for x in range(width)]
         for i in range(0, width):
             for j in range(0, height):
-                grid[i][j] = Square()
+                grid[i][j] = Square(self.board_window, i, j, callback)
         return grid
 
     ## Randomly places mines on board

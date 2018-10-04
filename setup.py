@@ -53,7 +53,7 @@ class Setup:
 
         """
 
-        self.exec = Executive()
+        self.exec = Executive(root)
         self.root = root
         bg = "indianred2"
         self.menu_callback = menu_callback
@@ -159,5 +159,5 @@ class Setup:
             else:
                 self.setup_window.destroy()
                 self.exec.setup(width, height, mines)
-                self.exec.play()
-                self.menu_callback()
+                #self.exec.play()
+                #self.menu_callback()

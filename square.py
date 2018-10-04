@@ -6,9 +6,11 @@
 #  Created: 09/07/18
 
 
+import tkinter as Tk
+
 # @class Square
 #  @brief Defines and manages properties for Square object
-class Square:
+class Square(Tk.Label):
 
     """
     Square class for managing properties of a square in Minesweeper
@@ -27,24 +29,31 @@ class Square:
 
     # Constructor
     #  @author: Kristi
-    def __init__(self):
+    def __init__(self, master, x, y, callback, **options):
         """
         Constructor for Square class
         Initialized all attributes to false or 0 depending on type of Boolean
         or Integer
         """
+        Tk.Label.__init__(self, master, options)
+        self.configure(bg="lightgray", relief=Tk.RAISED)
         self.is_mine = False
         self.is_flagged = False
         self.is_revealed = False
         self.num_adj_mines = 0
         self.was_moved = False
+        self.callback = callback
+        self.bind("<Button-1>", lambda _: callback(x, y, "r"))
 
     def flag(self):
         self.is_flagged = True
+        self.configure(text="F")
     def unflag(self):
         self.is_flagged = False
+        self.configure(text="")
     def reveal(self):
         self.is_revealed = True
+        self.configure(text=self.num_adj_mines, relief=Tk.SUNKEN)
 
     ## Prints the square based on properties
     #  @author: Kristi

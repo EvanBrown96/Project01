@@ -1,8 +1,11 @@
 def center_window(window):
     """
     centers the given window/widget on the screen
-    :param widget: window to center
-    :type widget: Tk
+
+    Args:
+
+        window: the tk window (root/toplevel) instance to center
+
     """
     window.attributes('-alpha', 0.0)
     window.update_idletasks()

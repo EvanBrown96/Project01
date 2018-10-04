@@ -28,15 +28,16 @@ class Executive:
 
     # Constructor; initializes class variables
     #  @author: Ethan
-    def __init__(self):
+    def __init__(self, root):
         """
         Constructor for Executive class
 
         Initializes all attributes
         """
+        self.root = root
         self.game_over = False
         self.cheat_mode = False
-        self.myBoard = Board()
+        self.myBoard = Board(root)
 
     # Checks if all mines are flagged
     #  @author: Ethan
@@ -72,9 +73,10 @@ class Executive:
         self.height = height
         self.mines_num = mines
         self.myBoard.num_flags = self.mines_num
-        self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
+        self.myBoard.grid = self.myBoard.make_grid(self.width, self.height, self.dochoice)
         self.myBoard.generate_mines(self.mines_num, self.width, self.height)
         self.myBoard.mine_check(self.width, self.height)
+        self.myBoard.gridSquares()
 
     # Takes coordinates from user and handles input
     #  @pre: Board has been setup
@@ -166,56 +168,58 @@ mode...')
                 # ask user for action with selected coordinates
                 choice = input("Enter an action flag [f], reveal [r], \
 unflag [n]: ")
-                if x >= self.width or y >= self.height:
-                    print("Invalid try again")
-                elif choice != "f" and choice != "n" and choice != "r":
-                    print("Invalid choice try again")
-                elif not self.myBoard.grid[x][y].is_flagged and choice == "n":
-                    print("Invalid try again")
-                elif not self.myBoard.grid[x][y].is_flagged \
-                     and self.myBoard.num_flags == 0 and choice == "f":
-                    print("Out of flags. Try again.")
-                elif self.myBoard.grid[x][y].is_flagged and choice == "f":
-                    print("Space is already flagged. Try again.")
-                elif self.myBoard.grid[x][y].is_revealed and choice == "f":
-                    print("You can't flag a revealed space. Try again.")
-                elif self.myBoard.grid[x][y].is_revealed and choice == "n":
-                    print("You can't unflag a revealed space. Try again.")
-                elif self.myBoard.grid[x][y].is_flagged and choice == "n":
-                    self.myBoard.grid[x][y].unflag()
-                    self.myBoard.num_flags += 1
-                elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
-                    # checking if first selection for stopwatch
-                    if self.myBoard.first_selection:
-                        # is first selection, toggle and start stopwatch
-                        self.myBoard.first_selection = False
-                        self.myBoard.stopwatch.start()
-                    self.myBoard.grid[x][y].flag()
-                    self.myBoard.num_flags -= 1
-                    self.check_win()
-                elif self.myBoard.grid[x][y].is_revealed and not \
-                    self.myBoard.grid[x][y].is_mine and choice == "r":
-                    print("Space is already revealed. Try again.")
-                elif self.myBoard.grid[x][y].is_flagged and choice == "r":
-                    print("You can't reveal a flagged space. Unflag before \
-guessing this space or guess a different space.")
-                elif self.myBoard.grid[x][y].is_mine and choice == "r":
-                    print("Game Over")
-                    self.game_over = True
-                else:
-                    # checking if first selection for stopwatch
-                    if self.myBoard.first_selection:
-                        # is first selection, toggle and start stopwatch
-                        self.myBoard.first_selection = False
-                        self.myBoard.stopwatch.start()
-                    self.myBoard.reveal(x, y)
-                    self.myBoard.moveMines()
-                    self.myBoard.resetGridMineCount()
-                    self.myBoard.mine_check(self.width, self.height)
-                    self.myBoard.checkAdditionalReveals()
 
-        for i in range(0, self.width):
-            for j in range(0, self.height):
-                self.myBoard.grid[i][j].num_adj_mines = False
-                self.myBoard.grid[i][j].reveal()
-        self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
+    def dochoice(self, x, y, choice):
+        if x >= self.width or y >= self.height:
+            print("Invalid try again")
+        elif choice != "f" and choice != "n" and choice != "r":
+            print("Invalid choice try again")
+        elif not self.myBoard.grid[x][y].is_flagged and choice == "n":
+            print("Invalid try again")
+        elif not self.myBoard.grid[x][y].is_flagged \
+             and self.myBoard.num_flags == 0 and choice == "f":
+            print("Out of flags. Try again.")
+        elif self.myBoard.grid[x][y].is_flagged and choice == "f":
+            print("Space is already flagged. Try again.")
+        elif self.myBoard.grid[x][y].is_revealed and choice == "f":
+            print("You can't flag a revealed space. Try again.")
+        elif self.myBoard.grid[x][y].is_revealed and choice == "n":
+            print("You can't unflag a revealed space. Try again.")
+        elif self.myBoard.grid[x][y].is_flagged and choice == "n":
+            self.myBoard.grid[x][y].unflag()
+            self.myBoard.num_flags += 1
+        elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
+            # checking if first selection for stopwatch
+            if self.myBoard.first_selection:
+                # is first selection, toggle and start stopwatch
+                self.myBoard.first_selection = False
+                self.myBoard.stopwatch.start()
+            self.myBoard.grid[x][y].flag()
+            self.myBoard.num_flags -= 1
+            self.check_win()
+        elif self.myBoard.grid[x][y].is_revealed and not \
+            self.myBoard.grid[x][y].is_mine and choice == "r":
+            print("Space is already revealed. Try again.")
+        elif self.myBoard.grid[x][y].is_flagged and choice == "r":
+            print("You can't reveal a flagged space. Unflag before \
+guessing this space or guess a different space.")
+        elif self.myBoard.grid[x][y].is_mine and choice == "r":
+            print("Game Over")
+            self.game_over = True
+        else:
+            # checking if first selection for stopwatch
+            if self.myBoard.first_selection:
+                # is first selection, toggle and start stopwatch
+                self.myBoard.first_selection = False
+                self.myBoard.stopwatch.start()
+            self.myBoard.reveal(x, y)
+            self.myBoard.moveMines()
+            self.myBoard.resetGridMineCount()
+            self.myBoard.mine_check(self.width, self.height)
+            self.myBoard.checkAdditionalReveals()
+
+        # for i in range(0, self.width):
+        #     for j in range(0, self.height):
+        #         self.myBoard.grid[i][j].num_adj_mines = False
+        #         self.myBoard.grid[i][j].reveal()
+        # self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
