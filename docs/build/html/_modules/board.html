@@ -1,0 +1,432 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>board &#8212; Minesweeper (2018) 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for board</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @file board.py</span>
+<span class="c1">#  Source file for the board object</span>
+<span class="c1">#</span>
+<span class="c1">#  Project: Minesweeper</span>
+<span class="c1">#  Author: Clare Meyer</span>
+<span class="c1">#  Created: 09/06/18</span>
+
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+<span class="kn">from</span> <span class="nn">square</span> <span class="k">import</span> <span class="n">Square</span>
+<span class="kn">from</span> <span class="nn">stopwatch</span> <span class="k">import</span> <span class="n">Stopwatch</span>
+
+<span class="c1">## @class Board</span>
+<span class="c1">#  @brief Handles board creation and board functionality</span>
+<div class="viewcode-block" id="Board"><a class="viewcode-back" href="../index.html#board.Board">[docs]</a><span class="k">class</span> <span class="nc">Board</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Board class that handles game board creation and functionality</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        width: Integer for width of the board</span>
+
+<span class="sd">        height: Integer for height of the board</span>
+
+<span class="sd">        mines_num: Integer for recording number of mines</span>
+
+<span class="sd">        num_flags: Integer for recording number of flags</span>
+
+<span class="sd">        grid: 2D array to store Square instances that make up board</span>
+
+<span class="sd">        first_selection: Boolean for recording whether or not an interaction is</span>
+<span class="sd">                         the user&#39;s first interaction</span>
+
+<span class="sd">        stopwatch: Instance of the Stopwatch class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">## Constructor</span>
+    <span class="c1">#  @author: Clare</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_flags</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span> <span class="o">=</span> <span class="n">Stopwatch</span><span class="p">()</span>
+
+    <span class="c1">## Generates a grid object</span>
+    <span class="c1">#  @author: Clare</span>
+    <span class="c1">#  @param: size, size of the grid</span>
+    <span class="c1">#  @returns: grid</span>
+<div class="viewcode-block" id="Board.make_grid"><a class="viewcode-back" href="../index.html#board.Board.make_grid">[docs]</a>    <span class="k">def</span> <span class="nf">make_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populates grid to user specification</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            width: Integer for width of board</span>
+<span class="sd">            height: Integer for height of board</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            grid: Populated 2D array to act as game board</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">)]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+                <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">Square</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">grid</span></div>
+
+    <span class="c1">## Randomly places mines on board</span>
+    <span class="c1">#  @author: Ayah</span>
+    <span class="c1">#  @pre: a grid has been generated</span>
+    <span class="c1">#  @param: num_mines, user-selected number of mines</span>
+    <span class="c1">#  @param: size, size of the grid</span>
+    <span class="c1">#  @param: grid, grid to be populated</span>
+    <span class="c1">#  @post: the grid is populated with mines</span>
+<div class="viewcode-block" id="Board.generate_mines"><a class="viewcode-back" href="../index.html#board.Board.generate_mines">[docs]</a>    <span class="k">def</span> <span class="nf">generate_mines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mines</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Randomly places mines on board</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            mines: Integer number of mines to be used</span>
+<span class="sd">            width: Integer for width of board</span>
+<span class="sd">            height: Integer for height of board</span>
+<span class="sd">            grid: 2D array to act as game board</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="o">=</span><span class="n">mines</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span><span class="p">;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">):</span>
+            <span class="n">is_bomb</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">is_bomb</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">b</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">is_bomb</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="c1">## Prints a formatted game board</span>
+    <span class="c1">#  @author: Clare</span>
+    <span class="c1">#  @pre: grid does not have formatting</span>
+    <span class="c1">#  @param: size, size of the grid</span>
+    <span class="c1">#  @param: main_grid, grid to be printed</span>
+    <span class="c1">#  @post: grid is printed to look nice for the user</span>
+<div class="viewcode-block" id="Board.print_board"><a class="viewcode-back" href="../index.html#board.Board.print_board">[docs]</a>    <span class="k">def</span> <span class="nf">print_board</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">main_grid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints a formatted game board, followed by making a call to print a</span>
+<span class="sd">        formatted time from stopwatch</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            width: Integer for width of board</span>
+<span class="sd">            height: Integer for height of board</span>
+<span class="sd">            main_grid: 2D array to be printed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+
+        <span class="n">grid</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)]</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span>
+                <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span>
+                <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="o">-</span><span class="mi">2</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span><span class="o">-</span><span class="mi">2</span>
+                <span class="k">elif</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;|&quot;</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">main_grid</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">2</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">((</span><span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">grid</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">print_square</span><span class="p">()</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">printCurrentTime</span><span class="p">()</span></div>
+
+    <span class="c1">## Counts number of adjacent mines for a given cell</span>
+    <span class="c1">#  @authors: Kyle, Kristi</span>
+    <span class="c1">#  @param x, x-coordinate of cell</span>
+    <span class="c1">#  @param y, y-coordinate of cell</span>
+    <span class="c1">#  @param: size, size of the grid</span>
+    <span class="c1">#  @param: grid, grid to be checked</span>
+<div class="viewcode-block" id="Board.count_nearby_mines"><a class="viewcode-back" href="../index.html#board.Board.count_nearby_mines">[docs]</a>    <span class="k">def</span> <span class="nf">count_nearby_mines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Counts the number of adjacent mines for a given Square</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Integer coordinate of Square on the x-axis</span>
+<span class="sd">            y: Integer coordinate of Square on the y-axis</span>
+<span class="sd">            width: Integer for width of board</span>
+<span class="sd">            height: Integer for height of board</span>
+<span class="sd">            grid: 2D array to act as game board</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">x</span><span class="o">+</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span><span class="o">+</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">y</span><span class="o">+</span><span class="n">j</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y</span><span class="o">+</span><span class="n">j</span> <span class="o">&lt;</span> <span class="n">height</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="n">i</span><span class="p">][</span><span class="n">y</span><span class="o">+</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+                            <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+    <span class="c1">#Simple loop to reset num_adj_mines to 0 before being evaluated again</span>
+<div class="viewcode-block" id="Board.resetGridMineCount"><a class="viewcode-back" href="../index.html#board.Board.resetGridMineCount">[docs]</a>    <span class="k">def</span> <span class="nf">resetGridMineCount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resets number of adjacent mines to 0 before evaluating the board</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            grid: 2D array to act as game board</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">was_moved</span> <span class="o">=</span> <span class="kc">False</span><span class="p">;</span></div>
+
+    <span class="c1">## Counts/labels number of adjacent mines for board</span>
+    <span class="c1">#  @author: Kyle</span>
+    <span class="c1">#  @param: size, size of the grid</span>
+    <span class="c1">#  @param: grid, grid to be checked</span>
+    <span class="c1">#  @post: each square is labeled with num_adj_mines</span>
+<div class="viewcode-block" id="Board.mine_check"><a class="viewcode-back" href="../index.html#board.Board.mine_check">[docs]</a>    <span class="k">def</span> <span class="nf">mine_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assigns number of adjacent mines for each Square to the Square member</span>
+<span class="sd">        variable</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            width: Integer width of the board</span>
+<span class="sd">            height: Integer height of the board</span>
+<span class="sd">            grid: 2D array to act as game board</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+                <span class="c1">#grid[x][y].num_adj_mines = 0;</span>
+                <span class="n">oldCount</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">count_nearby_mines</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span></div>
+
+    <span class="c1">## Recursively calls reveal_adjacent() to uncover squares</span>
+    <span class="c1">#  @authors: Ethan, Kristi</span>
+    <span class="c1">#  @param x, x-coordinate of cell</span>
+    <span class="c1">#  @param y, y-coordinate of cell</span>
+<div class="viewcode-block" id="Board.reveal"><a class="viewcode-back" href="../index.html#board.Board.reveal">[docs]</a>    <span class="k">def</span> <span class="nf">reveal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Recursively calls reveal_adajenct to reveal Squares</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Integer coordinate on the x-axis</span>
+<span class="sd">            y: Integer coordinate on the y-axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal_adjacent</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="c1">## Reveals cells that aren&#39;t mines; Called by reveal()</span>
+    <span class="c1">#  @authors: Ethan, Kristi</span>
+    <span class="c1">#  @param x, x-coordinate of cell</span>
+    <span class="c1">#  @param y, y-coordinate of cell</span>
+<div class="viewcode-block" id="Board.reveal_adjacent"><a class="viewcode-back" href="../index.html#board.Board.reveal_adjacent">[docs]</a>    <span class="k">def</span> <span class="nf">reveal_adjacent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reveals cells that aren&#39;t mines</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Integer coordinate on the x-axis</span>
+<span class="sd">            y: Integer coordinate on the y-axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_cell</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reveal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span></div>
+
+    <span class="c1">## Checks that coordinates are within bounds of board</span>
+    <span class="c1">#  @author: Kristi</span>
+    <span class="c1">#  @param x, x-coordinate of cell</span>
+    <span class="c1">#  @param y, y-coordinate of cell</span>
+<div class="viewcode-block" id="Board.is_valid_cell"><a class="viewcode-back" href="../index.html#board.Board.is_valid_cell">[docs]</a>    <span class="k">def</span> <span class="nf">is_valid_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks that coordinates are within bounds of the board</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x: Integer coordinate on the x-axis</span>
+<span class="sd">            y: Integer coordinate on the y-axis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1"># ##Trys to move the mine several times verse just once, set the tolerance to increase the probability of a successful moved</span>
+    <span class="c1"># #default tolerance set to 10</span>
+<div class="viewcode-block" id="Board.validTransformation"><a class="viewcode-back" href="../index.html#board.Board.validTransformation">[docs]</a>    <span class="k">def</span> <span class="nf">validTransformation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tolerance</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determines if moved mines are moved properly</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tolerance: Integer weight for propability of successful move</span>
+<span class="sd">            i: Integer coordinate on the x-axis</span>
+<span class="sd">            j: Integer coordinate on the y-axis</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if valid transformation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tolerance</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_cell</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">was_moved</span> <span class="o">=</span> <span class="kc">True</span><span class="p">;</span>
+                <span class="c1">#Uncomment to show transformation of mine position</span>
+                <span class="c1">#print(&quot;Value i,j :&quot; + str(i) + &quot;, &quot; + str(j) + &quot; with was_moved to: &quot; + str(a) + &quot;, &quot; +str(b))</span>
+                <span class="k">return</span> <span class="kc">True</span><span class="p">;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">validTransformation</span><span class="p">(</span><span class="n">tolerance</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span></div>
+
+    <span class="c1">##Iterates through each cell of the 2D array and determines if there is a mine</span>
+    <span class="c1">#If there is a mine the mine is removed and placed somewhere else not revealed or a mine</span>
+<div class="viewcode-block" id="Board.moveMines"><a class="viewcode-back" href="../index.html#board.Board.moveMines">[docs]</a>    <span class="k">def</span> <span class="nf">moveMines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Moves mines to a location that is not revealed nor is a mine</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">was_moved</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validTransformation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">reveal</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span></div>
+
+    <span class="c1"># Prints current time on stopwatch for user</span>
+<div class="viewcode-block" id="Board.printCurrentTime"><a class="viewcode-back" href="../index.html#board.Board.printCurrentTime">[docs]</a>    <span class="k">def</span> <span class="nf">printCurrentTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints a formatted time from the stopwatch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">currentTime</span><span class="p">()</span>
+        <span class="n">hours</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">3600</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">3600</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">60</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="s2">&quot;Time: &quot;</span>
+        <span class="k">if</span> <span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+        <span class="k">if</span> <span class="n">minutes</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+        <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Minesweeper (2018)</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Benjamin Streit, Blake Rieschick, Evan Brown, Ayah Alkhatib, Kyle Curry, Kristi Daigh, Ethan Lefert, Clare Meyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

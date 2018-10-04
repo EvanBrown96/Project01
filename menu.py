@@ -13,9 +13,23 @@ from window_functions import center_window
 #  @brief Prints menu and rules; Manages Executive instance
 class Menu:
 
+    """
+    Menu class to act as game menu
+
+    Attributes:
+        choice: Integer value to record whether or not user wants to play again
+
+        myGame: Instance of the Executive class for managing the game
+    """
+
     ## Constructor; initializes class variables
     #  @author: Ayah
     def __init__(self, root):
+        """
+        Constructor for Menu class
+
+        Initializes all attributes
+        """
 
         ## @var myGame
         #  instance of the executive class
@@ -87,6 +101,9 @@ class Menu:
     ## Prints the game instructions
     #  @author: Ayah
     def game_rules(self):
+        """
+        Prints the game instructions
+        """
 
         if self.rules_displayed:
             # if rules are already displayed, move them to the front and return

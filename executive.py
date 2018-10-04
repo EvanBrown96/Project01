@@ -7,7 +7,6 @@
 
 from random import randint
 from board import Board
-
 # importing copy module for creating deep copies for cheat mode
 import copy
 
@@ -15,24 +14,39 @@ import copy
 ## @class Executive
 #  @brief Handles user input and gameplay
 class Executive:
+    """
+    Executive class to act as game manager
+
+    Attributes:
+        game_over: Boolean to record current game status
+
+        cheat_mode: Boolean to record whether or not user is in cheat mode
+
+        myBoard: Instance of the Board class
+    """
 
     ## Constructor; initializes class variables
     #  @author: Ethan
     def __init__(self):
-        ## @var game_over
-        #  flag for game status
+        """
+        Constructor for Executive class
+
+        Initializes all attributes
+        """
         self.game_over = False
-        ## @var cheat_mode
-        # variable for whether or not user is in cheat mode
         self.cheat_mode = False
-        ## @var myBoard
-        #  instance of the board class
         self.myBoard = Board()
 
     ## Checks if all mines are flagged
     #  @author: Ethan
     #  @post: game_over flag has been updated
     def check_win(self):
+        """
+        Checks if all mines are flagged to determine is user has won the game
+
+        Returns:
+            0 if user has not won the game
+        """
         flag_on_mine = 0
         for i in range(0, self.width):
             for x in range(0, self.height):
@@ -48,6 +62,9 @@ class Executive:
     #  @author: Ethan
     #  @post: Board is generated based on user input
     def setup(self, width, height, mines):
+        """
+        Generates board to spec of user input
+        """
 
         self.width = width
         self.height = height
@@ -61,6 +78,10 @@ class Executive:
     #  @pre: Board has been setup
     #  @author: Ethan
     def play(self):
+        """
+        Requests user input for playing the game as long as the game is not over
+        Presents revealed board upon game over
+        """
         while not self.game_over:
             # Checking if in cheat mode
             if self.cheat_mode:
