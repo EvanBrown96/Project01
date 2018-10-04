@@ -1,0 +1,523 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Minesweeper’s documentation! &mdash; Minesweeper 0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> Minesweeper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Minesweeper’s documentation!</a></li>
+<li><a class="reference internal" href="#indices">Indices</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Minesweeper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to Minesweeper’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-minesweeper-s-documentation">
+<h1>Welcome to Minesweeper’s documentation!<a class="headerlink" href="#welcome-to-minesweeper-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-main"></span><dl class="class">
+<dt id="main.Main">
+<em class="property">class </em><code class="descclassname">main.</code><code class="descname">Main</code><a class="reference internal" href="_modules/main.html#Main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.Main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Source file for project. Creates instance of Menu class, begins game by
+the rules and menu</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd>playing: Instance of the Menu class</dd>
+</dl>
+<dl class="method">
+<dt id="main.Main.begin">
+<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#Main.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.Main.begin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Begins game by calling for game rules and game menu to be displayed</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-executive"></span><dl class="class">
+<dt id="executive.Executive">
+<em class="property">class </em><code class="descclassname">executive.</code><code class="descname">Executive</code><a class="reference internal" href="_modules/executive.html#Executive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executive class to act as game manager</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">game_over: Boolean to record current game status</p>
+<p>cheat_mode: Boolean to record whether or not user is in cheat mode</p>
+<p class="last">myBoard: Instance of the Board class</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="executive.Executive.check_win">
+<code class="descname">check_win</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.check_win"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.check_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if all mines are flagged to determine is user has won the game</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>0 if user has not won the game</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.play">
+<code class="descname">play</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.play"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.play" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests user input for playing the game as long as the game is not over
+Presents revealed board upon game over</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates board to spec of user input</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-menu"></span><dl class="class">
+<dt id="menu.Menu">
+<em class="property">class </em><code class="descclassname">menu.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu class to act as game menu</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">choice: Integer value to record whether or not user wants to play again</p>
+<p class="last">myGame: Instance of the Executive class for managing the game</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="menu.Menu.game_menu">
+<code class="descname">game_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_menu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps the game running until user quits</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu.Menu.game_rules">
+<code class="descname">game_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_rules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_rules" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the game instructions</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="menu.Menu.type_error_handler">
+<code class="descname">type_error_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.type_error_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.type_error_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles any type error in users input</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>check: Integer of users input if integer input</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-square"></span><dl class="class">
+<dt id="square.Square">
+<em class="property">class </em><code class="descclassname">square.</code><code class="descname">Square</code><a class="reference internal" href="_modules/square.html#Square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Square class for managing properties of a square in Minesweeper</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">is_mine: Boolean to record whether or not a square is a mine</p>
+<p>is_flagged: Boolean to record whether or not a square is flagged</p>
+<p>is_revealed: Boolean to record whether or not a square is revealed</p>
+<p>num_adj_mines: Integer to record number of mines adjacent to square</p>
+<p class="last">was_moved: Boolean to record whether or not a square has been moved</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="square.Square.print_square">
+<code class="descname">print_square</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.print_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.print_square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the square with respect to the current status of the square’s
+attributes</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-board"></span><dl class="class">
+<dt id="board.Board">
+<em class="property">class </em><code class="descclassname">board.</code><code class="descname">Board</code><a class="reference internal" href="_modules/board.html#Board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Board class that handles game board creation and functionality</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><p class="first">width: Integer for width of the board</p>
+<p>height: Integer for height of the board</p>
+<p>mines_num: Integer for recording number of mines</p>
+<p>num_flags: Integer for recording number of flags</p>
+<p>grid: 2D array to store Square instances that make up board</p>
+<dl class="docutils">
+<dt>first_selection: Boolean for recording whether or not an interaction is</dt>
+<dd>the user’s first interaction</dd>
+</dl>
+<p class="last">stopwatch: Instance of the Stopwatch class</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="board.Board.count_nearby_mines">
+<code class="descname">count_nearby_mines</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.count_nearby_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.count_nearby_mines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counts the number of adjacent mines for a given Square</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate of Square on the x-axis
+y: Integer coordinate of Square on the y-axis
+width: Integer for width of board
+height: Integer for height of board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.generate_mines">
+<code class="descname">generate_mines</code><span class="sig-paren">(</span><em>mines</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.generate_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.generate_mines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Randomly places mines on board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>mines: Integer number of mines to be used
+width: Integer for width of board
+height: Integer for height of board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.is_valid_cell">
+<code class="descname">is_valid_cell</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.is_valid_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.is_valid_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that coordinates are within bounds of the board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.make_grid">
+<code class="descname">make_grid</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.make_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.make_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates grid to user specification</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer for width of board
+height: Integer for height of board</dd>
+<dt>Returns:</dt>
+<dd>grid: Populated 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.mine_check">
+<code class="descname">mine_check</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.mine_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.mine_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assigns number of adjacent mines for each Square to the Square member
+variable</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer width of the board
+height: Integer height of the board
+grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.moveMines">
+<code class="descname">moveMines</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.moveMines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.moveMines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moves mines to a location that is not revealed nor is a mine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.printCurrentTime">
+<code class="descname">printCurrentTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.printCurrentTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.printCurrentTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a formatted time from the stopwatch</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.print_board">
+<code class="descname">print_board</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>main_grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.print_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.print_board" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a formatted game board, followed by making a call to print a
+formatted time from stopwatch</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>width: Integer for width of board
+height: Integer for height of board
+main_grid: 2D array to be printed</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.resetGridMineCount">
+<code class="descname">resetGridMineCount</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.resetGridMineCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.resetGridMineCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets number of adjacent mines to 0 before evaluating the board</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>grid: 2D array to act as game board</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.reveal">
+<code class="descname">reveal</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively calls reveal_adajenct to reveal Squares</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.reveal_adjacent">
+<code class="descname">reveal_adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal_adjacent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal_adjacent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reveals cells that aren’t mines</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>x: Integer coordinate on the x-axis
+y: Integer coordinate on the y-axis</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.validTransformation">
+<code class="descname">validTransformation</code><span class="sig-paren">(</span><em>tolerance</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.validTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.validTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines if moved mines are moved properly</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>tolerance: Integer weight for propability of successful move
+i: Integer coordinate on the x-axis
+j: Integer coordinate on the y-axis</dd>
+<dt>Returns:</dt>
+<dd>True if valid transformation</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-stopwatch"></span><dl class="class">
+<dt id="stopwatch.Stopwatch">
+<em class="property">class </em><code class="descclassname">stopwatch.</code><code class="descname">Stopwatch</code><a class="reference internal" href="_modules/stopwatch.html#Stopwatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple stopwatch class with functionality for starting, stopping, and
+getting current time on the stopwatch</p>
+<dl class="docutils">
+<dt>Attributes:</dt>
+<dd><dl class="first docutils">
+<dt>start_time: Integer to record time (0 seconds) that stopwatch was</dt>
+<dd>started</dd>
+</dl>
+<p class="last">end_time: Integer to record number of seconds since stopwatch started</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="stopwatch.Stopwatch.currentTime">
+<code class="descname">currentTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.currentTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.currentTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets current time on stopwatch
+If start_time is 0, returns 0
+Else returns time.time() - start_time rounded to nearest whole number</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Current time on switch as an integer</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="stopwatch.Stopwatch.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts stopwatch by setting the start_time to time.time(),
+rounded to the nearest whole number</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="stopwatch.Stopwatch.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops stopwatch by settingt the end_time equal to
+time.time() - start_time, rounded to the nearest whole number</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices">
+<h1>Indices<a class="headerlink" href="#indices" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ayah Alkhatib, Benjamin Streit, Blake Rieschick, Clare Meyer, Ethan Lefert, Evan Brown, Kristi Daigh, Kyle Curry.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,319 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>menu &mdash; Minesweeper 0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Minesweeper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Minesweeper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>menu</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for menu</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @file menu.py</span>
+<span class="c1">#  Source file for the menu object</span>
+<span class="c1">#</span>
+<span class="c1">#  Project: Minesweeper</span>
+<span class="c1">#  Author: Ayah Alkhatib</span>
+<span class="c1">#  Created: 09/08/18</span>
+
+<span class="kn">from</span> <span class="nn">executive</span> <span class="k">import</span> <span class="n">Executive</span>
+
+
+<span class="c1">## @class Menu</span>
+<span class="c1">#  @brief Prints menu and rules; Manages Executive instance</span>
+<div class="viewcode-block" id="Menu"><a class="viewcode-back" href="../index.html#menu.Menu">[docs]</a><span class="k">class</span> <span class="nc">Menu</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Menu class to act as game menu</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        choice: Integer value to record whether or not user wants to play again</span>
+
+<span class="sd">        myGame: Instance of the Executive class for managing the game</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">## Constructor; initializes class variables</span>
+    <span class="c1">#  @author: Ayah</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for Menu class</span>
+
+<span class="sd">        Initializes all attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span> <span class="o">=</span> <span class="n">Executive</span><span class="p">()</span>
+
+    <span class="c1">## Handles any type error in users input</span>
+    <span class="c1">#  @author: Ayah</span>
+    <span class="c1">#  @returns user input when entered correctly</span>
+<div class="viewcode-block" id="Menu.type_error_handler"><a class="viewcode-back" href="../index.html#menu.Menu.type_error_handler">[docs]</a>    <span class="k">def</span> <span class="nf">type_error_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles any type error in users input</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            check: Integer of users input if integer input</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">check</span> <span class="o">=</span> <span class="nb">int</span> <span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+                <span class="k">break</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Please enter a valid choice: &quot;</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Play[1], Quit[2]&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">check</span></div>
+
+    <span class="c1">## Keep the game running until user chose to quit</span>
+    <span class="c1">#  @authors: Ayah</span>
+<div class="viewcode-block" id="Menu.game_menu"><a class="viewcode-back" href="../index.html#menu.Menu.game_menu">[docs]</a>    <span class="k">def</span> <span class="nf">game_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Keeps the game running until user quits</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">play_again</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span><span class="o">.</span><span class="n">game_over</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please, chose from the menu:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;1. Play the Game</span>
+<span class="s2">2. Quit&quot;&quot;&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_error_handler</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Goodbye! See you later!&quot;</span><span class="p">)</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter a valid choice:&quot;</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">play_again</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Play[1], Quit [2]&quot;</span><span class="p">)</span>
+                <span class="n">play_again</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_error_handler</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">play_again</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span> <span class="o">=</span> <span class="n">Executive</span> <span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">myGame</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+                <span class="k">elif</span> <span class="n">play_again</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please enter a valid choice&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Goodbye! See you later!&quot;</span><span class="p">)</span>
+            <span class="k">return</span></div>
+
+
+    <span class="c1">## Prints the game instructions</span>
+    <span class="c1">#  @author: Ayah</span>
+<div class="viewcode-block" id="Menu.game_rules"><a class="viewcode-back" href="../index.html#menu.Menu.game_rules">[docs]</a>    <span class="k">def</span> <span class="nf">game_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Prints the game instructions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Welcome to Minesweepers!</span>
+
+<span class="s2">Here are the game instructions:</span>
+
+<span class="s2">The game will provid players a square board with a number of hidden mines and similar number of flags.</span>
+
+<span class="s2">Player has three choices of action:</span>
+
+<span class="s2">    - Flag: to flag squares that might have mines.</span>
+
+<span class="s2">    - Unflag: to unflag if player changed mind.</span>
+
+<span class="s2">    - Reveal: to see what squares have underneath.</span>
+
+<span class="s2">When player chose to reveal:</span>
+
+<span class="s2">    - If the square has a mine -&gt; Gameover!</span>
+
+<span class="s2">    - If not a mine, it will show spaces and numbers to tell player the number of mines around the chosen square.</span>
+
+<span class="s2">The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.</span>
+
+<span class="s2">Note: To see your current time, enter &#39;T&#39; when asked for coordinates, you can also enter &#39;C&#39; to enter cheat mode!</span>
+
+<span class="s2">Good Luck!</span>
+
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ayah Alkhatib, Benjamin Streit, Blake Rieschick, Clare Meyer, Ethan Lefert, Evan Brown, Kristi Daigh, Kyle Curry.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

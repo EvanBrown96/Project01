@@ -10,28 +10,42 @@
 #  @brief Defines and manages properties for Square object
 class Square:
 
+    """
+    Square class for managing properties of a square in Minesweeper
+
+    Attributes:
+        is_mine: Boolean to record whether or not a square is a mine
+
+        is_flagged: Boolean to record whether or not a square is flagged
+
+        is_revealed: Boolean to record whether or not a square is revealed
+
+        num_adj_mines: Integer to record number of mines adjacent to square
+        
+        was_moved: Boolean to record whether or not a square has been moved
+    """
+
     ## Constructor
     #  @author: Kristi
     def __init__(self):
-        ## @var is_mine
-        #  mine status flag
+        """
+        Constructor for Square class
+        Initialized all attributes to false or 0 depending on type of Boolean
+        or Integer
+        """
         self.is_mine = False
-        ## @var is_flagged
-        #  flag status flag
         self.is_flagged = False
-        ## @var is_revealed
-        #  reveal status flag
         self.is_revealed = False
-        ## @var num_adj_mines
-        #  tracks number of adjacent mines
         self.num_adj_mines = 0
-        ## @var was_moved
-        # tracks what mines were moved
         self.was_moved = False
-        
+
     ## Prints the square based on properties
     #  @author: Kristi
     def print_square(self):
+        """
+        Prints the square with respect to the current status of the square's
+        attributes
+        """
         if not self.is_revealed:
             if self.is_flagged:
                 print(str("F").ljust(2), end=' ')
