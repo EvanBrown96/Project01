@@ -29,9 +29,8 @@ Welcome to Minesweeper's documentation!
    :members:
 
 
-Indices and tables
+Indices
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
