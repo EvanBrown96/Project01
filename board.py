@@ -176,6 +176,10 @@ class Board:
                             self.grid[x][y].num_adj_mines += 1
 
     def checkAdditionalReveals(self):
+        """
+        Ensures Squares that were already revealed but were changed to 0 after
+        the mines moved are revealed properly
+        """
         for i in range(self.width):
             for j in range(self.height):
 
