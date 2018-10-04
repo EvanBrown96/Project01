@@ -1,4 +1,4 @@
-## @file square.py
+# @file square.py
 #  Source file for the square object
 #
 #  Project: Minesweeper
@@ -6,7 +6,7 @@
 #  Created: 09/07/18
 
 
-## @class Square
+# @class Square
 #  @brief Defines and manages properties for Square object
 class Square:
 
@@ -21,11 +21,11 @@ class Square:
         is_revealed: Boolean to record whether or not a square is revealed
 
         num_adj_mines: Integer to record number of mines adjacent to square
-        
+
         was_moved: Boolean to record whether or not a square has been moved
     """
 
-    ## Constructor
+    # Constructor
     #  @author: Kristi
     def __init__(self):
         """
@@ -39,7 +39,7 @@ class Square:
         self.num_adj_mines = 0
         self.was_moved = False
 
-    ## Prints the square based on properties
+    # Prints the square based on properties
     #  @author: Kristi
     def print_square(self):
         """

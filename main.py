@@ -1,4 +1,4 @@
-## @file main.py
+# @file main.py
 #  Main file for project
 #
 #  Project: Minesweeper
@@ -6,6 +6,7 @@
 #  Created: 09/06/18
 
 from menu import Menu
+
 
 class Main:
     """

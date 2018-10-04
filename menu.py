@@ -1,4 +1,4 @@
-## @file menu.py
+# @file menu.py
 #  Source file for the menu object
 #
 #  Project: Minesweeper
@@ -8,7 +8,7 @@
 from executive import Executive
 
 
-## @class Menu
+# @class Menu
 #  @brief Prints menu and rules; Manages Executive instance
 class Menu:
 
@@ -21,7 +21,7 @@ class Menu:
         myGame: Instance of the Executive class for managing the game
     """
 
-    ## Constructor; initializes class variables
+    # Constructor; initializes class variables
     #  @author: Ayah
     def __init__(self):
         """
@@ -32,7 +32,7 @@ class Menu:
         self.choice = 0
         self.myGame = Executive()
 
-    ## Handles any type error in users input
+    # Handles any type error in users input
     #  @author: Ayah
     #  @returns user input when entered correctly
     def type_error_handler(self):
@@ -44,14 +44,14 @@ class Menu:
         """
         while True:
             try:
-                check = int (input())
+                check = int(input())
                 break
             except:
                 print ("Please enter a valid choice: ")
                 print ("Play[1], Quit[2]")
         return check
 
-    ## Keep the game running until user chose to quit
+    # Keep the game running until user chose to quit
     #  @authors: Ayah
     def game_menu(self):
         """
@@ -75,7 +75,7 @@ class Menu:
                 print("Play[1], Quit [2]")
                 play_again = self.type_error_handler()
                 if play_again == 1:
-                    self.myGame = Executive ()
+                    self.myGame = Executive()
                     self.myGame.setup()
                     self.myGame.play()
                 elif play_again != 2:
@@ -83,37 +83,12 @@ class Menu:
             print("Goodbye! See you later!")
             return
 
-
-    ## Prints the game instructions
+    # Prints the game instructions
     #  @author: Ayah
     def game_rules(self):
         """
-        Prints the game instructions
+        Reads game instructions from game_instructions.txt and prints data
         """
-        print("""Welcome to Minesweepers!
-
-Here are the game instructions:
-
-The game will provid players a square board with a number of hidden mines and similar number of flags.
-
-Player has three choices of action:
-
-    - Flag: to flag squares that might have mines.
-
-    - Unflag: to unflag if player changed mind.
-
-    - Reveal: to see what squares have underneath.
-
-When player chose to reveal:
-
-    - If the square has a mine -> Gameover!
-
-    - If not a mine, it will show spaces and numbers to tell player the number of mines around the chosen square.
-
-The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.
-
-Note: To see your current time, enter 'T' when asked for coordinates, you can also enter 'C' to enter cheat mode!
-
-Good Luck!
-
-""")
+        file = open("game_instructions.txt", "r")
+        print(file.read())
+        file.close()

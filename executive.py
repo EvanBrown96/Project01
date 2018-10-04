@@ -1,4 +1,4 @@
-## @file executive.py
+# @file executive.py
 #  Source file for the UI class
 #
 #  Project: Minesweeper
@@ -11,7 +11,7 @@ from board import Board
 import copy
 
 
-## @class Executive
+# @class Executive
 #  @brief Handles user input and gameplay
 class Executive:
     """
@@ -25,7 +25,7 @@ class Executive:
         myBoard: Instance of the Board class
     """
 
-    ## Constructor; initializes class variables
+    # Constructor; initializes class variables
     #  @author: Ethan
     def __init__(self):
         """
@@ -37,7 +37,7 @@ class Executive:
         self.cheat_mode = False
         self.myBoard = Board()
 
-    ## Checks if all mines are flagged
+    # Checks if all mines are flagged
     #  @author: Ethan
     #  @post: game_over flag has been updated
     def check_win(self):
@@ -50,7 +50,8 @@ class Executive:
         flag_on_mine = 0
         for i in range(0, self.width):
             for x in range(0, self.height):
-                if self.myBoard.grid[i][x].is_mine and self.myBoard.grid[i][x].is_flagged:
+                if self.myBoard.grid[i][x].is_mine and \
+                   self.myBoard.grid[i][x].is_flagged:
                     flag_on_mine += 1
         if flag_on_mine == self.mines_num:
             print("You Win!")
@@ -58,7 +59,7 @@ class Executive:
         else:
             return 0
 
-    ## Generates board with user input for mines and size
+    # Generates board with user input for mines and size
     #  @author: Ethan
     #  @post: Board is generated based on user input
     def setup(self):
@@ -67,7 +68,8 @@ class Executive:
         """
         while True:
             try:
-                board_size_select = int(input("Please enter the board width between 2 and 15: "))
+                board_size_select = int(input("Please enter the board width \
+between 2 and 15: "))
             except ValueError:
                 print("That\'s not a number!")
             else:
@@ -79,7 +81,8 @@ class Executive:
 
         while True:
             try:
-                board_size_select = int(input("Please enter the board height between 2 and 15: "))
+                board_size_select = int(input("Please enter the board height \
+between 2 and 15: "))
             except ValueError:
                 print("That\'s not a number!")
             else:
@@ -94,7 +97,8 @@ class Executive:
         while True:
             try:
                 mine_num_select = int(
-                    input("Enter the number of mines, it should be between 1 and " + str(max_mines) + ": "))
+                    input("Enter the number of mines, it should be between 1 \
+and " + str(max_mines) + ": "))
             except ValueError:
                 print("That\'s not a number!")
             else:
@@ -110,12 +114,13 @@ class Executive:
         self.myBoard.generate_mines(self.mines_num, self.width, self.height)
         self.myBoard.mine_check(self.width, self.height)
 
-    ## Takes coordinates from user and handles input
+    # Takes coordinates from user and handles input
     #  @pre: Board has been setup
     #  @author: Ethan
     def play(self):
         """
-        Requests user input for playing the game as long as the game is not over
+        Requests user input for playing the game as long as the game is not
+        over
         Presents revealed board upon game over
         """
         while not self.game_over:
@@ -130,13 +135,15 @@ class Executive:
                         cheat_board[i][j].is_revealed = True
                 self.myBoard.print_board(self.width, self.height, cheat_board)
                 # present notice on how to leave cheat mode
-                leave_cheat_mode = input('Enter any input to leave cheat mode...')
+                leave_cheat_mode = input('Enter any input to leave cheat \
+mode...')
                 # leave cheat mode
                 self.cheat_mode = False
                 print('Leaving cheat mode...')
             else:
                 # Printing board and number of flags
-                self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
+                self.myBoard.print_board(self.width, self.height,
+                                         self.myBoard.grid)
                 print("Number of flags: %s" % self.myBoard.num_flags)
                 # not in cheat mode
                 # get x coordinate
@@ -162,7 +169,7 @@ class Executive:
                         break
 
                 # check if cheat applied
-                if self.cheat_mode == True:
+                if self.cheat_mode is True:
                     # is applied, continue to next iteration of loop
                     continue
 
@@ -189,19 +196,22 @@ class Executive:
                         break
 
                 # check if cheat applied
-                if self.cheat_mode == True:
+                if self.cheat_mode is True:
                     # is applied, continue to next iteration of loop
                     continue
 
-                # cheat code not applied, ask user for action with selected coordinates
-                choice = input("Enter an action flag [f], reveal [r], unflag [n]: ")
+                # cheat code not applied
+                # ask user for action with selected coordinates
+                choice = input("Enter an action flag [f], reveal [r], \
+unflag [n]: ")
                 if x >= self.width or y >= self.height:
                     print("Invalid try again")
                 elif choice != "f" and choice != "n" and choice != "r":
                     print("Invalid choice try again")
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "n":
                     print("Invalid try again")
-                elif not self.myBoard.grid[x][y].is_flagged and self.myBoard.num_flags == 0 and choice == "f":
+                elif not self.myBoard.grid[x][y].is_flagged \
+                     and self.myBoard.num_flags == 0 and choice == "f":
                     print("Out of flags. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "f":
                     print("Space is already flagged. Try again.")
@@ -221,11 +231,12 @@ class Executive:
                     self.myBoard.grid[x][y].is_flagged = True
                     self.myBoard.num_flags -= 1
                     self.check_win()
-                #Testing to see if is_revealed is being switched to true
-                elif self.myBoard.grid[x][y].is_revealed and not self.myBoard.grid[x][y].is_mine and choice == "r":
+                elif self.myBoard.grid[x][y].is_revealed and not \
+                    self.myBoard.grid[x][y].is_mine and choice == "r":
                     print("Space is already revealed. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "r":
-                    print("You can't reveal a flagged space. Unflag before guessing this space or guess a different space.")
+                    print("You can't reveal a flagged space. Unflag before \
+guessing this space or guess a different space.")
                 elif self.myBoard.grid[x][y].is_mine and choice == "r":
                     print("Game Over")
                     self.game_over = True
