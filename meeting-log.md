@@ -59,3 +59,15 @@ Location: In-Class
   * Discussed continuing work on GUI
   * Discussed implementing a stopwatch
   * Discussed next meeting time and location
+
+## Meeting \#6
+Date: Tuesday, October 12, 2018
+
+Time: 1:00 - 2:50 PM
+
+Location: Spahr Library
+
+  * Discussed work done since last meeting
+  * Discussed moving mines implementation
+  * Discussed continuing work on GUI
+  * Discussed revamping documentation implementation
