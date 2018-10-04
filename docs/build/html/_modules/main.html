@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; Minesweeper 0.0.2 documentation</title>
+  <title>main &mdash; Minesweeper 0.0.2 documentation</title>
   
 
   
@@ -121,7 +121,9 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Overview: module code</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>main</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -136,14 +138,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="board.html">board</a></li>
-<li><a href="executive.html">executive</a></li>
-<li><a href="main.html">main</a></li>
-<li><a href="menu.html">menu</a></li>
-<li><a href="square.html">square</a></li>
-<li><a href="stopwatch.html">stopwatch</a></li>
-</ul>
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @file main.py</span>
+<span class="c1">#  Main file for project</span>
+<span class="c1">#</span>
+<span class="c1">#  Project: Minesweeper</span>
+<span class="c1">#  Author: All</span>
+<span class="c1">#  Created: 09/06/18</span>
+
+<span class="kn">from</span> <span class="nn">menu</span> <span class="k">import</span> <span class="n">Menu</span>
+
+<div class="viewcode-block" id="Main"><a class="viewcode-back" href="../index.html#main.Main">[docs]</a><span class="k">class</span> <span class="nc">Main</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Source file for project. Creates instance of Menu class, begins game by</span>
+<span class="sd">    the rules and menu</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        playing: Instance of the Menu class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for Main class</span>
+
+<span class="sd">        Initializes all attributes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playing</span> <span class="o">=</span> <span class="n">Menu</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Main.begin"><a class="viewcode-back" href="../index.html#main.Main.begin">[docs]</a>    <span class="k">def</span> <span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Begins game by calling for game rules and game menu to be displayed</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playing</span><span class="o">.</span><span class="n">game_rules</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">playing</span><span class="o">.</span><span class="n">game_menu</span><span class="p">()</span></div></div>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">Main</span><span class="p">()</span>
+<span class="n">driver</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+</pre></div>
 
            </div>
            
