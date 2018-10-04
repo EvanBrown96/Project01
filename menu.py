@@ -19,7 +19,7 @@ class Menu:
 
         ## @var myGame
         #  instance of the executive class
-        self.myGame = None
+        self.setup = None
 
         # save root Tk window and set dimensions and centering
         self.root = root
