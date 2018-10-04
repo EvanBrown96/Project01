@@ -29,7 +29,7 @@ class Square(Tk.Label):
 
     # Constructor
     #  @author: Kristi
-    def __init__(self, master, x, y, callback, **options):
+    def __init__(self, master, x, y, click_callback, rclick_callback, **options):
         """
         Constructor for Square class
         Initialized all attributes to false or 0 depending on type of Boolean
@@ -42,8 +42,8 @@ class Square(Tk.Label):
         self.is_revealed = False
         self.num_adj_mines = 0
         self.was_moved = False
-        self.callback = callback
-        self.bind("<Button-1>", lambda _: callback(x, y, "r"))
+        self.bind("<Button-1>", lambda _: click_callback(x, y))
+        self.bind("<Button-2>", lambda _: rclick_callback(x, y))
 
     def flag(self):
         self.is_flagged = True
@@ -53,7 +53,7 @@ class Square(Tk.Label):
         self.configure(text="")
     def reveal(self):
         self.is_revealed = True
-        self.configure(text=self.num_adj_mines, relief=Tk.SUNKEN)
+        self.configure(text=("" if self.num_adj_mines == 0 else self.num_adj_mines), relief=Tk.SUNKEN)
 
     ## Prints the square based on properties
     #  @author: Kristi

@@ -82,7 +82,7 @@ class Board:
     #  @author: Clare
     #  @param: size, size of the grid
     #  @returns: grid
-    def make_grid(self, width, height, callback):
+    def make_grid(self, width, height, reveal_callback, flag_callback):
         """
         Populates grid to user specification
 
@@ -98,7 +98,7 @@ class Board:
         grid = [[0 for y in range(height)] for x in range(width)]
         for i in range(0, width):
             for j in range(0, height):
-                grid[i][j] = Square(self.board_window, i, j, callback)
+                grid[i][j] = Square(self.board_window, i, j, reveal_callback, flag_callback)
         return grid
 
     ## Randomly places mines on board
@@ -219,7 +219,7 @@ class Board:
         for i in range(self.width):
             for j in range(self.height):
 
-                if self.grid[i][j].num_adj_mines == 0 and self.grid[i][j].is_revealed:
+                if self.grid[i][j].is_revealed:
                     self.reveal(i, j)
 
     # Simple loop to reset num_adj_mines to 0 before being evaluated again
