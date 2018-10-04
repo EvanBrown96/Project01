@@ -49,11 +49,11 @@ class Executive:
             0 if user has not won the game
         """
         flag_on_mine = 0
-        for i in range(0, self.width):
-            for x in range(0, self.height):
+        for i in range(0, self.myBoard.width):
+            for x in range(0, self.myBoard.height):
                 if self.myBoard.grid[i][x].is_mine and self.myBoard.grid[i][x].is_flagged:
                     flag_on_mine += 1
-        if flag_on_mine == self.mines_num:
+        if flag_on_mine == self.myBoard.mines_num:
             print("You Win!")
             self.game_over = True
         else:
@@ -67,13 +67,13 @@ class Executive:
         Generates board to spec of user input
         """
 
-        self.width = width
-        self.height = height
-        self.mines_num = mines
-        self.myBoard.num_flags = self.mines_num
-        self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
-        self.myBoard.generate_mines(self.mines_num, self.width, self.height)
-        self.myBoard.mine_check(self.width, self.height)
+        self.myBoard.width = width
+        self.myBoard.height = height
+        self.myBoard.mines_num = mines
+        self.myBoard.num_flags = self.myBoard.mines_num
+        self.myBoard.grid = self.myBoard.make_grid(self.myBoard.width, self.myBoard.height)
+        self.myBoard.generate_mines(self.myBoard.mines_num, self.myBoard.width, self.myBoard.height)
+        self.myBoard.mine_check(self.myBoard.width, self.myBoard.height)
 
     ## Takes coordinates from user and handles input
     #  @pre: Board has been setup
@@ -90,10 +90,10 @@ class Executive:
                 print('Entering cheat mode, revealing entire board...')
                 # make duplicate board and reveal all spaces
                 cheat_board = copy.deepcopy(self.myBoard.grid)
-                for i in range(0, self.width):
-                    for j in range(0, self.height):
+                for i in range(0, self.myBoard.width):
+                    for j in range(0, self.myBoard.height):
                         cheat_board[i][j].is_revealed = True
-                self.myBoard.print_board(self.width, self.height, cheat_board)
+                self.myBoard.print_board(self.myBoard.width, self.myBoard.height, cheat_board)
                 # present notice on how to leave cheat mode
                 leave_cheat_mode = input('Enter any input to leave cheat mode...')
                 # leave cheat mode
@@ -101,7 +101,7 @@ class Executive:
                 print('Leaving cheat mode...')
             else:
                 # Printing board and number of flags
-                self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
+                self.myBoard.print_board(self.myBoard.width, self.myBoard.height, self.myBoard.grid)
                 print("Number of flags: %s" % self.myBoard.num_flags)
                 # not in cheat mode
                 # get x coordinate
@@ -118,7 +118,7 @@ class Executive:
                     elif not x.isnumeric():
                         print("That\'s not an integer. Try again.")
                     # not cheat input, is numeric, check if within range
-                    elif int(x) < 0 or int(x) >= self.width:
+                    elif int(x) < 0 or int(x) >= self.myBoard.width:
                         print("Invalid input. Try again.")
                     # good input
                     else:
@@ -145,7 +145,7 @@ class Executive:
                     elif not y.isnumeric():
                         print("That\'s not an integer. Try again.")
                     # not cheat input, is numeric, check if within range
-                    elif int(y) < 0 or int(y) >= self.height:
+                    elif int(y) < 0 or int(y) >= self.myBoard.height:
                         print("Invalid input. Try again.")
                     # good input
                     else:
@@ -160,7 +160,7 @@ class Executive:
 
                 # cheat code not applied, ask user for action with selected coordinates
                 choice = input("Enter an action flag [f], reveal [r], unflag [n]: ")
-                if x >= self.width or y >= self.height:
+                if x >= self.myBoard.width or y >= self.myBoard.height:
                     print("Invalid try again")
                 elif choice != "f" and choice != "n" and choice != "r":
                     print("Invalid choice try again")
@@ -203,11 +203,11 @@ class Executive:
                     self.myBoard.reveal(x, y)
                     self.myBoard.moveMines()
                     self.myBoard.resetGridMineCount()
-                    self.myBoard.mine_check(self.width, self.height)
+                    self.myBoard.mine_check(self.myBoard.width, self.myBoard.height)
                     self.myBoard.checkAdditionalReveals()
 
-        for i in range(0, self.width):
-            for j in range(0, self.height):
+        for i in range(0, self.myBoard.width):
+            for j in range(0, self.myBoard.height):
                 self.myBoard.grid[i][j].num_adj_mines = False
                 self.myBoard.grid[i][j].reveal()
-        self.myBoard.print_board(self.width, self.height, self.myBoard.grid)
+        self.myBoard.print_board(self.myBoard.width, self.myBoard.height, self.myBoard.grid)
