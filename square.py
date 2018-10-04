@@ -21,7 +21,7 @@ class Square:
         is_revealed: Boolean to record whether or not a square is revealed
 
         num_adj_mines: Integer to record number of mines adjacent to square
-        
+
         was_moved: Boolean to record whether or not a square has been moved
     """
 
@@ -38,6 +38,13 @@ class Square:
         self.is_revealed = False
         self.num_adj_mines = 0
         self.was_moved = False
+
+    def flag(self):
+        self.is_flagged = True
+    def unflag(self):
+        self.is_flagged = False
+    def reveal(self):
+        self.is_revealed = True
 
     ## Prints the square based on properties
     #  @author: Kristi

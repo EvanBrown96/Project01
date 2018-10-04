@@ -175,7 +175,7 @@ class Executive:
                 elif self.myBoard.grid[x][y].is_revealed and choice == "n":
                     print("You can't unflag a revealed space. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "n":
-                    self.myBoard.grid[x][y].is_flagged = False
+                    self.myBoard.grid[x][y].unflag()
                     self.myBoard.num_flags += 1
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
                     # checking if first selection for stopwatch
@@ -183,7 +183,7 @@ class Executive:
                         # is first selection, toggle and start stopwatch
                         self.myBoard.first_selection = False
                         self.myBoard.stopwatch.start()
-                    self.myBoard.grid[x][y].is_flagged = True
+                    self.myBoard.grid[x][y].flag()
                     self.myBoard.num_flags -= 1
                     self.check_win()
                 #Testing to see if is_revealed is being switched to true
@@ -208,6 +208,6 @@ class Executive:
 
         for i in range(0, self.width):
             for j in range(0, self.height):
-                self.myBoard.grid[i][j].is_revealed = True
                 self.myBoard.grid[i][j].num_adj_mines = False
+                self.myBoard.grid[i][j].reveal()
         self.myBoard.print_board(self.width, self.height, self.myBoard.grid)

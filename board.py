@@ -230,7 +230,7 @@ class Board:
             x: Integer coordinate on the x-axis
             y: Integer coordinate on the y-axis
         """
-        self.grid[x][y].is_revealed = True
+        self.grid[x][y].reveal()
         if self.grid[x][y].num_adj_mines == 0:
             self.reveal_adjacent(x - 1, y - 1)
             self.reveal_adjacent(x - 1, y)
@@ -258,11 +258,11 @@ class Board:
         if self.grid[x][y].is_revealed or self.grid[x][y].is_flagged:
             return
         if self.grid[x][y].num_adj_mines == 0:
-            self.grid[x][y].is_revealed = True
+            self.grid[x][y].reveal()
             self.reveal(x, y)
         else:
             if not self.grid[x][y].is_mine:
-                self.grid[x][y].is_revealed = True
+                self.grid[x][y].reveal()
             return
 
     ## Checks that coordinates are within bounds of board
