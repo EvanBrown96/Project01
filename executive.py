@@ -18,6 +18,7 @@ class Executive:
     Executive class to act as game manager
 
     Attributes:
+
         game_over: Boolean to record current game status
 
         cheat_mode: Boolean to record whether or not user is in cheat mode

@@ -17,9 +17,21 @@ class Menu:
     Menu class to act as game menu
 
     Attributes:
-        choice: Integer value to record whether or not user wants to play again
 
-        myGame: Instance of the Executive class for managing the game
+        setup: Instance of the Setup class for getting user input to setup the board
+
+        root: instance of Tk root window
+
+        play_button: tkinter button to play the game
+
+        rules_button: tkinter button to show the rules window
+
+        quit_button: tkinter button to quit the entire process
+
+        rules_window: tkinter window for the rules to display in
+
+        rules_displayed: flag if the rules are currently displayed or not
+
     """
 
     ## Constructor; initializes class variables
@@ -29,6 +41,11 @@ class Menu:
         Constructor for Menu class
 
         Initializes all attributes
+
+        Args:
+
+            root: instance of Tk root window
+
         """
 
         ## @var myGame
@@ -44,18 +61,20 @@ class Menu:
         root.withdraw()
         root.deiconify()
 
+        bg = "lightgreen"
+
         # configure window
         root.title("Minesweeper 2018")
-        root.configure(bg="lightgreen", bd=10, relief="ridge", pady=30)
+        root.configure(bg=bg, bd=10, relief="ridge", pady=30)
         root.resizable(width=False, height=False)
 
         # create welcome text and display it
-        Tk.Label(root, text="Welcome to Minesweeper", bg="lightgreen", font=('copperplate', 24)).pack()
+        Tk.Label(root, text="Welcome to Minesweeper", bg=bg, font=('copperplate', 24)).pack()
 
         # create buttons
-        self.play_button = Tk.Button(root, text="Play", command=self.start_game, highlightbackground="lightgreen")
-        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules, highlightbackground="lightgreen")
-        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy, highlightbackground="lightgreen")
+        self.play_button = Tk.Button(root, text="Play", command=self.start_game, highlightbackground=bg)
+        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules, highlightbackground=bg)
+        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy, highlightbackground=bg)
 
         # display buttons
         self.play_button.pack()
@@ -67,7 +86,12 @@ class Menu:
         # flag to prevent rules window from being created multiple times
         self.rules_displayed = False
 
+
+
     def start_game(self):
+        """
+        Hides main menu window and displays the board setup window
+        """
 
         # hide the menu window, and the rules window if it is open
         self.root.withdraw()
@@ -80,21 +104,8 @@ class Menu:
             if self.rules_displayed:
                 self.rules_window.deiconify()
 
-        # create new game and call methods as normal
+        # create board setup window
         self.setup = Setup(self.root, show_callback)
-        #self.myGame.setup()
-        #self.myGame.play()
-
-        # after game finishes (by either loss or win), display the windows again
-        # self.root.deiconify()
-        # if self.rules_displayed:
-        #     self.rules_window.deiconify()
-
-
-
-    def on_rules_close(self):
-        self.rules_displayed = False
-        self.rules_window.destroy()
 
 
 
@@ -121,19 +132,28 @@ class Menu:
         self.rules_window.withdraw()
         self.rules_window.deiconify()
 
+        bg = "khaki"
+
         # configure window
         self.rules_window.title("Rules")
-        self.rules_window.configure(bg="khaki", bd=10, relief="ridge")
+        self.rules_window.configure(bg=bg, bd=10, relief="ridge")
         self.rules_window.resizable(width=False, height=False)
 
+        def on_rules_close():
+            """
+            Destroys the rules window sets window flag to false
+            """
+            self.rules_displayed = False
+            self.rules_window.destroy()
+
         # when window is closed, call function to set flag
-        self.rules_window.protocol("WM_DELETE_WINDOW", self.on_rules_close)
+        self.rules_window.protocol("WM_DELETE_WINDOW", on_rules_close)
         # also allow escape to close the window
-        self.rules_window.bind("<Escape>", lambda _: self.on_rules_close())
+        self.rules_window.bind("<Escape>", lambda _: on_rules_close())
 
         # create and show rules text
-        Tk.Label(self.rules_window, bg="khaki", text="----- How to Play -----").pack()
-        Tk.Label(self.rules_window, bg="khaki", justify=Tk.LEFT, text="""
+        Tk.Label(self.rules_window, bg=bg, text="----- How to Play -----").pack()
+        Tk.Label(self.rules_window, bg=bg, justify=Tk.LEFT, text="""
 The game will provide players a tiled board with a number of hidden mines
 and an equal number of flags which with to mark the mines.
 
