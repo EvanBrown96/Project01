@@ -1,25 +1,21 @@
-Welcome to Minesweepers!
+The game will provide players a tiled board with a number of hidden mines
+and an equal number of flags which with to mark the mines.
 
-Here are the game instructions:
+The player has three choices of action:
+- Flag: flag a tile that might have a mine
+- Unflag: unflag if you think you made a mistake
+- Reveal: show what a tile has hiding underneath
 
-The game will provid players a square board with a number of hidden mines and similar number of flags.
-
-Player has three choices of action:
-
-- Flag: to flag squares that might have mines.
-
-- Unflag: to unflag if player changed mind.
-
-- Reveal: to see what squares have underneath.
-
-When player chose to reveal:
-
+When you choose to reveal:
 - If the square has a mine -> Gameover!
+- Not a mine -> Display number of adjacent squares that DO have a mine
 
-- If not a mine, it will show spaces and numbers to tell player the number of mines around the chosen square.
+Goal: place a flag where all of the mines are.
 
-The goal is to flag all mines until the counter of flags equals to zero without revealing any mine.
+Also, as an added difficulty, some or all of the mines will move
+    around every time you select to reveal!
 
-Note: To see your current time, enter 'T' when asked for coordinates, you can also enter 'C' to enter cheat mode!
+Note: To see your current time, enter 'T' when asked for coordinates;
+    you can also enter 'C' to enter cheat mode!
 
 Good Luck!

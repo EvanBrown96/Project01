@@ -18,6 +18,7 @@ class Executive:
     Executive class to act as game manager
 
     Attributes:
+
         game_over: Boolean to record current game status
 
         cheat_mode: Boolean to record whether or not user is in cheat mode
@@ -62,54 +63,15 @@ class Executive:
     # Generates board with user input for mines and size
     #  @author: Ethan
     #  @post: Board is generated based on user input
-    def setup(self):
+    def setup(self, width, height, mines):
         """
         Generates board to spec of user input
         """
-        while True:
-            try:
-                board_size_select = int(input("Please enter the board width \
-between 2 and 15: "))
-            except ValueError:
-                print("That\'s not a number!")
-            else:
-                if 2 <= board_size_select <= 15:
-                    self.width = board_size_select
-                    break
-                else:
-                    print('Not a valid board size. Try again')
 
-        while True:
-            try:
-                board_size_select = int(input("Please enter the board height \
-between 2 and 15: "))
-            except ValueError:
-                print("That\'s not a number!")
-            else:
-                if 2 <= board_size_select <= 15:
-                    self.height = board_size_select
-                    break
-                else:
-                    print('Not a valid board size. Try again')
-
-        max_mines = self.width * self.height - 1
-
-        while True:
-            try:
-                mine_num_select = int(
-                    input("Enter the number of mines, it should be between 1 \
-and " + str(max_mines) + ": "))
-            except ValueError:
-                print("That\'s not a number!")
-            else:
-                if 1 <= mine_num_select <= max_mines:
-                    self.mines_num = mine_num_select
-                    break
-                else:
-                    print('Not a valid amount of mines. Try again')
-
+        self.width = width
+        self.height = height
+        self.mines_num = mines
         self.myBoard.num_flags = self.mines_num
-
         self.myBoard.grid = self.myBoard.make_grid(self.width, self.height)
         self.myBoard.generate_mines(self.mines_num, self.width, self.height)
         self.myBoard.mine_check(self.width, self.height)
@@ -220,7 +182,7 @@ unflag [n]: ")
                 elif self.myBoard.grid[x][y].is_revealed and choice == "n":
                     print("You can't unflag a revealed space. Try again.")
                 elif self.myBoard.grid[x][y].is_flagged and choice == "n":
-                    self.myBoard.grid[x][y].is_flagged = False
+                    self.myBoard.grid[x][y].unflag()
                     self.myBoard.num_flags += 1
                 elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
                     # checking if first selection for stopwatch
@@ -228,7 +190,7 @@ unflag [n]: ")
                         # is first selection, toggle and start stopwatch
                         self.myBoard.first_selection = False
                         self.myBoard.stopwatch.start()
-                    self.myBoard.grid[x][y].is_flagged = True
+                    self.myBoard.grid[x][y].flag()
                     self.myBoard.num_flags -= 1
                     self.check_win()
                 elif self.myBoard.grid[x][y].is_revealed and not \
@@ -254,6 +216,6 @@ guessing this space or guess a different space.")
 
         for i in range(0, self.width):
             for j in range(0, self.height):
-                self.myBoard.grid[i][j].is_revealed = True
                 self.myBoard.grid[i][j].num_adj_mines = False
+                self.myBoard.grid[i][j].reveal()
         self.myBoard.print_board(self.width, self.height, self.myBoard.grid)

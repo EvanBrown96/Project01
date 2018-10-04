@@ -39,7 +39,14 @@ class Square:
         self.num_adj_mines = 0
         self.was_moved = False
 
-    # Prints the square based on properties
+    def flag(self):
+        self.is_flagged = True
+    def unflag(self):
+        self.is_flagged = False
+    def reveal(self):
+        self.is_revealed = True
+
+    ## Prints the square based on properties
     #  @author: Kristi
     def print_square(self):
         """

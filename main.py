@@ -6,6 +6,7 @@
 #  Created: 09/06/18
 
 from menu import Menu
+import tkinter as Tk
 
 
 class Main:
@@ -23,14 +24,9 @@ class Main:
 
         Initializes all attributes
         """
-        self.playing = Menu()
+        root = Tk.Tk()
+        self.playing = Menu(root)
 
-    def begin(self):
-        """
-        Begins game by calling for game rules and game menu to be displayed
-        """
-        self.playing.game_rules()
-        self.playing.game_menu()
 
-driver = Main()
-driver.begin()
+Main()
+Tk.mainloop()
