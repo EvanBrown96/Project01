@@ -165,7 +165,7 @@ class Board:
             width: Integer for width of board
             height: Integer for height of board
         """
-        if grid[x][y].is_mine:
+        if self.grid[x][y].is_mine:
             return
 
         for i in range(-1, 2):
