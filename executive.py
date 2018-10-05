@@ -107,7 +107,7 @@ class Executive:
         over
         Presents revealed board upon game over
         """
-        
+
 
     def reveal_event(self, x, y):
         if self.myBoard.grid[x][y].is_revealed and not \
@@ -135,16 +135,16 @@ class Executive:
             choice = "n"
 
         if not self.myBoard.grid[x][y].is_flagged and choice == "n":
-            print("Invalid try again")
+            pass #print("Invalid try again")
         elif not self.myBoard.grid[x][y].is_flagged \
              and self.myBoard.num_flags.get() == 0 and choice == "f":
-            print("Out of flags. Try again.")
+            pass #print("Out of flags. Try again.")
         elif self.myBoard.grid[x][y].is_flagged and choice == "f":
-            print("Space is already flagged. Try again.")
+            pass #print("Space is already flagged. Try again.")
         elif self.myBoard.grid[x][y].is_revealed and choice == "f":
-            print("You can't flag a revealed space. Try again.")
+            pass #print("You can't flag a revealed space. Try again.")
         elif self.myBoard.grid[x][y].is_revealed and choice == "n":
-            print("You can't unflag a revealed space. Try again.")
+            pass #print("You can't unflag a revealed space. Try again.")
         elif self.myBoard.grid[x][y].is_flagged and choice == "n":
             self.myBoard.grid[x][y].unflag()
             self.myBoard.num_flags.set(self.myBoard.num_flags.get()+1)

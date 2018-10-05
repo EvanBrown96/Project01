@@ -36,7 +36,7 @@ class Square(Tk.Label):
         or Integer
         """
         Tk.Label.__init__(self, master, options)
-        self.configure(bg="lightgray", relief=Tk.RAISED)
+        self.configure(bg="lightgray", relief=Tk.RAISED, font=("Futura", 24))
         self.is_mine = False
         self.is_flagged = False
         self.is_revealed = False
@@ -47,6 +47,7 @@ class Square(Tk.Label):
         self.bind("<Control-Button-1>", lambda _: rclick_callback(x, y))
         self.flag_img = Tk.PhotoImage(file="./flag.gif")
         self.mine_img = Tk.PhotoImage(file="./mine.gif")
+        self.color_mapping = {0: "black", 1: "blue3", 2: "green3", 3: "yellow", 4: "orange3", 5: "red3", 6: "maroon3", 7: "purple3", 8: "black"}
 
     def flag(self):
         self.is_flagged = True
@@ -58,7 +59,7 @@ class Square(Tk.Label):
         self.is_revealed = True
         self.configure(text=("" if self.is_mine or self.num_adj_mines == 0 else self.num_adj_mines),
                        image=(self.mine_img if self.is_mine else ""),
-                       relief=Tk.SUNKEN)
+                       relief=Tk.SUNKEN, fg=self.color_mapping[self.num_adj_mines])
 
     def freeze(self):
         self.unbind("<Button-1>")
