@@ -53,7 +53,7 @@ class Setup:
 
         """
 
-        self.exec = Executive(root)
+        self.exec = Executive(root, self.setup_callback)
         self.root = root
         bg = "indianred2"
         self.menu_callback = menu_callback
@@ -157,7 +157,11 @@ class Setup:
             elif mines < 1:
                 messagebox.showerror("Entry Error", "Too few mines!")
             else:
-                self.setup_window.destroy()
+                self.setup_window.withdraw()
                 self.exec.setup(width, height, mines)
                 #self.exec.play()
                 #self.menu_callback()
+
+
+    def setup_callback(self):
+        self.setup_window.deiconify()

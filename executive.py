@@ -7,6 +7,7 @@
 
 from random import randint
 from board import Board
+from tkinter import messagebox
 # importing copy module for creating deep copies for cheat mode
 import copy
 
@@ -28,7 +29,7 @@ class Executive:
 
     # Constructor; initializes class variables
     #  @author: Ethan
-    def __init__(self, root):
+    def __init__(self, root, setup_callback):
         """
         Constructor for Executive class
 
@@ -37,7 +38,7 @@ class Executive:
         self.root = root
         self.game_over = False
         self.cheat_mode = False
-        self.myBoard = Board(root)
+        self.myBoard = Board(root, setup_callback)
 
     # Checks if all mines are flagged
     #  @author: Ethan
@@ -76,6 +77,8 @@ class Executive:
         self.myBoard.generate_mines(self.mines_num, self.width, self.height)
         self.myBoard.mine_check(self.width, self.height)
         self.myBoard.gridSquares()
+        self.myBoard.board_window.deiconify()
+        self.myBoard.board_window.unbind("<Escape>")
 
     # Takes coordinates from user and handles input
     #  @pre: Board has been setup
@@ -218,7 +221,7 @@ unflag [n]: ")
             self.check_win()
 
     def on_game_lose(self):
-        print("YOU LOSE")
+        #print("aaa")
         #self.stopwatch.stop()
         for i in range(self.width):
             for j in range(self.height):
@@ -227,12 +230,17 @@ unflag [n]: ")
 
                 self.myBoard.grid[i][j].freeze()
 
+        messagebox.showerror("YOU LOSE", "Stupid Loser haha")
+        self.myBoard.return_to_setup()
+
     def on_game_win(self):
-        print("YOU WIN!")
         for i in range(self.width):
             for j in range(self.height):
                 self.myBoard.grid[i][j].reveal()
                 self.myBoard.grid[i][j].freeze()
+
+        messagebox.showerror("YOU WIN!", "Congratulations!")
+        self.myBoard.return_to_setup()
 
         # for i in range(0, self.width):
         #     for j in range(0, self.height):

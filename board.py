@@ -37,7 +37,7 @@ class Board:
 
     ## Constructor
     #  @author: Clare
-    def __init__(self, root):
+    def __init__(self, root, setup_callback):
         self.width = 0
         self.height = 0
         self.mines_num = 0
@@ -46,6 +46,7 @@ class Board:
         self.first_selection = True
         self.stopwatch = Stopwatch()
         self.root = root
+        self.setup_callback = setup_callback
 
         self.board_window = Tk.Toplevel(root)
         center_window(self.board_window)
@@ -57,6 +58,7 @@ class Board:
         # configure window
         self.board_window.title("Minesweeper 2018")
         self.board_window.resizable(width=False, height=False)
+        self.board_window.protocol("WM_DELETE_WINDOW", self.return_to_setup)
 
 
     def gridSquares(self):
@@ -376,3 +378,9 @@ class Board:
         else:
             time += str(seconds)
         print(time)
+
+
+    def return_to_setup(self):
+        self.ungridSquares()
+        self.board_window.withdraw()
+        self.setup_callback()
