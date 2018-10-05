@@ -62,8 +62,8 @@ class Setup:
         self.setup_window.geometry("200x200")
         center_window(self.setup_window)
 
-        self.setup_window.withdraw()
-        self.setup_window.deiconify()
+        # self.setup_window.withdraw()
+        # self.setup_window.deiconify()
 
         self.setup_window.title("Setup Board")
         self.setup_window.configure(bg=bg, bd=10, relief="ridge", pady=32)

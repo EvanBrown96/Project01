@@ -7,6 +7,7 @@
 
 from random import randint
 from board import Board
+import tkinter as Tk
 from tkinter import messagebox
 # importing copy module for creating deep copies for cheat mode
 import copy
@@ -39,6 +40,19 @@ class Executive:
         self.game_over = False
         self.cheat_mode = False
         self.myBoard = Board(root, setup_callback)
+
+        self.game_status = Tk.Toplevel(root)
+        self.game_status.geometry("100x200")
+        #center_window(self.setup_window)
+
+        self.game_status.withdraw()
+        # self.game_status.deiconify()
+
+        bg = "MediumOrchid1"
+
+        self.game_status.title("Game Status")
+        self.game_status.configure(bg=bg, bd=10, relief="ridge", pady=32)
+        self.game_status.resizable(width=False, height=False)
 
     # Checks if all mines are flagged
     #  @author: Ethan

@@ -7,7 +7,6 @@ def center_window(window):
         window: the tk window (root/toplevel) instance to center
 
     """
-    window.attributes('-alpha', 0.0)
     window.update_idletasks()
     # get current window width & height
     width = window.winfo_width()
@@ -17,4 +16,7 @@ def center_window(window):
     y = (window.winfo_screenheight() // 2) - (height // 2)
     # resize window
     window.geometry('{0}x{1}+{2}+{3}'.format(width, height, x, y))
-    window.attributes('-alpha', 1.0)
+
+    # this prevents window from temporarily appearing in its original position
+    window.withdraw()
+    window.deiconify()

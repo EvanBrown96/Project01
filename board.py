@@ -52,8 +52,8 @@ class Board:
         center_window(self.board_window)
 
         # this prevents window from temporarily appearing in its original position
-        self.board_window.withdraw()
-        self.board_window.deiconify()
+        # self.board_window.withdraw()
+        # self.board_window.deiconify()
 
         # configure window
         self.board_window.title("Minesweeper 2018")

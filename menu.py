@@ -58,8 +58,8 @@ class Menu:
         center_window(self.root)
 
         # this prevents window from temporarily appearing in its original position
-        root.withdraw()
-        root.deiconify()
+        # root.withdraw()
+        # root.deiconify()
 
         bg = "lightgreen"
 
@@ -128,8 +128,8 @@ class Menu:
         self.rules_window.geometry("550x425")
         center_window(self.rules_window)
 
-        self.rules_window.withdraw()
-        self.rules_window.deiconify()
+        # self.rules_window.withdraw()
+        # self.rules_window.deiconify()
 
         bg = "khaki"
 

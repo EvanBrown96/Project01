@@ -44,16 +44,20 @@ class Square(Tk.Label):
         self.was_moved = False
         self.bind("<Button-1>", lambda _: click_callback(x, y))
         self.bind("<Button-2>", lambda _: rclick_callback(x, y))
+        self.flag_img = Tk.PhotoImage(file="./flag.gif")
+        self.mine_img = Tk.PhotoImage(file="./mine.gif")
 
     def flag(self):
         self.is_flagged = True
-        self.configure(text="F")
+        self.configure(text="", image=self.flag_img)
     def unflag(self):
         self.is_flagged = False
-        self.configure(text="")
+        self.configure(text="", image="")
     def reveal(self):
         self.is_revealed = True
-        self.configure(text=("*" if self.is_mine else ("" if self.num_adj_mines == 0 else self.num_adj_mines)), relief=Tk.SUNKEN)
+        self.configure(text=("" if self.is_mine or self.num_adj_mines == 0 else self.num_adj_mines),
+                       image=(self.mine_img if self.is_mine else ""),
+                       relief=Tk.SUNKEN)
 
     def freeze(self):
         self.unbind("<Button-1>")
