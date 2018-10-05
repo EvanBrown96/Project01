@@ -39,7 +39,7 @@ class Executive:
         self.root = root
         self.game_over = False
         self.cheat_mode = False
-        self.myBoard = Board(root, setup_callback)
+        self.myBoard = Board(root, self.hide_windows)
 
         self.game_status = Tk.Toplevel(root)
         self.game_status.geometry("100x200")
@@ -48,11 +48,18 @@ class Executive:
         self.game_status.withdraw()
         # self.game_status.deiconify()
 
+        self.setup_callback = setup_callback
+
         bg = "MediumOrchid1"
 
         self.game_status.title("Game Status")
         self.game_status.configure(bg=bg, bd=10, relief="ridge", pady=32)
         self.game_status.resizable(width=False, height=False)
+        self.game_status.protocol("WM_DELETE_WINDOW", self.hide_windows)
+
+        self.flag_img = Tk.PhotoImage(file="./flag.gif")
+        self.flags_counter = Tk.Label(self.game_status, textvariable=self.myBoard.num_flags, image=self.flag_img, compound=Tk.BOTTOM, bg=bg)
+        self.flags_counter.pack()
 
     # Checks if all mines are flagged
     #  @author: Ethan
@@ -86,103 +93,21 @@ class Executive:
         self.width = width
         self.height = height
         self.mines_num = mines
-        self.myBoard.num_flags = self.mines_num
+        self.myBoard.num_flags.set(self.mines_num)
         self.myBoard.grid = self.myBoard.make_grid(self.width, self.height, self.reveal_event, self.flag_event)
         self.myBoard.generate_mines(self.mines_num, self.width, self.height)
         self.myBoard.mine_check(self.width, self.height)
         self.myBoard.gridSquares()
         self.myBoard.board_window.deiconify()
+        self.game_status.deiconify()
 
-    # Takes coordinates from user and handles input
-    #  @pre: Board has been setup
-    #  @author: Ethan
-    def play(self):
+
         """
         Requests user input for playing the game as long as the game is not
         over
         Presents revealed board upon game over
         """
-        while not self.game_over:
-            # Checking if in cheat mode
-            if self.cheat_mode:
-                # in cheat mode
-                print('Entering cheat mode, revealing entire board...')
-                # make duplicate board and reveal all spaces
-                cheat_board = copy.deepcopy(self.myBoard.grid)
-                for i in range(0, self.width):
-                    for j in range(0, self.height):
-                        cheat_board[i][j].is_revealed = True
-                self.myBoard.print_board(self.width, self.height, cheat_board)
-                # present notice on how to leave cheat mode
-                leave_cheat_mode = input('Enter any input to leave cheat \
-mode...')
-                # leave cheat mode
-                self.cheat_mode = False
-                print('Leaving cheat mode...')
-            else:
-                # Printing board and number of flags
-                self.myBoard.print_board(self.width, self.height,
-                                         self.myBoard.grid)
-                print("Number of flags: %s" % self.myBoard.num_flags)
-                # not in cheat mode
-                # get x coordinate
-                while True:
-                    x = input("Enter a X coordinate: ")
-                    # account for cheat input
-                    if x == 'c' or x == 'C':
-                        self.cheat_mode = True
-                        break
-                    # user requested to see current time on stopwatch
-                    elif x == 't' or x == 'T':
-                        self.myBoard.printCurrentTime()
-                    # not cheat input, check if numeric
-                    elif not x.isnumeric():
-                        print("That\'s not an integer. Try again.")
-                    # not cheat input, is numeric, check if within range
-                    elif int(x) < 0 or int(x) >= self.width:
-                        print("Invalid input. Try again.")
-                    # good input
-                    else:
-                        # make x an int
-                        x = int(x)
-                        break
-
-                # check if cheat applied
-                if self.cheat_mode is True:
-                    # is applied, continue to next iteration of loop
-                    continue
-
-                # get x coordinate
-                while True:
-                    y = input("Enter a Y coordinate: ")
-                    # account for cheat input
-                    if y == 'c' or y == 'C':
-                        self.cheat_mode = True
-                        break
-                    # user requested to see current time on stopwatch
-                    elif y == 't' or y == 'T':
-                        self.myBoard.printCurrentTime()
-                    # not cheat input, check if numeric
-                    elif not y.isnumeric():
-                        print("That\'s not an integer. Try again.")
-                    # not cheat input, is numeric, check if within range
-                    elif int(y) < 0 or int(y) >= self.height:
-                        print("Invalid input. Try again.")
-                    # good input
-                    else:
-                        # make y an int
-                        y = int(y)
-                        break
-
-                # check if cheat applied
-                if self.cheat_mode is True:
-                    # is applied, continue to next iteration of loop
-                    continue
-
-                # cheat code not applied
-                # ask user for action with selected coordinates
-                choice = input("Enter an action flag [f], reveal [r], \
-unflag [n]: ")
+        
 
     def reveal_event(self, x, y):
         if self.myBoard.grid[x][y].is_revealed and not \
@@ -212,7 +137,7 @@ unflag [n]: ")
         if not self.myBoard.grid[x][y].is_flagged and choice == "n":
             print("Invalid try again")
         elif not self.myBoard.grid[x][y].is_flagged \
-             and self.myBoard.num_flags == 0 and choice == "f":
+             and self.myBoard.num_flags.get() == 0 and choice == "f":
             print("Out of flags. Try again.")
         elif self.myBoard.grid[x][y].is_flagged and choice == "f":
             print("Space is already flagged. Try again.")
@@ -222,7 +147,7 @@ unflag [n]: ")
             print("You can't unflag a revealed space. Try again.")
         elif self.myBoard.grid[x][y].is_flagged and choice == "n":
             self.myBoard.grid[x][y].unflag()
-            self.myBoard.num_flags += 1
+            self.myBoard.num_flags.set(self.myBoard.num_flags.get()+1)
         elif not self.myBoard.grid[x][y].is_flagged and choice == "f":
             # checking if first selection for stopwatch
             if self.myBoard.first_selection:
@@ -230,7 +155,7 @@ unflag [n]: ")
                 self.myBoard.first_selection = False
                 self.myBoard.stopwatch.start()
             self.myBoard.grid[x][y].flag()
-            self.myBoard.num_flags -= 1
+            self.myBoard.num_flags.set(self.myBoard.num_flags.get() - 1)
             self.check_win()
 
     def on_game_lose(self):
@@ -244,7 +169,7 @@ unflag [n]: ")
                 self.myBoard.grid[i][j].freeze()
 
         messagebox.showerror("YOU LOSE", "Stupid Loser haha")
-        self.myBoard.return_to_setup()
+        self.hide_windows()
 
     def on_game_win(self):
         for i in range(self.width):
@@ -253,8 +178,12 @@ unflag [n]: ")
                 self.myBoard.grid[i][j].freeze()
 
         messagebox.showerror("YOU WIN!", "Congratulations!")
-        self.myBoard.return_to_setup()
+        self.hide_windows()
 
+    def hide_windows(self):
+        self.myBoard.hide_board_window()
+        self.game_status.withdraw()
+        self.setup_callback()
         # for i in range(0, self.width):
         #     for j in range(0, self.height):
         #         self.myBoard.grid[i][j].num_adj_mines = False

@@ -44,6 +44,7 @@ class Square(Tk.Label):
         self.was_moved = False
         self.bind("<Button-1>", lambda _: click_callback(x, y))
         self.bind("<Button-2>", lambda _: rclick_callback(x, y))
+        self.bind("<Control-Button-1>", lambda _: rclick_callback(x, y))
         self.flag_img = Tk.PhotoImage(file="./flag.gif")
         self.mine_img = Tk.PhotoImage(file="./mine.gif")
 
@@ -62,6 +63,7 @@ class Square(Tk.Label):
     def freeze(self):
         self.unbind("<Button-1>")
         self.unbind("<Button-2>")
+        self.unbind("<Control-Button-1>")
 
     ## Prints the square based on properties
     #  @author: Kristi
