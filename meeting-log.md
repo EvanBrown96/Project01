@@ -61,7 +61,7 @@ Location: In-Class
   * Discussed next meeting time and location
 
 ## Meeting \#6
-Date: Tuesday, October 12, 2018
+Date: Tuesday, October 2, 2018
 
 Time: 1:00 - 2:50 PM
 
@@ -71,3 +71,15 @@ Location: Spahr Library
   * Discussed moving mines implementation
   * Discussed continuing work on GUI
   * Discussed revamping documentation implementation
+
+## Meeting \#7
+Date: Friday, October 5, 2018
+
+Time: 11:30 - 11:50 PM
+
+Location: In-Class
+
+  * Discussed work done since last meeting
+  * Discussed GUI implementation
+  * Discussed documentation
+  * Discussed final activities
