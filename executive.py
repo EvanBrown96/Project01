@@ -78,7 +78,6 @@ class Executive:
         self.myBoard.mine_check(self.width, self.height)
         self.myBoard.gridSquares()
         self.myBoard.board_window.deiconify()
-        self.myBoard.board_window.unbind("<Escape>")
 
     # Takes coordinates from user and handles input
     #  @pre: Board has been setup

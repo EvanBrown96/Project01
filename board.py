@@ -382,5 +382,6 @@ class Board:
 
     def return_to_setup(self):
         self.ungridSquares()
+        self.board_window.update()
         self.board_window.withdraw()
         self.setup_callback()
