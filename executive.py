@@ -8,6 +8,7 @@
 from random import randint
 from board import Board
 import tkinter as Tk
+from stopwatch import Stopwatch
 from tkinter import messagebox
 # importing copy module for creating deep copies for cheat mode
 import copy
@@ -44,6 +45,7 @@ class Executive:
         self.game_status = Tk.Toplevel(root)
         self.game_status.geometry("100x200")
         #center_window(self.setup_window)
+        self.stopwatch = Stopwatch(root)
 
         self.game_status.withdraw()
         # self.game_status.deiconify()
@@ -53,13 +55,19 @@ class Executive:
         bg = "MediumOrchid1"
 
         self.game_status.title("Game Status")
-        self.game_status.configure(bg=bg, bd=10, relief="ridge", pady=32)
+        self.game_status.configure(bg=bg, bd=10, relief="ridge", pady=24)
         self.game_status.resizable(width=False, height=False)
         self.game_status.protocol("WM_DELETE_WINDOW", self.hide_windows)
 
         self.flag_img = Tk.PhotoImage(file="./flag.gif")
-        self.flags_counter = Tk.Label(self.game_status, textvariable=self.myBoard.num_flags, image=self.flag_img, compound=Tk.BOTTOM, bg=bg)
+        self.flags_counter = Tk.Label(self.game_status, textvariable=self.myBoard.num_flags, image=self.flag_img, compound=Tk.TOP, bg=bg, font=("Futura", 24))
         self.flags_counter.pack()
+
+        #Tk.Label(self.game_status, text="", bg=bg).pack()
+        self.time_text = Tk.Label(self.game_status, text="\nTime:", bg=bg)
+        self.time_text.pack()
+        self.timer = Tk.Label(self.game_status, textvariable=self.stopwatch.formatted_time, bg=bg)
+        self.timer.pack()
 
     # Checks if all mines are flagged
     #  @author: Ethan
@@ -100,6 +108,8 @@ class Executive:
         self.myBoard.gridSquares()
         self.myBoard.board_window.deiconify()
         self.game_status.deiconify()
+        self.stopwatch.reset()
+        self.myBoard.first_selection = True
 
 
         """
@@ -122,7 +132,7 @@ class Executive:
             if self.myBoard.first_selection:
                 # is first selection, toggle and start stopwatch
                 self.myBoard.first_selection = False
-                self.myBoard.stopwatch.start()
+                self.stopwatch.start()
             self.myBoard.reveal(x, y)
             self.myBoard.moveMines()
             self.myBoard.resetGridMineCount()
@@ -153,14 +163,15 @@ class Executive:
             if self.myBoard.first_selection:
                 # is first selection, toggle and start stopwatch
                 self.myBoard.first_selection = False
-                self.myBoard.stopwatch.start()
+                self.stopwatch.start()
             self.myBoard.grid[x][y].flag()
             self.myBoard.num_flags.set(self.myBoard.num_flags.get() - 1)
             self.check_win()
 
     def on_game_lose(self):
         #print("aaa")
-        #self.stopwatch.stop()
+        self.stopwatch.stop()
+
         for i in range(self.width):
             for j in range(self.height):
                 if self.myBoard.grid[i][j].is_mine:
@@ -172,15 +183,18 @@ class Executive:
         self.hide_windows()
 
     def on_game_win(self):
+        self.stopwatch.stop()
+
         for i in range(self.width):
             for j in range(self.height):
                 self.myBoard.grid[i][j].reveal()
                 self.myBoard.grid[i][j].freeze()
 
-        messagebox.showerror("YOU WIN!", "Congratulations!")
+        messagebox.showerror("YOU WIN!", "Congratulations!\nYour time was " + self.stopwatch.formatted_time.get())
         self.hide_windows()
 
     def hide_windows(self):
+        self.stopwatch.stop()
         self.myBoard.hide_board_window()
         self.game_status.withdraw()
         self.setup_callback()

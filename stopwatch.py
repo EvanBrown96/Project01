@@ -1,4 +1,5 @@
 import time
+import tkinter as Tk
 
 
 class Stopwatch:
@@ -15,13 +16,20 @@ class Stopwatch:
     """
 
     # Constructor
-    def __init__(self):
+    def __init__(self, root):
         """
         Constructor for Stopwatch
         Sets both start_time and end_time member variables to 0
         """
         self.start_time = 0
         self.end_time = 0
+        self.formatted_time = Tk.StringVar()
+        self.reset()
+        self.last_after = None
+        self.root = root
+
+    def reset(self):
+        self.formatted_time.set("00:00:00")
 
     # Starts stopwatch
     def start(self):
@@ -31,6 +39,34 @@ class Stopwatch:
         """
         self.start_time = round(time.time())
 
+        def update():
+            """
+            Prints a formatted time from the stopwatch
+            """
+            seconds = 0 if self.start_time == 0 else round(time.time() - self.start_time)
+            hours = seconds // 3600
+            seconds = seconds % 3600
+            minutes = seconds // 60
+            seconds = seconds % 60
+            cur_time = ""
+            if hours < 10:
+                cur_time += "0" + str(hours) + ":"
+            else:
+                cur_time += str(hours) + ":"
+            if minutes < 10:
+                cur_time += "0" + str(minutes) + ":"
+            else:
+                cur_time += str(minutes) + ":"
+            if seconds < 10:
+                cur_time += "0" + str(seconds)
+            else:
+                cur_time += str(seconds)
+
+            self.formatted_time.set(cur_time)
+            self.last_after = self.root.after(200, update)
+
+        update()
+
     # Starts stopwatch
     def stop(self):
         """
@@ -38,6 +74,8 @@ class Stopwatch:
         time.time() - start_time, rounded to the nearest whole number
         """
         self.end_time = round(time.time() - self.start_time)
+        if self.last_after:
+            self.root.after_cancel(self.last_after)
 
     # Gets current time on stopwatch
     def currentTime(self):
@@ -55,3 +93,29 @@ class Stopwatch:
             return 0
         else:
             return round(time.time() - self.start_time)
+
+
+    # Prints current time on stopwatch for user
+    def printCurrentTime(self):
+        """
+        Prints a formatted time from the stopwatch
+        """
+        seconds = self.stopwatch.currentTime()
+        hours = seconds // 3600
+        seconds = seconds % 3600
+        minutes = seconds // 60
+        seconds = seconds % 60
+        time = "Time: "
+        if hours < 10:
+            time += "0" + str(hours) + ":"
+        else:
+            time += str(hours) + ":"
+        if minutes < 10:
+            time += "0" + str(minutes) + ":"
+        else:
+            time += str(minutes) + ":"
+        if seconds < 10:
+            time += "0" + str(seconds)
+        else:
+            time += str(seconds)
+        print(time)

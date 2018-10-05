@@ -7,7 +7,7 @@
 
 from random import randint
 from square import Square
-from stopwatch import Stopwatch
+#from stopwatch import Stopwatch
 import tkinter as Tk
 from window_functions import center_window
 
@@ -44,7 +44,7 @@ class Board:
         self.num_flags = Tk.IntVar(0)
         self.grid = [0][0]
         self.first_selection = True
-        self.stopwatch = Stopwatch()
+        #self.stopwatch = Stopwatch()
         self.root = root
 
         self.board_window = Tk.Toplevel(root)
@@ -353,30 +353,6 @@ class Board:
                 if self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and not self.grid[i][j].was_moved:
                     self.validTransformation(10, i, j)
 
-    # Prints current time on stopwatch for user
-    def printCurrentTime(self):
-        """
-        Prints a formatted time from the stopwatch
-        """
-        seconds = self.stopwatch.currentTime()
-        hours = seconds // 3600
-        seconds = seconds % 3600
-        minutes = seconds // 60
-        seconds = seconds % 60
-        time = "Time: "
-        if hours < 10:
-            time += "0" + str(hours) + ":"
-        else:
-            time += str(hours) + ":"
-        if minutes < 10:
-            time += "0" + str(minutes) + ":"
-        else:
-            time += str(minutes) + ":"
-        if seconds < 10:
-            time += "0" + str(seconds)
-        else:
-            time += str(seconds)
-        print(time)
 
 
     def hide_board_window(self):
