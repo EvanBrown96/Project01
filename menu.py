@@ -9,6 +9,8 @@ from setup import Setup
 import tkinter as Tk
 from window_functions import center_window
 
+
+
 # @class Menu
 #  @brief Prints menu and rules; Manages Executive instance
 class Menu:
@@ -21,12 +23,6 @@ class Menu:
         setup: Instance of the Setup class for getting user input to setup the board
 
         root: instance of Tk root window
-
-        play_button: tkinter button to play the game
-
-        rules_button: tkinter button to show the rules window
-
-        quit_button: tkinter button to quit the entire process
 
         rules_window: tkinter window for the rules to display in
 
@@ -48,7 +44,6 @@ class Menu:
 
         """
 
-        ## @var myGame
         #  instance of the executive class
         self.setup = None
 
@@ -57,13 +52,9 @@ class Menu:
         root.geometry("400x200")
         center_window(self.root)
 
-        # this prevents window from temporarily appearing in its original position
-        root.withdraw()
-        root.deiconify()
-
         bg = "lightgreen"
 
-        # configure window
+        # configure window title and color
         root.title("Minesweeper 2018")
         root.configure(bg=bg, bd=10, relief="ridge", pady=30)
         root.resizable(width=False, height=False)
@@ -72,14 +63,14 @@ class Menu:
         Tk.Label(root, text="Welcome to Minesweeper", bg=bg, font=('copperplate', 24)).pack()
 
         # create buttons
-        self.play_button = Tk.Button(root, text="Play", command=self.start_game, highlightbackground=bg)
-        self.rules_button = Tk.Button(root, text="Rules", command=self.game_rules, highlightbackground=bg)
-        self.quit_button = Tk.Button(root, text="Quit", command=self.root.destroy, highlightbackground=bg)
+        play_button = Tk.Button(root, text="Play", command=self.start_game, highlightbackground=bg)
+        rules_button = Tk.Button(root, text="Rules", command=self.game_rules, highlightbackground=bg)
+        quit_button = Tk.Button(root, text="Quit", command=self.root.destroy, highlightbackground=bg)
 
         # display buttons
-        self.play_button.pack()
-        self.rules_button.pack()
-        self.quit_button.pack()
+        play_button.pack()
+        rules_button.pack()
+        quit_button.pack()
 
         # create member variable for rules window, but don't create the actual window yet
         self.rules_window = None
@@ -108,8 +99,7 @@ class Menu:
         self.setup = Setup(self.root, show_callback)
 
 
-    # Prints the game instructions
-    #  @author: Ayah
+
     def game_rules(self):
         """
         Reads game instructions from game_instructions.txt and prints data
@@ -128,19 +118,16 @@ class Menu:
         self.rules_window.geometry("550x425")
         center_window(self.rules_window)
 
-        self.rules_window.withdraw()
-        self.rules_window.deiconify()
-
         bg = "khaki"
 
-        # configure window
+        # configure window title and color
         self.rules_window.title("Rules")
         self.rules_window.configure(bg=bg, bd=10, relief="ridge")
         self.rules_window.resizable(width=False, height=False)
 
         def on_rules_close():
             """
-            Destroys the rules window sets window flag to false
+            Destroys the rules window; sets window flag to false
             """
             self.rules_displayed = False
             self.rules_window.destroy()
@@ -150,11 +137,13 @@ class Menu:
         # also allow escape to close the window
         self.rules_window.bind("<Escape>", lambda _: on_rules_close())
 
-        # create and show rules text
+        # create and show header label
         Tk.Label(self.rules_window, bg=bg, text="----- How to Play -----").pack()
 
+        # read rules text from file
         file = open("game_instructions.txt", "r")
         rules_text = file.read()
         file.close()
 
+        # display rules text
         Tk.Label(self.rules_window, bg=bg, justify=Tk.LEFT, text=rules_text).pack()
