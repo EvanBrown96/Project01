@@ -156,11 +156,11 @@ class Setup:
             # if they are all numbers, check that they are in bounds
             if width < 2:
                 messagebox.showerror("Entry Error", "Too small of a width")
-            elif width > 15:
+            elif width > 20:
                 messagebox.showerror("Entry Error", "Too large of a width")
             elif height < 2:
                 messagebox.showerror("Entry Error", "Too small of a height")
-            elif height > 15:
+            elif height > 20:
                 messagebox.showerror("Entry Error", "Too large of a height")
             elif mines >= width * height:
                 messagebox.showerror("Entry Error", "Too many mines!")

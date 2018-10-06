@@ -8,7 +8,6 @@
 from random import randint
 from square import Square
 import tkinter as Tk
-from window_functions import center_window
 
 
 
@@ -58,12 +57,14 @@ class Board:
 
         # create and center board window
         self.board_window = Tk.Toplevel(root)
-        center_window(self.board_window)
 
         # configure window
         self.board_window.title("Minesweeper 2018")
         self.board_window.resizable(width=False, height=False)
         self.board_window.protocol("WM_DELETE_WINDOW", hide_callback)
+
+        # initially hide window
+        self.board_window.withdraw()
 
 
 

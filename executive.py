@@ -10,8 +10,7 @@ from board import Board
 import tkinter as Tk
 from stopwatch import Stopwatch
 from tkinter import messagebox
-# importing copy module for creating deep copies for cheat mode
-import copy
+from window_functions import center_window, position_window
 
 
 
@@ -37,6 +36,8 @@ class Executive:
 
         flag_img: tk photoimage instance for the flag
 
+        cheat_button: button to click in order to cheat
+
     """
 
     # Constructor; initializes class variables
@@ -54,11 +55,14 @@ class Executive:
         self.game_over = False
         self.cheat_mode = False
         self.myBoard = Board(root, self.hide_windows)
+        self.cheat_board = Board(root, self.exit_cheat)
+        self.cheat_board.board_window.title("Cheating...")
+        self.cheat_board.board_window.bind("<Escape>", lambda _: self.exit_cheat())
         self.stopwatch = Stopwatch(root)
 
         # create game status window
         self.game_status = Tk.Toplevel(root)
-        self.game_status.geometry("100x200")
+        self.game_status.geometry("100x260")
         #center_window(self.setup_window)
         # initially hide the window
         self.game_status.withdraw()
@@ -83,6 +87,12 @@ class Executive:
         time_text.pack()
         timer = Tk.Label(self.game_status, textvariable=self.stopwatch.formatted_time, bg=bg)
         timer.pack()
+        # add extra space after timer
+        Tk.Label(self.game_status, text="\n", bg=bg).pack()
+
+        # create cheat mode button
+        self.cheat_button = Tk.Button(self.game_status, text="Cheat!", command=self.cheat, highlightbackground=bg)
+        self.cheat_button.pack()
 
 
 
@@ -146,9 +156,11 @@ class Executive:
         self.myBoard.gridSquares()
 
         # display board window
+        center_window(self.myBoard.board_window)
         self.myBoard.board_window.deiconify()
 
         # display game status window
+        position_window(self.game_status, self.myBoard.board_window.winfo_x()-100, self.myBoard.board_window.winfo_y())
         self.game_status.deiconify()
 
         # reset the stopwatch
@@ -157,12 +169,6 @@ class Executive:
         # signal that the board has not yet had a selection
         self.myBoard.first_selection = True
 
-
-        """
-        Requests user input for playing the game as long as the game is not
-        over
-        Presents revealed board upon game over
-        """
 
 
     def reveal_event(self, x, y):
@@ -281,6 +287,58 @@ class Executive:
 
 
 
+    def cheat(self):
+        """
+        Run when user enters cheat mode
+        """
+
+        # create new board and make a grid for it
+        self.cheat_board.grid = self.cheat_board.make_grid(self.width, self.height, None, None)
+        self.cheat_board.width = self.width;
+        self.cheat_board.height = self.height;
+
+        # copy mine status and adjacent mine count from original board
+        for i in range(self.width):
+            for j in range(self.height):
+                self.cheat_board.grid[i][j].is_mine = self.myBoard.grid[i][j].is_mine
+                self.cheat_board.grid[i][j].num_adj_mines = self.myBoard.grid[i][j].num_adj_mines
+
+        # display squares on board window
+        self.cheat_board.gridSquares()
+
+        # reveal and freeze all squares
+        for i in range(self.width):
+            for j in range(self.height):
+                self.cheat_board.grid[i][j].reveal()
+                self.cheat_board.grid[i][j].freeze()
+
+        # hide main board window
+        self.myBoard.board_window.withdraw()
+        # show cheat window
+        position_window(self.cheat_board.board_window, self.myBoard.board_window.winfo_x(), self.myBoard.board_window.winfo_y())
+        self.cheat_board.board_window.deiconify()
+
+        # set cheat mode flag
+        self.cheat_mode = True
+        self.cheat_button.configure(text="Back", command=self.exit_cheat)
+
+
+
+    def exit_cheat(self):
+        """
+        function to call to hide the cheat board and reset cheat flag
+        """
+        # hide cheat window
+        self.cheat_board.hide_board_window()
+        # display original board window
+        self.myBoard.board_window.deiconify()
+
+        # set cheat mode flag
+        self.cheat_mode = False
+        self.cheat_button.configure(text="Cheat!", command=self.cheat)
+
+
+
     def hide_windows(self):
         """
         hides windows and stops processes associated with them
@@ -290,6 +348,10 @@ class Executive:
         self.stopwatch.stop()
         # hide board window
         self.myBoard.hide_board_window()
+        # hide cheat window (if it is displayed)
+        self.cheat_board.hide_board_window()
+        self.cheat_mode = False
+        self.cheat_button.configure(text="Cheat!", command=self.cheat)
         # hide game status window
         self.game_status.withdraw()
         # re-show setup window

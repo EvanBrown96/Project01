@@ -20,3 +20,25 @@ def center_window(window):
     # this prevents window from temporarily appearing in its original position
     window.withdraw()
     window.deiconify()
+
+
+
+def position_window(window, x, y):
+    """
+    sends the given window to the given x, y position
+
+    Args:
+
+        window: the tk window (root/toplevel) instance to move
+
+        x: pixel x-position to move to
+
+        y: pixel y-position to move to
+
+    """
+    window.update_idletasks()
+
+    window.geometry('+{}+{}'.format(x, y))
+
+    window.withdraw()
+    window.deiconify()
