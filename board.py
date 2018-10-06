@@ -395,7 +395,7 @@ class Board:
             i = randint(0, self.width - 1)
             j = randint(0, self.height - 1)
             if not self.grid[i][j].is_mine and not self.grid[i][j].is_flagged and self.is_valid_cell(i, j) and not self.grid[i][j].is_revealed:
-                self.grid[i][j].is_mine = False
+                self.grid[x][y].is_mine = False
                 self.grid[i][j].is_mine = True
                 self.grid[i][j].was_moved = True;
             else:
