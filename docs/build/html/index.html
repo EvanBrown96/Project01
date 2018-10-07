@@ -157,87 +157,125 @@ the rules and menu</p>
 <dt>Attributes:</dt>
 <dd>playing: Instance of the Menu class</dd>
 </dl>
-<dl class="method">
-<dt id="main.Main.begin">
-<code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#Main.begin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.Main.begin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Begins game by calling for game rules and game menu to be displayed</p>
-</dd></dl>
-
 </dd></dl>
 
 <span class="target" id="module-executive"></span><dl class="class">
 <dt id="executive.Executive">
-<em class="property">class </em><code class="descclassname">executive.</code><code class="descname">Executive</code><a class="reference internal" href="_modules/executive.html#Executive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">executive.</code><code class="descname">Executive</code><span class="sig-paren">(</span><em>root</em>, <em>setup_callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executive class to act as game manager</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd><p class="first">game_over: Boolean to record current game status</p>
+<p>Attributes:</p>
+<blockquote>
+<div><p>game_over: Boolean to record current game status</p>
 <p>cheat_mode: Boolean to record whether or not user is in cheat mode</p>
-<p class="last">myBoard: Instance of the Board class</p>
-</dd>
-</dl>
+<p>myBoard: Instance of the Board class</p>
+<p>root: tk root widget instance</p>
+<p>setup_callback: function to call to re-show setup window</p>
+<p>stopwatch: instance of stopwatch</p>
+<p>flag_img: tk photoimage instance for the flag</p>
+<p>cheat_button: button to click in order to cheat</p>
+</div></blockquote>
+<dl class="method">
+<dt id="executive.Executive.cheat">
+<code class="descname">cheat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.cheat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.cheat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run when user enters cheat mode</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="executive.Executive.check_win">
 <code class="descname">check_win</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.check_win"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.check_win" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if all mines are flagged to determine is user has won the game</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>0 if user has not won the game</dd>
-</dl>
+<p>Calls on_game_win function if the user has won</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="executive.Executive.play">
-<code class="descname">play</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.play"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.play" title="Permalink to this definition">¶</a></dt>
-<dd><p>Requests user input for playing the game as long as the game is not over
-Presents revealed board upon game over</p>
+<dt id="executive.Executive.exit_cheat">
+<code class="descname">exit_cheat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.exit_cheat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.exit_cheat" title="Permalink to this definition">¶</a></dt>
+<dd><p>function to call to hide the cheat board and reset cheat flag</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.flag_event">
+<code class="descname">flag_event</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.flag_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.flag_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs necessary actions when a cell is flagged/unflagged (right clicked)</p>
+<p>Args:</p>
+<blockquote>
+<div><p>x: x-position of the cell flagged</p>
+<p>y: y-position of the cell flagged</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.hide_windows">
+<code class="descname">hide_windows</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.hide_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.hide_windows" title="Permalink to this definition">¶</a></dt>
+<dd><p>hides windows and stops processes associated with them</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.on_game_lose">
+<code class="descname">on_game_lose</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.on_game_lose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.on_game_lose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run when user clicks on a mine</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.on_game_win">
+<code class="descname">on_game_win</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.on_game_win"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.on_game_win" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run when user has flagged all mines</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="executive.Executive.reveal_event">
+<code class="descname">reveal_event</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.reveal_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.reveal_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs necessary actions when a cell is clicked on</p>
+<p>Args:</p>
+<blockquote>
+<div><p>x: x-position of the cell clicked</p>
+<p>y: y-position of the cell clicked</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="executive.Executive.setup">
-<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.setup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setup</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>mines</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/executive.html#Executive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#executive.Executive.setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates board to spec of user input</p>
+<p>Then shows board window and game status window</p>
+<p>Args:</p>
+<blockquote>
+<div><p>width: width of the board to setup</p>
+<p>height: height of the board to setup</p>
+<p>mines: number of mines in the board to setup</p>
+</div></blockquote>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-menu"></span><dl class="class">
 <dt id="menu.Menu">
-<em class="property">class </em><code class="descclassname">menu.</code><code class="descname">Menu</code><a class="reference internal" href="_modules/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">menu.</code><code class="descname">Menu</code><span class="sig-paren">(</span><em>root</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Menu class to act as game menu</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd><p class="first">choice: Integer value to record whether or not user wants to play again</p>
-<p class="last">myGame: Instance of the Executive class for managing the game</p>
-</dd>
-</dl>
-<dl class="method">
-<dt id="menu.Menu.game_menu">
-<code class="descname">game_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_menu" title="Permalink to this definition">¶</a></dt>
-<dd><p>Keeps the game running until user quits</p>
-</dd></dl>
-
+<p>Attributes:</p>
+<blockquote>
+<div><p>setup: Instance of the Setup class for getting user input to setup the board</p>
+<p>root: instance of Tk root window</p>
+<p>rules_window: tkinter window for the rules to display in</p>
+<p>rules_displayed: flag if the rules are currently displayed or not</p>
+</div></blockquote>
 <dl class="method">
 <dt id="menu.Menu.game_rules">
 <code class="descname">game_rules</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.game_rules"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.game_rules" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints the game instructions</p>
+<dd><p>Reads game instructions from game_instructions.txt and prints data</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="menu.Menu.type_error_handler">
-<code class="descname">type_error_handler</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.type_error_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.type_error_handler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles any type error in users input</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>check: Integer of users input if integer input</dd>
-</dl>
+<dt id="menu.Menu.start_game">
+<code class="descname">start_game</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/menu.html#Menu.start_game"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#menu.Menu.start_game" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hides main menu window and displays the board setup window</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-square"></span><dl class="class">
 <dt id="square.Square">
-<em class="property">class </em><code class="descclassname">square.</code><code class="descname">Square</code><a class="reference internal" href="_modules/square.html#Square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">square.</code><code class="descname">Square</code><span class="sig-paren">(</span><em>master</em>, <em>x</em>, <em>y</em>, <em>click_callback</em>, <em>rclick_callback</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square" title="Permalink to this definition">¶</a></dt>
 <dd><p>Square class for managing properties of a square in Minesweeper</p>
 <dl class="docutils">
 <dt>Attributes:</dt>
@@ -245,21 +283,43 @@ Presents revealed board upon game over</p>
 <p>is_flagged: Boolean to record whether or not a square is flagged</p>
 <p>is_revealed: Boolean to record whether or not a square is revealed</p>
 <p>num_adj_mines: Integer to record number of mines adjacent to square</p>
-<p class="last">was_moved: Boolean to record whether or not a square has been moved</p>
+<p>was_moved: Boolean to record whether or not a square has been moved</p>
+<p>flag_img: Tk photoimage object of the flag</p>
+<p>mine_img: Tk photoimage object of the mine</p>
+<p class="last">color_mapping: mapping of colors for each number of mines</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="square.Square.print_square">
-<code class="descname">print_square</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.print_square"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.print_square" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints the square with respect to the current status of the square’s
-attributes</p>
+<dt id="square.Square.flag">
+<code class="descname">flag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.flag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.flag" title="Permalink to this definition">¶</a></dt>
+<dd><p>flags the cell - sets property and displays image in cell</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="square.Square.freeze">
+<code class="descname">freeze</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.freeze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.freeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>removes bindings for mouse buttons - used for cheat mode and when game ends,
+to prevent user from editing cell</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="square.Square.reveal">
+<code class="descname">reveal</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.reveal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.reveal" title="Permalink to this definition">¶</a></dt>
+<dd><p>reveals the cell - sets property, number of mines in cell, mine image
+(if this cell is a mine), and relief to sunken</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="square.Square.unflag">
+<code class="descname">unflag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/square.html#Square.unflag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#square.Square.unflag" title="Permalink to this definition">¶</a></dt>
+<dd><p>unflags the cell - sets property and hides image from cell</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-board"></span><dl class="class">
 <dt id="board.Board">
-<em class="property">class </em><code class="descclassname">board.</code><code class="descname">Board</code><a class="reference internal" href="_modules/board.html#Board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">board.</code><code class="descname">Board</code><span class="sig-paren">(</span><em>root</em>, <em>hide_callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board" title="Permalink to this definition">¶</a></dt>
 <dd><p>Board class that handles game board creation and functionality</p>
 <dl class="docutils">
 <dt>Attributes:</dt>
@@ -272,55 +332,77 @@ attributes</p>
 <dt>first_selection: Boolean for recording whether or not an interaction is</dt>
 <dd>the user’s first interaction</dd>
 </dl>
-<p class="last">stopwatch: Instance of the Stopwatch class</p>
+<p class="last">board_window: tk toplevel window instance for board</p>
 </dd>
 </dl>
 <dl class="method">
+<dt id="board.Board.checkAdditionalReveals">
+<code class="descname">checkAdditionalReveals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.checkAdditionalReveals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.checkAdditionalReveals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures Squares that were already revealed but were changed to 0 after
+the mines moved are revealed properly</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="board.Board.count_nearby_mines">
-<code class="descname">count_nearby_mines</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.count_nearby_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.count_nearby_mines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">count_nearby_mines</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.count_nearby_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.count_nearby_mines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Counts the number of adjacent mines for a given Square</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>x: Integer coordinate of Square on the x-axis
-y: Integer coordinate of Square on the y-axis
-width: Integer for width of board
-height: Integer for height of board
-grid: 2D array to act as game board</dd>
+<dd><p class="first">x: Integer coordinate of Square on the x-axis</p>
+<p>y: Integer coordinate of Square on the y-axis</p>
+<p>width: Integer for width of board</p>
+<p class="last">height: Integer for height of board</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.generate_mines">
-<code class="descname">generate_mines</code><span class="sig-paren">(</span><em>mines</em>, <em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.generate_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.generate_mines" title="Permalink to this definition">¶</a></dt>
+<code class="descname">generate_mines</code><span class="sig-paren">(</span><em>mines</em>, <em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.generate_mines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.generate_mines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Randomly places mines on board</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>mines: Integer number of mines to be used
-width: Integer for width of board
-height: Integer for height of board
-grid: 2D array to act as game board</dd>
+<dd><p class="first">mines: Integer number of mines to be used</p>
+<p>width: Integer for width of board</p>
+<p class="last">height: Integer for height of board</p>
+</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.gridSquares">
+<code class="descname">gridSquares</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.gridSquares"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.gridSquares" title="Permalink to this definition">¶</a></dt>
+<dd><p>place all the squares into the board window</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.hide_board_window">
+<code class="descname">hide_board_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.hide_board_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.hide_board_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>performs actions to properly hide the board window</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.is_valid_cell">
 <code class="descname">is_valid_cell</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.is_valid_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.is_valid_cell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that coordinates are within bounds of the board</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>x: Integer coordinate on the x-axis
-y: Integer coordinate on the y-axis</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>x: Integer coordinate on the x-axis</p>
+<p>y: Integer coordinate on the y-axis</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.make_grid">
-<code class="descname">make_grid</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.make_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.make_grid" title="Permalink to this definition">¶</a></dt>
+<code class="descname">make_grid</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>reveal_callback</em>, <em>flag_callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.make_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.make_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populates grid to user specification</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>width: Integer for width of board
-height: Integer for height of board</dd>
+<dd><p class="first">width: Integer for width of board</p>
+<p>height: Integer for height of board</p>
+<p>reveal_callback: function to call when a square is revealed</p>
+<p class="last">flag_callback: function to call when a square is flagged</p>
+</dd>
 <dt>Returns:</dt>
 <dd>grid: Populated 2D array to act as game board</dd>
 </dl>
@@ -328,15 +410,14 @@ height: Integer for height of board</dd>
 
 <dl class="method">
 <dt id="board.Board.mine_check">
-<code class="descname">mine_check</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.mine_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.mine_check" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mine_check</code><span class="sig-paren">(</span><em>width</em>, <em>height</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.mine_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.mine_check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assigns number of adjacent mines for each Square to the Square member
 variable</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>width: Integer width of the board
-height: Integer height of the board
-grid: 2D array to act as game board</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>width: Integer width of the board</p>
+<p>height: Integer height of the board</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
@@ -346,96 +427,88 @@ grid: 2D array to act as game board</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="board.Board.printCurrentTime">
-<code class="descname">printCurrentTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.printCurrentTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.printCurrentTime" title="Permalink to this definition">¶</a></dt>
-<dd><p>Prints a formatted time from the stopwatch</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="board.Board.print_board">
 <code class="descname">print_board</code><span class="sig-paren">(</span><em>width</em>, <em>height</em>, <em>main_grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.print_board"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.print_board" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prints a formatted game board, followed by making a call to print a
 formatted time from stopwatch</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>width: Integer for width of board
-height: Integer for height of board
-main_grid: 2D array to be printed</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>width: Integer for width of board</p>
+<p>height: Integer for height of board</p>
+<p>main_grid: 2D array to be printed</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.resetGridMineCount">
-<code class="descname">resetGridMineCount</code><span class="sig-paren">(</span><em>grid</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.resetGridMineCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.resetGridMineCount" title="Permalink to this definition">¶</a></dt>
+<code class="descname">resetGridMineCount</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.resetGridMineCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.resetGridMineCount" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets number of adjacent mines to 0 before evaluating the board</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>grid: 2D array to act as game board</dd>
-</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.reveal">
 <code class="descname">reveal</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Recursively calls reveal_adajenct to reveal Squares</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>x: Integer coordinate on the x-axis
-y: Integer coordinate on the y-axis</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>x: Integer coordinate on the x-axis</p>
+<p>y: Integer coordinate on the y-axis</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.reveal_adjacent">
 <code class="descname">reveal_adjacent</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.reveal_adjacent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.reveal_adjacent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reveals cells that aren’t mines</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>x: Integer coordinate on the x-axis
-y: Integer coordinate on the y-axis</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>x: Integer coordinate on the x-axis</p>
+<p>y: Integer coordinate on the y-axis</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="board.Board.ungridSquares">
+<code class="descname">ungridSquares</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.ungridSquares"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.ungridSquares" title="Permalink to this definition">¶</a></dt>
+<dd><p>remove all the squares from the board window</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="board.Board.validTransformation">
-<code class="descname">validTransformation</code><span class="sig-paren">(</span><em>tolerance</em>, <em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.validTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.validTransformation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">validTransformation</code><span class="sig-paren">(</span><em>tolerance</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/board.html#Board.validTransformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#board.Board.validTransformation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determines if moved mines are moved properly</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>tolerance: Integer weight for propability of successful move
-i: Integer coordinate on the x-axis
-j: Integer coordinate on the y-axis</dd>
-<dt>Returns:</dt>
-<dd>True if valid transformation</dd>
-</dl>
+<p>Args:</p>
+<blockquote>
+<div><p>tolerance: Integer weight for propability of successful move</p>
+<p>x: Integer coordinate on the x-axis</p>
+<p>y: Integer coordinate on the y-axis</p>
+</div></blockquote>
+<p>Returns:</p>
+<blockquote>
+<div>True if valid transformation</div></blockquote>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-stopwatch"></span><dl class="class">
 <dt id="stopwatch.Stopwatch">
-<em class="property">class </em><code class="descclassname">stopwatch.</code><code class="descname">Stopwatch</code><a class="reference internal" href="_modules/stopwatch.html#Stopwatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Simple stopwatch class with functionality for starting, stopping, and
-getting current time on the stopwatch</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd><dl class="first docutils">
+<em class="property">class </em><code class="descclassname">stopwatch.</code><code class="descname">Stopwatch</code><span class="sig-paren">(</span><em>root</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple stopwatch class with functionality for starting, stopping, and resetting</p>
+<p>Attributes:</p>
+<blockquote>
+<div><dl class="docutils">
 <dt>start_time: Integer to record time (0 seconds) that stopwatch was</dt>
 <dd>started</dd>
 </dl>
-<p class="last">end_time: Integer to record number of seconds since stopwatch started</p>
-</dd>
-</dl>
+<p>formatted_time: stores a formatted time string of the current time</p>
+<p>root: tkinter root widget - needed for timer periodic callbacks</p>
+<p>last_after: stores last last timer callback, so that it can be cancelled
+when the timer is stopped</p>
+</div></blockquote>
 <dl class="method">
-<dt id="stopwatch.Stopwatch.currentTime">
-<code class="descname">currentTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.currentTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.currentTime" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets current time on stopwatch
-If start_time is 0, returns 0
-Else returns time.time() - start_time rounded to nearest whole number</p>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>Current time on switch as an integer</dd>
-</dl>
+<dt id="stopwatch.Stopwatch.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>resets the formatted time to string of 0s</p>
 </dd></dl>
 
 <dl class="method">
@@ -443,15 +516,60 @@ Else returns time.time() - start_time rounded to nearest whole number</p>
 <code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Starts stopwatch by setting the start_time to time.time(),
 rounded to the nearest whole number</p>
+<p>Then makes a periodic callback to update the formatted time in 200 ms</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="stopwatch.Stopwatch.stop">
 <code class="descname">stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/stopwatch.html#Stopwatch.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#stopwatch.Stopwatch.stop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stops stopwatch by settingt the end_time equal to
-time.time() - start_time, rounded to the nearest whole number</p>
+<dd><p>Stops stopwatch by removing the latest callback</p>
 </dd></dl>
 
+</dd></dl>
+
+<span class="target" id="module-setup"></span><dl class="class">
+<dt id="setup.Setup">
+<em class="property">class </em><code class="descclassname">setup.</code><code class="descname">Setup</code><span class="sig-paren">(</span><em>root</em>, <em>menu_callback</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/setup.html#Setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.Setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates and provides functions for window to take in board specifications
+from user.</p>
+<p>Attributes:</p>
+<blockquote>
+<div><p>exec: instance of executive class, for actually playing the game with</p>
+<p>root: instance of tk root window</p>
+<p>menu_callback: function to call when the setup window is closed, to re-show
+the main menu window</p>
+<p>setup_window: instance of tk window for input of board parameters</p>
+<p>width_input: tk entry for user to put width value in</p>
+<p>height_input: tk entry for user to put height value in</p>
+<p>mines_input: tk entry for suer to put mines count in</p>
+</div></blockquote>
+<dl class="method">
+<dt id="setup.Setup.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/setup.html#Setup.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#setup.Setup.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>checks if the user’s inputs are valid, and starts the game if they are</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-window_functions"></span><dl class="function">
+<dt id="window_functions.center_window">
+<code class="descclassname">window_functions.</code><code class="descname">center_window</code><span class="sig-paren">(</span><em>window</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/window_functions.html#center_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#window_functions.center_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>centers the given window/widget on the screen</p>
+<p>Args:</p>
+<blockquote>
+<div>window: the tk window (root/toplevel) instance to center</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="window_functions.position_window">
+<code class="descclassname">window_functions.</code><code class="descname">position_window</code><span class="sig-paren">(</span><em>window</em>, <em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/window_functions.html#position_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#window_functions.position_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>sends the given window to the given x, y position</p>
+<p>Args:</p>
+<blockquote>
+<div><p>window: the tk window (root/toplevel) instance to move</p>
+<p>x: pixel x-position to move to</p>
+<p>y: pixel y-position to move to</p>
+</div></blockquote>
 </dd></dl>
 
 </div>

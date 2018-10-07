@@ -140,62 +140,106 @@
             
   <h1>Source code for stopwatch</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">Tk</span>
+
 
 
 <div class="viewcode-block" id="Stopwatch"><a class="viewcode-back" href="../index.html#stopwatch.Stopwatch">[docs]</a><span class="k">class</span> <span class="nc">Stopwatch</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Simple stopwatch class with functionality for starting, stopping, and</span>
-<span class="sd">    getting current time on the stopwatch</span>
+<span class="sd">    Simple stopwatch class with functionality for starting, stopping, and resetting</span>
 
 <span class="sd">    Attributes:</span>
+
 <span class="sd">        start_time: Integer to record time (0 seconds) that stopwatch was</span>
 <span class="sd">                    started</span>
-<span class="sd">                    </span>
-<span class="sd">        end_time: Integer to record number of seconds since stopwatch started</span>
+
+<span class="sd">        formatted_time: stores a formatted time string of the current time</span>
+
+<span class="sd">        root: tkinter root widget - needed for timer periodic callbacks</span>
+
+<span class="sd">        last_after: stores last last timer callback, so that it can be cancelled</span>
+<span class="sd">        when the timer is stopped</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Constructor</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for Stopwatch</span>
-<span class="sd">        Sets both start_time and end_time member variables to 0</span>
+
+<span class="sd">        Sets start_time variable to 0, and resets the formatted time</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            root: tkinter root widget, for callbacks</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatted_time</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
 
-    <span class="c1"># Starts stopwatch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_after</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+
+
+<div class="viewcode-block" id="Stopwatch.reset"><a class="viewcode-back" href="../index.html#stopwatch.Stopwatch.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        resets the formatted time to string of 0s</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">formatted_time</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;00:00:00&quot;</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="Stopwatch.start"><a class="viewcode-back" href="../index.html#stopwatch.Stopwatch.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Starts stopwatch by setting the start_time to time.time(),</span>
 <span class="sd">        rounded to the nearest whole number</span>
+
+<span class="sd">        Then makes a periodic callback to update the formatted time in 200 ms</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+
+        <span class="k">def</span> <span class="nf">update</span><span class="p">():</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            updates the formatted time with current time, and makes a new callback</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span>
+            <span class="n">hours</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">3600</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">3600</span>
+            <span class="n">minutes</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+            <span class="n">seconds</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">60</span>
+            <span class="n">cur_time</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">if</span> <span class="n">hours</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">hours</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+            <span class="k">if</span> <span class="n">minutes</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">minutes</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span>
+            <span class="k">if</span> <span class="n">seconds</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cur_time</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">formatted_time</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">cur_time</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">update</span><span class="p">)</span>
+
+        <span class="n">update</span><span class="p">()</span></div>
+
+
 
     <span class="c1"># Starts stopwatch</span>
 <div class="viewcode-block" id="Stopwatch.stop"><a class="viewcode-back" href="../index.html#stopwatch.Stopwatch.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Stops stopwatch by settingt the end_time equal to</span>
-<span class="sd">        time.time() - start_time, rounded to the nearest whole number</span>
+<span class="sd">        Stops stopwatch by removing the latest callback</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span></div>
-
-    <span class="c1"># Gets current time on stopwatch</span>
-<div class="viewcode-block" id="Stopwatch.currentTime"><a class="viewcode-back" href="../index.html#stopwatch.Stopwatch.currentTime">[docs]</a>    <span class="k">def</span> <span class="nf">currentTime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Gets current time on stopwatch</span>
-<span class="sd">        If start_time is 0, returns 0</span>
-<span class="sd">        Else returns time.time() - start_time rounded to nearest whole number</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Current time on switch as an integer</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># account for stopwatch not being started yet</span>
-        <span class="c1"># don&#39;t want to return current time UTC</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span><span class="p">)</span></div></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_after</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after_cancel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last_after</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

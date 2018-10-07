@@ -139,7 +139,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for executive</h1><div class="highlight"><pre>
-<span></span><span class="c1">## @file executive.py</span>
+<span></span><span class="c1"># @file executive.py</span>
 <span class="c1">#  Source file for the UI class</span>
 <span class="c1">#</span>
 <span class="c1">#  Project: Minesweeper</span>
@@ -148,244 +148,355 @@
 
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
 <span class="kn">from</span> <span class="nn">board</span> <span class="k">import</span> <span class="n">Board</span>
-<span class="c1"># importing copy module for creating deep copies for cheat mode</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">Tk</span>
+<span class="kn">from</span> <span class="nn">stopwatch</span> <span class="k">import</span> <span class="n">Stopwatch</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="n">messagebox</span>
+<span class="kn">from</span> <span class="nn">window_functions</span> <span class="k">import</span> <span class="n">center_window</span><span class="p">,</span> <span class="n">position_window</span>
 
 
-<span class="c1">## @class Executive</span>
+
+<span class="c1"># @class Executive</span>
 <span class="c1">#  @brief Handles user input and gameplay</span>
 <div class="viewcode-block" id="Executive"><a class="viewcode-back" href="../index.html#executive.Executive">[docs]</a><span class="k">class</span> <span class="nc">Executive</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Executive class to act as game manager</span>
 
 <span class="sd">    Attributes:</span>
+
 <span class="sd">        game_over: Boolean to record current game status</span>
 
 <span class="sd">        cheat_mode: Boolean to record whether or not user is in cheat mode</span>
 
 <span class="sd">        myBoard: Instance of the Board class</span>
+
+<span class="sd">        root: tk root widget instance</span>
+
+<span class="sd">        setup_callback: function to call to re-show setup window</span>
+
+<span class="sd">        stopwatch: instance of stopwatch</span>
+
+<span class="sd">        flag_img: tk photoimage instance for the flag</span>
+
+<span class="sd">        cheat_button: button to click in order to cheat</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1">## Constructor; initializes class variables</span>
+    <span class="c1"># Constructor; initializes class variables</span>
     <span class="c1">#  @author: Ethan</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">setup_callback</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for Executive class</span>
 
 <span class="sd">        Initializes all attributes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_callback</span> <span class="o">=</span> <span class="n">setup_callback</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span> <span class="o">=</span> <span class="n">Board</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span> <span class="o">=</span> <span class="n">Board</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_windows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span> <span class="o">=</span> <span class="n">Board</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_cheat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Cheating...&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Escape&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit_cheat</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span> <span class="o">=</span> <span class="n">Stopwatch</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
 
-    <span class="c1">## Checks if all mines are flagged</span>
+        <span class="c1"># create game status window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;100x260&quot;</span><span class="p">)</span>
+        <span class="c1">#center_window(self.setup_window)</span>
+        <span class="c1"># initially hide the window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+
+        <span class="n">bg</span> <span class="o">=</span> <span class="s2">&quot;MediumOrchid1&quot;</span>
+
+        <span class="c1"># configure window title and color</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Game Status&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># assign callback for window close</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hide_windows</span><span class="p">)</span>
+
+        <span class="c1"># create flag counter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag_img</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">PhotoImage</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;./flag.gif&quot;</span><span class="p">)</span>
+        <span class="n">flags_counter</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">flag_img</span><span class="p">,</span> <span class="n">compound</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;Futura&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">))</span>
+        <span class="n">flags_counter</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+
+        <span class="c1"># create timer text</span>
+        <span class="n">time_text</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Time:&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="n">time_text</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="n">textvariable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">formatted_time</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+        <span class="c1"># add extra space after timer</span>
+        <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+
+        <span class="c1"># create cheat mode button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_button</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Cheat!&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cheat</span><span class="p">,</span> <span class="n">highlightbackground</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_button</span><span class="o">.</span><span class="n">pack</span><span class="p">()</span>
+
+
+
+    <span class="c1"># Checks if all mines are flagged</span>
     <span class="c1">#  @author: Ethan</span>
     <span class="c1">#  @post: game_over flag has been updated</span>
 <div class="viewcode-block" id="Executive.check_win"><a class="viewcode-back" href="../index.html#executive.Executive.check_win">[docs]</a>    <span class="k">def</span> <span class="nf">check_win</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Checks if all mines are flagged to determine is user has won the game</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            0 if user has not won the game</span>
+<span class="sd">        Calls on_game_win function if the user has won</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">flag_on_mine</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> \
+                   <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span><span class="p">:</span>
                     <span class="n">flag_on_mine</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">flag_on_mine</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You Win!&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="mi">0</span></div>
 
-    <span class="c1">## Generates board with user input for mines and size</span>
+        <span class="k">if</span> <span class="n">flag_on_mine</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_game_win</span><span class="p">()</span></div>
+
+
+
+    <span class="c1"># Generates board with user input for mines and size</span>
     <span class="c1">#  @author: Ethan</span>
     <span class="c1">#  @post: Board is generated based on user input</span>
-<div class="viewcode-block" id="Executive.setup"><a class="viewcode-back" href="../index.html#executive.Executive.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Executive.setup"><a class="viewcode-back" href="../index.html#executive.Executive.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">mines</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generates board to spec of user input</span>
+
+<span class="sd">        Then shows board window and game status window</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            width: width of the board to setup</span>
+
+<span class="sd">            height: height of the board to setup</span>
+
+<span class="sd">            mines: number of mines in the board to setup</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">board_size_select</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Please enter the board width between 2 and 15: &quot;</span><span class="p">))</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That</span><span class="se">\&#39;</span><span class="s2">s not a number!&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">board_size_select</span> <span class="o">&lt;=</span> <span class="mi">15</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">board_size_select</span>
-                    <span class="k">break</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not a valid board size. Try again&#39;</span><span class="p">)</span>
 
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">board_size_select</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Please enter the board height between 2 and 15: &quot;</span><span class="p">))</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That</span><span class="se">\&#39;</span><span class="s2">s not a number!&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="n">board_size_select</span> <span class="o">&lt;=</span> <span class="mi">15</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">board_size_select</span>
-                    <span class="k">break</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not a valid board size. Try again&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span> <span class="o">=</span> <span class="n">mines</span>
 
-        <span class="n">max_mines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="c1"># set the initial number of flags</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">)</span>
 
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">mine_num_select</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-                    <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter the number of mines, it should be between 1 and &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_mines</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span><span class="p">))</span>
-            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That</span><span class="se">\&#39;</span><span class="s2">s not a number!&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">mine_num_select</span> <span class="o">&lt;=</span> <span class="n">max_mines</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span> <span class="o">=</span> <span class="n">mine_num_select</span>
-                    <span class="k">break</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Not a valid amount of mines. Try again&#39;</span><span class="p">)</span>
+        <span class="c1"># create board grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reveal_event</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag_event</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span>
+        <span class="c1"># generate mines on the board grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">generate_mines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">generate_mines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mines_num</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">mine_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span></div>
+        <span class="c1"># populate cells with number of adjacent mines</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">mine_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 
-    <span class="c1">## Takes coordinates from user and handles input</span>
-    <span class="c1">#  @pre: Board has been setup</span>
-    <span class="c1">#  @author: Ethan</span>
-<div class="viewcode-block" id="Executive.play"><a class="viewcode-back" href="../index.html#executive.Executive.play">[docs]</a>    <span class="k">def</span> <span class="nf">play</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># display squares on board window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">gridSquares</span><span class="p">()</span>
+
+        <span class="c1"># display board window</span>
+        <span class="n">center_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+
+        <span class="c1"># display game status window</span>
+        <span class="n">position_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">()</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+
+        <span class="c1"># reset the stopwatch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="c1"># signal that the board has not yet had a selection</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.reveal_event"><a class="viewcode-back" href="../index.html#executive.Executive.reveal_event">[docs]</a>    <span class="k">def</span> <span class="nf">reveal_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Requests user input for playing the game as long as the game is not over</span>
-<span class="sd">        Presents revealed board upon game over</span>
+<span class="sd">        Performs necessary actions when a cell is clicked on</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            x: x-position of the cell clicked</span>
+
+<span class="sd">            y: y-position of the cell clicked</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span><span class="p">:</span>
-            <span class="c1"># Checking if in cheat mode</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span><span class="p">:</span>
-                <span class="c1"># in cheat mode</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Entering cheat mode, revealing entire board...&#39;</span><span class="p">)</span>
-                <span class="c1"># make duplicate board and reveal all spaces</span>
-                <span class="n">cheat_board</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
-                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
-                        <span class="n">cheat_board</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">print_board</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">cheat_board</span><span class="p">)</span>
-                <span class="c1"># present notice on how to leave cheat mode</span>
-                <span class="n">leave_cheat_mode</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;Enter any input to leave cheat mode...&#39;</span><span class="p">)</span>
-                <span class="c1"># leave cheat mode</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Leaving cheat mode...&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Printing board and number of flags</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">print_board</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of flags: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="p">)</span>
-                <span class="c1"># not in cheat mode</span>
-                <span class="c1"># get x coordinate</span>
-                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a X coordinate: &quot;</span><span class="p">)</span>
-                    <span class="c1"># account for cheat input</span>
-                    <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">True</span>
-                        <span class="k">break</span>
-                    <span class="c1"># user requested to see current time on stopwatch</span>
-                    <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">printCurrentTime</span><span class="p">()</span>
-                    <span class="c1"># not cheat input, check if numeric</span>
-                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That</span><span class="se">\&#39;</span><span class="s2">s not an integer. Try again.&quot;</span><span class="p">)</span>
-                    <span class="c1"># not cheat input, is numeric, check if within range</span>
-                    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid input. Try again.&quot;</span><span class="p">)</span>
-                    <span class="c1"># good input</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># make x an int</span>
-                        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-                        <span class="k">break</span>
 
-                <span class="c1"># check if cheat applied</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="c1"># is applied, continue to next iteration of loop</span>
-                    <span class="k">continue</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="ow">not</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">on_game_lose</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># checking if first selection for stopwatch</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span><span class="p">:</span>
+                <span class="c1"># is first selection, toggle and start stopwatch</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">reveal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">moveMines</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">resetGridMineCount</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">mine_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">checkAdditionalReveals</span><span class="p">()</span></div>
 
-                <span class="c1"># get x coordinate</span>
-                <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="n">y</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter a Y coordinate: &quot;</span><span class="p">)</span>
-                    <span class="c1"># account for cheat input</span>
-                    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="s1">&#39;c&#39;</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">True</span>
-                        <span class="k">break</span>
-                    <span class="c1"># user requested to see current time on stopwatch</span>
-                    <span class="k">elif</span> <span class="n">y</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">printCurrentTime</span><span class="p">()</span>
-                    <span class="c1"># not cheat input, check if numeric</span>
-                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">y</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">():</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;That</span><span class="se">\&#39;</span><span class="s2">s not an integer. Try again.&quot;</span><span class="p">)</span>
-                    <span class="c1"># not cheat input, is numeric, check if within range</span>
-                    <span class="k">elif</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">:</span>
-                        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid input. Try again.&quot;</span><span class="p">)</span>
-                    <span class="c1"># good input</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="c1"># make y an int</span>
-                        <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-                        <span class="k">break</span>
 
-                <span class="c1"># check if cheat applied</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-                    <span class="c1"># is applied, continue to next iteration of loop</span>
-                    <span class="k">continue</span>
 
-                <span class="c1"># cheat code not applied, ask user for action with selected coordinates</span>
-                <span class="n">choice</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter an action flag [f], reveal [r], unflag [n]: &quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="ow">or</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid try again&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">choice</span> <span class="o">!=</span> <span class="s2">&quot;f&quot;</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">!=</span> <span class="s2">&quot;n&quot;</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">!=</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid choice try again&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Invalid try again&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Out of flags. Try again.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Space is already flagged. Try again.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can&#39;t flag a revealed space. Try again.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can&#39;t unflag a revealed space. Try again.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="o">=</span> <span class="kc">False</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span> <span class="o">+=</span> <span class="mi">1</span>
-                <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
-                    <span class="c1"># checking if first selection for stopwatch</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span><span class="p">:</span>
-                        <span class="c1"># is first selection, toggle and start stopwatch</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">False</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="o">=</span> <span class="kc">True</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span> <span class="o">-=</span> <span class="mi">1</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">check_win</span><span class="p">()</span>
-                <span class="c1">#Testing to see if is_revealed is being switched to true</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Space is already revealed. Try again.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can&#39;t reveal a flagged space. Unflag before guessing this space or guess a different space.&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Game Over&quot;</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># checking if first selection for stopwatch</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span><span class="p">:</span>
-                        <span class="c1"># is first selection, toggle and start stopwatch</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">False</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">reveal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">moveMines</span><span class="p">()</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">resetGridMineCount</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">mine_check</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+<div class="viewcode-block" id="Executive.flag_event"><a class="viewcode-back" href="../index.html#executive.Executive.flag_event">[docs]</a>    <span class="k">def</span> <span class="nf">flag_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Performs necessary actions when a cell is flagged/unflagged (right clicked)</span>
 
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">print_board</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span></div></div>
+<span class="sd">        Args:</span>
+
+<span class="sd">            x: x-position of the cell flagged</span>
+
+<span class="sd">            y: y-position of the cell flagged</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">choice</span> <span class="o">=</span> <span class="s2">&quot;f&quot;</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span><span class="p">):</span>
+            <span class="n">choice</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#print(&quot;Invalid try again&quot;)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> \
+             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#print(&quot;Out of flags. Try again.&quot;)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#print(&quot;Space is already flagged. Try again.&quot;)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#print(&quot;You can&#39;t flag a revealed space. Try again.&quot;)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_revealed</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c1">#print(&quot;You can&#39;t unflag a revealed space. Try again.&quot;)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">unflag</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">is_flagged</span> <span class="ow">and</span> <span class="n">choice</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="c1"># checking if first selection for stopwatch</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span><span class="p">:</span>
+                <span class="c1"># is first selection, toggle and start stopwatch</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">first_selection</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">x</span><span class="p">][</span><span class="n">y</span><span class="p">]</span><span class="o">.</span><span class="n">flag</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">num_flags</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_win</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.on_game_lose"><a class="viewcode-back" href="../index.html#executive.Executive.on_game_lose">[docs]</a>    <span class="k">def</span> <span class="nf">on_game_lose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run when user clicks on a mine</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># stop stopwatch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="c1"># reveal all of the mines and freeze all cells to prevent further clicks</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reveal</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;YOU LOSE&quot;</span><span class="p">,</span> <span class="s2">&quot;Too bad.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide_windows</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.on_game_win"><a class="viewcode-back" href="../index.html#executive.Executive.on_game_win">[docs]</a>    <span class="k">def</span> <span class="nf">on_game_win</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run when user has flagged all mines</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># stop stopwatch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="c1"># display and freeze all cells</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reveal</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+
+        <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;YOU WIN!&quot;</span><span class="p">,</span> <span class="s2">&quot;Congratulations!</span><span class="se">\n\n</span><span class="s2">Your time was &quot;</span> \
+                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">formatted_time</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hide_windows</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.cheat"><a class="viewcode-back" href="../index.html#executive.Executive.cheat">[docs]</a>    <span class="k">def</span> <span class="nf">cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run when user enters cheat mode</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># create new board and make a grid for it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">;</span>
+
+        <span class="c1"># copy mine status and adjacent mine count from original board</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">is_mine</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">num_adj_mines</span>
+
+        <span class="c1"># display squares on board window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">gridSquares</span><span class="p">()</span>
+
+        <span class="c1"># reveal and freeze all squares</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reveal</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+
+        <span class="c1"># hide main board window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+        <span class="c1"># show cheat window</span>
+        <span class="n">position_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">board_window</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">winfo_x</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">winfo_y</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+
+        <span class="c1"># set cheat mode flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Back&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exit_cheat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.exit_cheat"><a class="viewcode-back" href="../index.html#executive.Executive.exit_cheat">[docs]</a>    <span class="k">def</span> <span class="nf">exit_cheat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        function to call to hide the cheat board and reset cheat flag</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># hide cheat window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">hide_board_window</span><span class="p">()</span>
+        <span class="c1"># display original board window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">board_window</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+
+        <span class="c1"># set cheat mode flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Cheat!&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cheat</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="Executive.hide_windows"><a class="viewcode-back" href="../index.html#executive.Executive.hide_windows">[docs]</a>    <span class="k">def</span> <span class="nf">hide_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        hides windows and stops processes associated with them</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># stop stopwatch (it may have already been stopped, but not in all cases)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopwatch</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="c1"># hide board window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">myBoard</span><span class="o">.</span><span class="n">hide_board_window</span><span class="p">()</span>
+        <span class="c1"># hide cheat window (if it is displayed)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_board</span><span class="o">.</span><span class="n">hide_board_window</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_mode</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cheat_button</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Cheat!&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cheat</span><span class="p">)</span>
+        <span class="c1"># hide game status window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game_status</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+        <span class="c1"># re-show setup window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_callback</span><span class="p">()</span></div></div>
 </pre></div>
 
            </div>

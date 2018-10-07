@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>setup &mdash; Minesweeper 0.0.2 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Minesweeper
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Minesweeper</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>setup</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for setup</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">tkinter</span> <span class="k">as</span> <span class="nn">Tk</span>
+<span class="kn">from</span> <span class="nn">tkinter</span> <span class="k">import</span> <span class="n">messagebox</span>
+<span class="kn">from</span> <span class="nn">executive</span> <span class="k">import</span> <span class="n">Executive</span>
+<span class="kn">from</span> <span class="nn">window_functions</span> <span class="k">import</span> <span class="n">center_window</span>
+
+
+
+<div class="viewcode-block" id="Setup"><a class="viewcode-back" href="../index.html#setup.Setup">[docs]</a><span class="k">class</span> <span class="nc">Setup</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates and provides functions for window to take in board specifications</span>
+<span class="sd">    from user.</span>
+
+<span class="sd">    Attributes:</span>
+
+<span class="sd">        exec: instance of executive class, for actually playing the game with</span>
+
+<span class="sd">        root: instance of tk root window</span>
+
+<span class="sd">        menu_callback: function to call when the setup window is closed, to re-show</span>
+<span class="sd">        the main menu window</span>
+
+<span class="sd">        setup_window: instance of tk window for input of board parameters</span>
+
+<span class="sd">        width_input: tk entry for user to put width value in</span>
+
+<span class="sd">        height_input: tk entry for user to put height value in</span>
+
+<span class="sd">        mines_input: tk entry for suer to put mines count in</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">menu_callback</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        constructor for setup class</span>
+
+<span class="sd">        creates tkinter widgets for setup window</span>
+
+<span class="sd">        Args:</span>
+
+<span class="sd">            root: instance of tk root window</span>
+
+<span class="sd">            menu_callback: function to call when the setup window is closed, to re-show</span>
+<span class="sd">            the main menu window</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">setup_callback</span><span class="p">():</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            callback to pass in to executive for calling to re-show setup window after game end</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">deiconify</span><span class="p">()</span>
+
+        <span class="c1"># creates executive instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exec</span> <span class="o">=</span> <span class="n">Executive</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">setup_callback</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span> <span class="o">=</span> <span class="n">menu_callback</span>
+
+        <span class="c1"># creates setup window and centers it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Toplevel</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;200x200&quot;</span><span class="p">)</span>
+        <span class="n">center_window</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">)</span>
+
+        <span class="n">bg</span> <span class="o">=</span> <span class="s2">&quot;indianred2&quot;</span>
+
+        <span class="c1"># configures setup window title and title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Setup Board&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="n">bd</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">relief</span><span class="o">=</span><span class="s2">&quot;ridge&quot;</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># create function to call in order to move back to main menu</span>
+        <span class="k">def</span> <span class="nf">return_to_menu</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">menu_callback</span><span class="p">()</span>
+
+        <span class="c1"># define window close, escape and return key bindings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">protocol</span><span class="p">(</span><span class="s2">&quot;WM_DELETE_WINDOW&quot;</span><span class="p">,</span> <span class="n">return_to_menu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Escape&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">return_to_menu</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s2">&quot;&lt;Return&gt;&quot;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">())</span>
+
+        <span class="c1"># create width text &amp; entry</span>
+        <span class="n">width_text</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width_input</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">highlightbackground</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span> <span class="c1">#, textvariable=self.width_val)</span>
+
+        <span class="n">width_text</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width_input</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># create height text &amp; entry</span>
+        <span class="n">height_text</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Height&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height_input</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">highlightbackground</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span> <span class="c1">#, textvariable=self.height_val)</span>
+
+        <span class="n">height_text</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height_input</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># create mines text &amp; entry</span>
+        <span class="n">mines_text</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Mines&quot;</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mines_input</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">highlightbackground</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span> <span class="c1">#, textvariable=self.mines_val)</span>
+
+        <span class="n">mines_text</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">E</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mines_input</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># button that starts the game, or displays an error if the dimensions are invalid</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Begin Game&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">,</span> <span class="n">highlightbackground</span><span class="o">=</span><span class="n">bg</span><span class="p">)</span>
+        <span class="n">begin</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="Setup.validate"><a class="viewcode-back" href="../index.html#setup.Setup.validate">[docs]</a>    <span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if the user&#39;s inputs are valid, and starts the game if they are</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">checknum</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            checks if the string entered is a nonnegative number</span>
+
+<span class="sd">            Args:</span>
+
+<span class="sd">                val: the string to check if is a number</span>
+
+<span class="sd">            Returns:</span>
+
+<span class="sd">                True if the string is a nonnegative number</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">val</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># get user entry from inputs</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width_input</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">height_input</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">mines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mines_input</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+        <span class="c1"># check that all entries are numbers</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">checknum</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Board width must be a number!&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">checknum</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Board height must be a number!&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">checknum</span><span class="p">(</span><span class="n">mines</span><span class="p">):</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Mine count must be a number!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">width</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+            <span class="n">mines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mines</span><span class="p">)</span>
+
+            <span class="c1"># if they are all numbers, check that they are in bounds</span>
+            <span class="k">if</span> <span class="n">width</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too small of a width&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too large of a width&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too small of a height&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too large of a height&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">mines</span> <span class="o">&gt;=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">height</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too many mines!&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">mines</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Entry Error&quot;</span><span class="p">,</span> <span class="s2">&quot;Too few mines!&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># hide setup window and tell executive instance to start game</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setup_window</span><span class="o">.</span><span class="n">withdraw</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">exec</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">mines</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ayah Alkhatib, Benjamin Streit, Blake Rieschick, Clare Meyer, Ethan Lefert, Evan Brown, Kristi Daigh, Kyle Curry.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.2',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

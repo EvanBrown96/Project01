@@ -28,6 +28,12 @@ Welcome to Minesweeper's documentation!
 .. automodule:: stopwatch
    :members:
 
+.. automodule:: setup
+   :members:
+
+.. automodule:: window_functions
+   :members:
+
 
 Indices
 ==================
