@@ -40,3 +40,10 @@ Indices
 
 * :ref:`genindex`
 * :ref:`modindex`
+
+Works Cited
+==================
+This project is a fork from `Team Py Five <https://github.com/amalkhatib90/Project01>`_, from KU's EECS 448 course.
+
+
+`Tkinter <https://wiki.python.org/moin/TkInter>`_ was used for GUI, and `Sphinx <http://www.sphinx-doc.org/en/master/>`_ paired with the `read the docs <https://readthedocs.org>`_ theme was used for documentation.
